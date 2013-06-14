@@ -1,0 +1,7 @@
+GUIDA PER INSTALLARE I FILE:
+
+- inserire i file nel vostro sito
+- importare nel vostro database il file sql.sql presente nei file che avete scaricato
+- modificare il file applications/config/config.php alla riga 14 e 15
+- modificare il file applications/config/database.php inserendo i vostri dati del database
+- modificare il file applications/config/ikariam.php modificando i valori del vostro sito
