@@ -79,36 +79,49 @@ class Main extends CI_Controller {
         
 		// Регистрируем
         if (count($errors) == 0)
+        {
+            $login = strip_tags($_POST['name']);
+            $password = strip_tags($_POST['password']);
+
+            $user_query = $this->db->get_where($_POST['universe'].'_users', array('login' => $login));
+          
+    		// Если такого игркоа нету
+            if ($user_query->num_rows == 0)
             {
-                $login = strip_tags($_POST['name']);
-                $password = strip_tags($_POST['password']);
+                $key = random_string('alnum', 30);
+                
+				// Добавляем данные игрока
+                $this->db->insert($_POST['universe'].'_users', array('login' => $login,'password' => md5($password),'email' => $_POST['email'], 'last_visit' => time(),'register_key' => $key));
 
+				// Находим игрока в базе
                 $user_query = $this->db->get_where($_POST['universe'].'_users', array('login' => $login));
-                // Если такого игркоа нету
-                if ($user_query->num_rows == 0)
-                {
-                    $key = random_string('alnum', 30);
-                    // Добавляем данные игрока
-                    $this->db->insert($_POST['universe'].'_users', array('login' => $login,'password' => md5($password),'email' => $_POST['email'], 'last_visit' => time(),'register_key' => $key));
-                    // Находим игрока в базе
-                    $user_query = $this->db->get_where($_POST['universe'].'_users', array('login' => $login));
-                    $user = $user_query->row();
-                    // Выбираем остров
-                    $island_query = $this->db->query('SELECT * FROM `'.$_POST['universe'].'_islands'.'` WHERE `city0`=0 or `city2`=0 or `city4`=0 or `city6`=0 or `city8`=0 or `city10`=0 or `city12`=0 or `city14`=0 ORDER BY RAND() LIMIT 1');
+                $user = $user_query->row();
+               
+			    // Se l'utente è il primo a registrarsi allora è admin
+				if($user->id == '1')
+				{ 
+				    $data = array('rank' => '2');
+                    $this->db->where('id', '1');
+                    $this->db->update($_POST['universe'].'_users', $data); 
+				}
+				
+				// Выбираем остров
+                $island_query = $this->db->query('SELECT * FROM `'.$_POST['universe'].'_islands'.'` WHERE `city0`=0 or `city2`=0 or `city4`=0 or `city6`=0 or `city8`=0 or `city10`=0 or `city12`=0 or `city14`=0 ORDER BY RAND() LIMIT 1');
 
-                    if ($island_query->num_rows > 0)
+                if ($island_query->num_rows > 0)
+                {
+                    $island = $island_query->row();
+                    
+					// Находим позицию
+                    $position = -1;
+                    for ($i = 0; $i <= 15; $i++)
                     {
-                        $island = $island_query->row();
-                        // Находим позицию
-                        $position = -1;
-                        for ($i = 0; $i <= 15; $i++)
+                        if ($i == 0 or $i == 2 or $i == 4 or $i == 6 or $i == 8 or $i == 10 or $i == 12 or $i == 14)
                         {
-                            if ($i == 0 or $i == 2 or $i == 4 or $i == 6 or $i == 8 or $i == 10 or $i == 12 or $i == 14)
-                            {
-                                $parametr = 'city'.$i;
-                                if ($island->$parametr == 0){$position = $i;break;}
-                            }
+                            $parametr = 'city'.$i;
+                            if ($island->$parametr == 0){$position = $i;break;}
                         }
+                    }
                         if ($position >= 0)
                         {
                             // Добавляем город
