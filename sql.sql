@@ -711,6 +711,7 @@ CREATE TABLE `alpha_users` (
   `email` varchar(255) CHARACTER SET utf8 NOT NULL,
   `register_key` varchar(255) CHARACTER SET utf8 NOT NULL,
   `register_complete` int(11) NOT NULL DEFAULT '0',
+  `rank` int(11) NOT NULL DEFAULT '0',
   `last_visit` int(11) NOT NULL,
   `double_login` int(11) NOT NULL DEFAULT '0',
   `blocked_time` int(11) NOT NULL DEFAULT '0',
