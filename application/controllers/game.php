@@ -2,6 +2,8 @@
 
 class Game extends CI_Controller {
 
+	public $configValue;
+	
 	/**
 	 * Construct function
 	 */
@@ -41,7 +43,7 @@ class Game extends CI_Controller {
             $this->Player_Model->Load_New_Town_Messages();
             $this->Player_Model->Load_New_User_To_Messages();
 			$this->load->model('View_Model');
-
+			
         }
 		
 		// Load language
@@ -53,6 +55,10 @@ class Game extends CI_Controller {
         {
             $this->lang->load('game');
         }
+		
+		//Load config
+		$this->Data_Model->Load_Config(1);
+		$this->configValue =& $this->Data_Model->temp_config_db[1];
 	}
 	
 	/**
@@ -69,7 +75,9 @@ class Game extends CI_Controller {
      */
     public function index()
     {
-        $this->show('city');
+        $this->Data_Model->Load_Config(1);
+		$config =& $this->Data_Model->temp_config_db[1];
+		$this->show('city', $config);
     }
 	
 	
@@ -936,68 +944,6 @@ class Game extends CI_Controller {
 	$this->show('sendAllyMex', $id_alleanza);
 	}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	function show($location, $param1 = 0, $param2 = 0, $param3 = 0, $param4 = 0, $param5 = 0, $param6 = 0)

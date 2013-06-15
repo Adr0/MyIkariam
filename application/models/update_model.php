@@ -994,7 +994,7 @@ class Update_Model extends CI_Model
                 $resource_name = $this->Data_Model->resource_class_by_type($route->send_resource);
                 if ($this->Player_Model->towns[$route->from]->$resource_name >= $route->send_count)
                 {
-                    $transports = ceil($route->send_count/$this->config->item('transport_capacity'));
+                    $transports = ceil($route->send_count/$this->configValue->transport_capacity);
                     if ($this->Player_Model->user->transports >= $transports and $this->Player_Model->towns[$route->from]->actions > 0)
                     {
                         // Вычитаем ресурсы и баллы

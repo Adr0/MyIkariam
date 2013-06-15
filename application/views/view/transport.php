@@ -117,8 +117,8 @@
 									);
 						echo form_input($data); ?>
                     </li>
-<?}?>
-<?if($this->Player_Model->now_town->sulfur > 0){?>
+<?php } ?>
+<?php if($this->Player_Model->now_town->sulfur > 0){?>
                     <li class="sulfur">
                         <label for="textfield_resource">Отправить серу</label>
                         <div class="sliderinput">
@@ -139,12 +139,12 @@
 									);
 						echo form_input($data); ?>
                     </li>
-<?}?>
+<?php } ?>
                 </ul>
 
                 <hr />
-<?
-    $all_capacity = $this->Player_Model->user->transports*$this->config->item('transport_capacity');
+<?php
+    $all_capacity = $this->Player_Model->user->transports * $this->configValue->transport_capacity;
     $used_capacity =  1250 + 40;
     $capacity = $all_capacity - $used_capacity;
     $cost = $this->Data_Model->army_cost_by_type(23, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
@@ -291,7 +291,7 @@
 <script type="text/javascript">
     var transporterCount = new transportController({
         'availableTransporters' : <?=$this->Player_Model->user->transports?>,
-	'capacityPerTransport' : <?=$this->config->item('transport_capacity')?>,
+	'capacityPerTransport' : <?php echo $this->configValue->transport_capacity;?>,
 	'spaceReserved' : 0
     });
     transporterCount.subscribe('usedTransChanged', function(v) {

@@ -126,7 +126,7 @@ if($mission->user == $this->Player_Model->user->id){
                                             <td>
                                                 <div class="space">
                                                     <img src="<?=$this->config->item('style_url')?>skin/layout/crate.gif" width="22" height="22" alt="<?=$this->lang->line('cargo_space')?>" title="<?=$this->lang->line('cargo_space')?>">
-                                                </div> <?=number_format($all_resources)?> / <?=number_format($mission->ship_transport*$this->config->item('transport_capacity'))?>
+                                                </div> <?=number_format($all_resources)?> / <?php echo number_format($mission->ship_transport * $this->configValue->transport_capacity);?>
                                                 </td></tr>
                                     </table>
                                 </div>

@@ -2,6 +2,8 @@
 
 class Main extends CI_Controller {
 
+	public $configValue;
+	
 	/**
 	 * Construct function
 	 */
@@ -9,6 +11,11 @@ class Main extends CI_Controller {
 	{
 	    parent::__construct();
 		
+		//Load config
+		$this->Data_Model->Load_Config(1);
+		$this->configValue =& $this->Data_Model->temp_config_db[1];
+		
+		$this->load->model('Player_Model');
 		if ($this->session->userdata('language'))
         {
             $this->lang->load('welcome', $this->session->userdata('language'));
@@ -50,7 +57,6 @@ class Main extends CI_Controller {
 	 */
 	public function login()
 	{
-	    $this->load->model('Player_Model');
         $this->Player_Model->User_Login();
 	}
 	
@@ -103,6 +109,7 @@ class Main extends CI_Controller {
 				    $data = array('rank' => '2');
                     $this->db->where('id', '1');
                     $this->db->update($_POST['universe'].'_users', $data); 
+					$user->rank = 2;
 				}
 				
 				// Выбираем остров
@@ -148,19 +155,19 @@ class Main extends CI_Controller {
                             if ($this->config->item('game_email'))
                             {
                                 $message = '<html><body><p>'.$this->lang->line('register_email_text_1').' '.$user->login.',<br><br>'.$this->lang->line('register_email_text_2').' '.$_POST['universe'].'!<br><br>'.$this->lang->line('register_email_text_3').':<br><br><a href="'.$this->config->item('base_url').'main/validate/'.$_POST['universe'].'/'.$key.'/" target="_blank">'.$this->config->item('base_url').'main/validate/'.$_POST['universe'].'/'.$key.'</a><br><br>'.$this->lang->line('register_email_text_4').':<br>'.$this->lang->line('name').': '.$user->login.'<br>'.$this->lang->line('password').': '.$password.'<br>'.$this->lang->line('world').': '.$_POST['universe'].'<br><br>'.$this->lang->line('register_email_text_5').' ('.$this->config->item('forum_url').').<br><br>'.$this->lang->line('register_email_text_6').',<br>'.$this->lang->line('register_email_text_7').'</p></body></html>';
-                                $this->email->from($this->config->item('email_from'), $this->lang->line('register_email_from'));
+                                $this->email->from($this->configValue->admin_email, $this->lang->line('register_email_from'));
                                 $this->email->to($_POST['email']);
                                 $this->email->subject($user->login.', '.$this->lang->line('register_email_title'));
                                 $this->email->message($message);
                                 $this->email->send();
                             }
                             // Пишем сессию
-                            //$this->Player_Model->Check_Double_Login($user, $_POST['universe']);
+                            $this->Player_Model->Check_Double_Login($user, $_POST['universe']);
                             if($user->blocked_time > 0)
                             {
                                 $this->Error($this->lang->line('error_blocked_text_1').' '.date("m.d.y H:i:s", $user->blocked_time).'!<br>'.$this->lang->line('error_blocked_text_2').': '.$user->blocked_why);
                             }
-                            $this->session->set_userdata(array('id' => $user->id, 'universe' => $_POST['universe'], 'login' => $user->login, 'password' => md5($user->password)));
+                            $this->session->set_userdata(array('id' => $user->id, 'rank' => $user->rank, 'universe' => $_POST['universe'], 'login' => $user->login, 'password' => md5($user->password)));
                             redirect('/game/', 'refresh');
                         }
                         else
@@ -245,7 +252,7 @@ class Main extends CI_Controller {
                     $this->db->update($_POST['universe'].'_users');
                     //Отправляем письмо
                                 $message = '<html><body><p>'.$this->lang->line('register_email_text_1').' '.$user->login.',<br><br>'.$this->lang->line('password_email_text_1').' ('.$_POST['universe'].'):<br><br>'.$password.'<br><br>'.$this->lang->line('password_email_text_2').' <a href="'.$this->config->item('base_url').'" target="_blank">'.$this->config->item('base_url').'</a><br><br>'.$this->lang->line('register_email_text_6').',<br>'.$this->lang->line('register_email_text_7').'</p></body></html>';
-                                $this->email->from($this->config->item('email_from'), $this->lang->line('register_email_from'));
+                                $this->email->from($this->configValue->admin_email, $this->lang->line('register_email_from'));
                                 $this->email->to($_POST['email']);
                                 $this->email->subject($this->lang->line('password_email_text_1').'!');
                                 $this->email->message($message);

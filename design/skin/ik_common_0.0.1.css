@@ -2270,15 +2270,23 @@ auto;font-size:24px;font-weight:bold;text-align:center}
 html #militaryAdvisorReportView #container #mainview
 #command{border:1px
 solid #E2B977;font-size:11px;color:#542c0f;background-color:#fdf7dd}
-.militaryAdvisorTabs{background:transparent url(layout/bg_tabs.jpg) no-repeat scroll 0%;margin-bottom:5px;width:680px;height:36px}
-.militaryAdvisorTabs #tabz td
-a{color:#542c0f;display:block;width:250px;margin:0px
-auto;padding:5px
-0px 10px 0px}
-.militaryAdvisorTabs #tabz td.selected a,
-.militaryAdvisorTabs #tabz td a:hover{background:transparent url(layout/bg_tabs_single3.jpg) no-repeat scroll center -1px}
+.militaryAdvisorTabs{background:transparent url(layout/bg_tabs.jpg) no-repeat scroll 0%;padding: 5px 3px 1px 3px;width:680px;}
+.militaryAdvisorTabs #tabz td a {
+    color:#542c0f;
+	display:block;
+	margin:0px auto;
+	padding:5px 0px 10px 0px;
+}
+/* We replace the image with css propety. TODO: remove the image layout/bg_tabs_single3.jpg */
+.militaryAdvisorTabs #tabz td.selected a, .militaryAdvisorTabs #tabz td a:hover {
+    /*background:transparent url(layout/bg_tabs_single3.jpg) no-repeat scroll center -1px;*/
+	background-color: rgb(254, 247, 229);
+	border-radius: 10px 10px 0 0; 
+  -moz-border-radius: 10px 10px 0 0; /* firefox */
+  -webkit-border-radius: 10px 10px 0 0; /* safari, chrome */
+}
 #tabz
-td{text-align:center;width:50%}
+td{text-align:center;width:200px; height:42px;}
 .militaryAdvisorTabs a
 em{font-weight:bold}
 .militaryAdvisorTabs

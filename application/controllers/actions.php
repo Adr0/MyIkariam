@@ -9,7 +9,9 @@ require_once "game.php";
 class Actions extends CI_Controller
 {
 
-    function __construct()
+    public $configValue;
+	
+	function __construct()
     {
         parent::__construct();
 
@@ -39,6 +41,8 @@ class Actions extends CI_Controller
             $this->lang->load('game');
         }
         //$this->game = new Game;
+		$this->Data_Model->Load_Config(1);
+		$this->configValue =& $this->Data_Model->temp_config_db[1];
     }
 
     function show($location, $param1 = 0, $param2 = 0, $param3 = 0)
@@ -269,7 +273,7 @@ class Actions extends CI_Controller
             ($id != 13 or $this->Player_Model->research->res2_13 > 0) and
             ($id != 14 or ($id == 14 and $this->Player_Model->now_town->spyes_start == 0)) and
             ($type == 0 or $type == $id) and
-            (SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]) <= $this->config->item('town_queue_size')) and (SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]) > 0 and $this->Player_Model->user->premium_account > 0) or SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]) == 0)
+            (SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]) <= $this->configValue->town_queue_size) and (SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]) > 0 and $this->Player_Model->user->premium_account > 0) or SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]) == 0)
         {
             // Получаем цены
             $cost = $this->Data_Model->building_cost($id, $level, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
@@ -617,7 +621,7 @@ class Actions extends CI_Controller
     {
         $position = $this->Data_Model->get_position(5, $this->Player_Model->now_town);
         if (($this->Player_Model->now_town->build_line == '' or $this->Player_Model->build_line[$this->Player_Model->town_id][0]['type'] != 5) and
-           (strlen($this->Player_Model->armys[$this->Player_Model->town_id]->army_line) <= $this->config->item('army_queue_size')*4) )
+           (strlen($this->Player_Model->armys[$this->Player_Model->town_id]->army_line) <= $this->configValue->army_queue_size * 4))
         {
             if ($position > 0 and $position == $id)
             {
@@ -696,7 +700,7 @@ class Actions extends CI_Controller
     {
         $position = $this->Data_Model->get_position(4, $this->Player_Model->now_town);
         if (($this->Player_Model->now_town->build_line == '' or $this->Player_Model->build_line[$this->Player_Model->town_id][0]['type'] != 4) and
-           (strlen($this->Player_Model->armys[$this->Player_Model->town_id]->ships_line) <= $this->config->item('army_queue_size')*4) )
+           (strlen($this->Player_Model->armys[$this->Player_Model->town_id]->ships_line) <= $this->configValue->army_queue_size *4) )
         {
             if ($position > 0 and $position == $id)
             {
@@ -969,7 +973,7 @@ class Actions extends CI_Controller
                                              <br>Если Вам понадобится помощь, то Вы сможете найти ее на форуме Икариам ('.$this->config->item('forum_url').').<br><br>Удачи в игре,<br>Ваша команда Икариам.</p>
                                             </body>
                                             </html>';
-                    $this->email->from($this->config->item('email_from'), 'Гермес');
+                    $this->email->from($this->configValue->admin_email, 'Гермес');
                     $this->email->to($this->Player_Model->user->email);
                     $this->email->subject('Ваша активация для Икариам!');
                     $this->email->message($message);
@@ -1019,7 +1023,7 @@ class Actions extends CI_Controller
     function saveAvatarNotes()
     {
         $notes = strip_tags($_POST['notes']);
-        if (strlen($notes <= $this->config->item('notes_default')) or (strlen($notes <= $this->config->item('notes_premium') and $this->Player_Model->user->premium_account > 0)))
+        if (strlen($notes <= $this->configValue->notes_default) or (strlen($notes <= $this->configValue->notes_premium and $this->Player_Model->user->premium_account > 0)))
         {
             $this->db->set('text', $notes);
             $this->db->where(array('user' => $this->Player_Model->user->id));
@@ -1052,7 +1056,7 @@ class Actions extends CI_Controller
                 $crystal = $this->Player_Model->now_town->crystal - $cargo_crystal;
                 $sulfur = $this->Player_Model->now_town->sulfur - $cargo_sulfur;
                 $transports = $this->Player_Model->user->transports - $transporters;
-                if(isset($this->Data_Model->temp_towns_db[$town]) and ($this->Player_Model->user->transports >= $transporters) and ($transporters != 0) and ($wood >= 0) and ($wine >= 0) and ($crystal >= 0) and ($sulfur >= 0) and ($transports >= 0) and ($transporters*$this->config->item('transport_capacity') >= $cargo_wood + $cargo_wine + $cargo_marble + $cargo_crystal + $cargo_sulfur) and ($cargo_wood + $cargo_wine + $cargo_marble + $cargo_crystal + $cargo_sulfur != 0))
+                if(isset($this->Data_Model->temp_towns_db[$town]) and ($this->Player_Model->user->transports >= $transporters) and ($transporters != 0) and ($wood >= 0) and ($wine >= 0) and ($crystal >= 0) and ($sulfur >= 0) and ($transports >= 0) and ($transporters * $this->configValue->transport_capacity >= $cargo_wood + $cargo_wine + $cargo_marble + $cargo_crystal + $cargo_sulfur) and ($cargo_wood + $cargo_wine + $cargo_marble + $cargo_crystal + $cargo_sulfur != 0))
                 {
                     // subtract the resources
                     $this->Player_Model->now_town->wood = $wood;
@@ -1163,7 +1167,7 @@ class Actions extends CI_Controller
                                 $peoples = $this->Player_Model->now_town->peoples - 40;
                                 $gold = $this->Player_Model->user->gold - 9000;
                                 $transports = $this->Player_Model->user->transports - $transporters;
-                                if(($this->Player_Model->user->transports >= $transporters) and ($wood >= 0) and ($wine >= 0) and ($crystal >= 0) and ($sulfur >= 0) and ($peoples >= 0) and ($gold >= 0) and ($transports >= 0) and ($transporters*$this->config->item('transport_capacity') >= $sendresource + $sendwine + $sendmarble + $sendcrystal + $sendsulfur + 1250 + 40))
+                                if(($this->Player_Model->user->transports >= $transporters) and ($wood >= 0) and ($wine >= 0) and ($crystal >= 0) and ($sulfur >= 0) and ($peoples >= 0) and ($gold >= 0) and ($transports >= 0) and ($transporters*$this->configValue->transport_capacity >= $sendresource + $sendwine + $sendmarble + $sendcrystal + $sendsulfur + 1250 + 40))
                                 {
                                     if($this->Island_Model->island->$city_text == 0)
                                     {
@@ -2073,7 +2077,7 @@ class Actions extends CI_Controller
                 $crystal = $this->Player_Model->now_town->crystal - $cargo_crystal;
                 $sulfur = $this->Player_Model->now_town->sulfur - $cargo_sulfur;
                 $transports = $this->Player_Model->user->transports - $transporters;
-                if(isset($this->Data_Model->temp_towns_db[$town]) and ($this->Player_Model->user->transports >= $transporters) and ($soldati1 >= 0) and ($wine >= 0) and ($crystal >= 0) and ($sulfur >= 0) and ($transports >= 0) and ($transporters*$this->config->item('transport_capacity') >= $soldati + $cargo_wine + $cargo_marble + $cargo_crystal + $cargo_sulfur))
+                if(isset($this->Data_Model->temp_towns_db[$town]) and ($this->Player_Model->user->transports >= $transporters) and ($soldati1 >= 0) and ($wine >= 0) and ($crystal >= 0) and ($sulfur >= 0) and ($transports >= 0) and ($transporters*$this->configValue->transport_capacity >= $soldati + $cargo_wine + $cargo_marble + $cargo_crystal + $cargo_sulfur))
                 {
                     // Вычитаем ресурсы
                     $this->Player_Model->now_town->armys = $armys;

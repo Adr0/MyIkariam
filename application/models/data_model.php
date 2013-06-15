@@ -2,7 +2,7 @@
 class Data_Model extends CI_Model
 {
 
-    public $temp_user_db, $temp_spyes_db, $temp_trade_routes_db, $temp_missions_db, $temp_research_db, $temp_towns_db, $temp_islands_db, $temp_army_db = null;
+    public $temp_config_db, $temp_user_db, $temp_spyes_db, $temp_trade_routes_db, $temp_missions_db, $temp_research_db, $temp_towns_db, $temp_islands_db, $temp_army_db = null;
 
 	function __construct()
     {
@@ -27,7 +27,20 @@ class Data_Model extends CI_Model
         }}
     }
 
-    function Load_Town($id = 0)
+    function Load_Config($id = 0)
+    {
+        if ($id > 0)
+		{
+		    if (!isset($temp_config_db[$id]))
+			{
+                $query = $this->db->get_where($this->session->userdata('universe').'_config', array('id' => $id));
+                $return = $query->row();
+                $this->temp_config_db[$id] = $return;
+            }
+		}
+    }
+	
+	function Load_Town($id = 0)
     {
         if ($id > 0){if (!isset($temp_towns_db[$id])){
                 $query = $this->db->get_where($this->session->userdata('universe').'_towns', array('id' => $id));

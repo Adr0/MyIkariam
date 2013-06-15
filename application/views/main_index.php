@@ -4,9 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="language" content="<?=$this->lang->line('content')?>">
-	<meta name="author" content="Nexus">
-	<meta name="Description" content="<?=$this->lang->line('head_description')?>">
+        <meta name="language" content="<?php echo $this->lang->line('content');?>">
+	    <meta name="author" content="XxidroxX">
+	    <meta name="description" content="<?php echo $this->lang->line('head_description');?>">
 
         <script type="text/javascript" src="<?php echo base_url();?>design/js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url();?>design/js/jquery.tools.min.js"></script>
@@ -27,7 +27,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>design/ie6.css" />
         <![endif]-->
 
-        <title><?=$this->lang->line('head_title')?></title>
+        <title><?php echo $this->lang->line('head_title');?></title>
 
         <style>
             /* dont't remove!!!!!!!! (chrome fix) Parallax = Sky */

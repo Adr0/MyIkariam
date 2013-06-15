@@ -1,4 +1,4 @@
-<?
+<?php
     $this->Data_Model->Load_Town($param1);
     $town = $this->Data_Model->temp_towns_db[$param1];
     $this->Data_Model->Load_User($town->user);
@@ -138,7 +138,7 @@
 <script type="text/javascript">
 var transporterCount = new transportController({
 	'availableTransporters' : <?=$this->Player_Model->user->transports?>,
-	'capacityPerTransport' : <?=$this->config->item('transport_capacity')?>,
+	'capacityPerTransport' : <?php echo $this->configValue->transport_capacity;?>,
 	'spaceReserved' : 0
 });
 transporterCount.subscribe('usedTransChanged', function(v) {

@@ -16,11 +16,11 @@
                                 <td  style="width:250px;">
                                     <select id="moveCitySelect" class="citySpecialSelect smallFont" name="cityId" tabindex="1" >
                                         <option>-- <?=$this->lang->line('choose_town')?> --</option>
-<?foreach($this->Player_Model->towns as $town){?>
-<?$island = $this->Player_Model->islands[$town->island]?>
-<?$selected = ($this->Player_Model->town_id == $town->id) ? 'selected="selected"' : ''?>
-                    <option class="coords" value="<?=$town->id?>" <?=$selected?> title="<?=$this->lang->line('trade')?>: <?=$this->Data_Model->resource_name_by_type($island->trade_resource)?>" ><p>[<?=$island->x?>:<?=$island->y?>]&nbsp;<?=$town->name?></p></option>
-<?}?>
+<?php foreach($this->Player_Model->towns as $town){
+$island = $this->Player_Model->islands[$town->island];
+$selected = ($this->Player_Model->town_id == $town->id) ? 'selected="selected"' : '';?>
+                    <option class="coords" value="<?php echo $town->id;?>" <?=$selected?> title="<?=$this->lang->line('trade')?>: <?=$this->Data_Model->resource_name_by_type($island->trade_resource)?>" ><p>[<?=$island->x?>:<?=$island->y?>]&nbsp;<?=$town->name?></p></option>
+<?php } ?>
                                     </select>
                                 </td>
                                 <td>200<img height="20" width="24" title="<?=$this->lang->line('ambrosy')?>" alt="<?=$this->lang->line('ambrosy')?>" src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif"/></td>
@@ -81,9 +81,8 @@ Event.onDOMReady( function() {
 <?}?>
                 </ul>
             </div>
-<?}else{?>
-<?
-    $all_capacity = $this->Player_Model->user->transports*$this->config->item('transport_capacity');
+<?php }else{
+    $all_capacity = $this->Player_Model->user->transports * $this->configValue->transport_capacity;
     $used_capacity =  1250 + 40;
     $capacity = $all_capacity - $used_capacity;
     $cost = $this->Data_Model->army_cost_by_type(23, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
@@ -96,7 +95,7 @@ Event.onDOMReady( function() {
 <script type="text/javascript" src="<?=$this->config->item('script_url')?>js/transportController.js"></script>
 <script type="text/javascript">
 var transporterDisplay;
-Event.onDOMReady(function() {transporterDisplay = new transportController(<?=$this->Player_Model->user->transports?>, <?=$this->config->item('transport_capacity')?>, Dom.get("transporterCount"), 40+1250);});
+Event.onDOMReady(function() {transporterDisplay = new transportController(<?=$this->Player_Model->user->transports?>, <?php echo $this->configValue->transport_capacity;?>, Dom.get("transporterCount"), 40+1250);});
 </script>
 <p><?=$this->lang->line('more_resources')?></p>
 <form action="<?=$this->config->item('base_url')?>actions/colonize/<?=$id?>/<?=$position?>/" method="post">

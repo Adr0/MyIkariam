@@ -1103,8 +1103,8 @@ $lang['information44_7'] = 'Các nhà lãnh đạo khôn ngoan luôn phải bi�
 $lang['towns_on_island'] = 'Thành phố';
 $lang['colonize_here'] = 'Bạn có muốn chiếm đóng nơi này?';
 $lang['building_ground'] = 'Mặt bằng xây dựng';
-$lang['town_size'] = 'Cấp';
-$lang['player'] = 'Người chơi';
+$lang['town_size'] = 'Town size';
+$lang['player'] = 'Player';
 $lang['report_to_operator'] = 'Trình báo người chơi này cho nhà quản trị game...';
 $lang['report_player'] = 'Trình báo lại người chơi';
 $lang['diplomacy'] = 'Ngoại giao';
@@ -1137,4 +1137,4 @@ $lang['holds_empty'] = 'Khoang trống rỗng';
 
 // Key added after
 // Highscore
-$lang['ranking_list'] = 'Ranking list';
+$lang['acp_name'] = 'ACP';

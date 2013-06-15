@@ -5,7 +5,7 @@ class Player_Model extends CI_Model {
 	/**
 	 * We must start all array and object of all game
 	 */
-	public $missions, $user, $towns, $now_island, $research, $notes, $islands = null;
+	public $missions, $configValue, $user, $towns, $now_island, $research, $notes, $islands = null;
 	public $fleets, $spyes, $ways, $research_advisor, $army_gold_need, $all_transports, $resource_production, $tradegood_production_bonus, $plus_sulfur, $tradegood_production, $resource_production_bonus, $plus_wood, $saldo, $corruption, $missions_loading, $units_count, $peoples_gold, $max_peoples, $good, $plus, $minus, $army_line, $ships_line, $my_fleets, $town_id, $already_build, $armys, $build_line, $garisson_limit, $capacity, $warehouses_levels, $warehouses, $scientists, $capital_id, $levels, $peoples, $now_town = 0;
 	
 	/**
@@ -27,6 +27,9 @@ class Player_Model extends CI_Model {
 		    // Creo l'oggetto dell'utente e lo applico al "$this->user" che da ora contiene i valori della tabella users
 			$this->Data_Model->Load_User($id);
 			$this->user =& $this->Data_Model->temp_user_db[$id];
+			
+			$this->Data_Model->Load_Config(1);
+			$this->configValue =& $this->Data_Model->temp_config_db[1];
 			
 			// come prima carichiamo i valori delle ricerche dell'utente
 			$this->Data_Model->Load_Research($id);
@@ -69,7 +72,7 @@ class Player_Model extends CI_Model {
 				    continue; 
 				}
                 
-				$this->capacity[$town->id] = $this->config->item('standart_capacity');
+				$this->capacity[$town->id] = $this->configValue->standard_capacity;
                 
 				// Уровни зданий
                 for ($i = 1; $i <=26; $i++)
@@ -346,7 +349,8 @@ class Player_Model extends CI_Model {
 	
 	function Check_Double_Login($user, $universe)
     {
-        if ($this->config->item('double_login') and ($user->blocked_time == 0) and ($this->session->userdata('id') > 0) and ($user->id != $this->session->userdata('id')) and ($this->session->userdata('universe') == $universe))
+        $this->Data_Model->Load_Config(1);
+		if ($this->Data_Model->temp_config_db[1]->double_login == '1' and ($user->blocked_time == 0) and ($this->session->userdata('id') > 0) and ($user->id != $this->session->userdata('id')) and ($this->session->userdata('universe') == $universe))
         {
             $this->db->insert($universe.'_double_login', array('account_from' => $this->session->userdata('id'),'account_to' => $user->id,'login_time' => time(), 'ip_address' => $_SERVER['REMOTE_ADDR']));
             $user->double_login++;

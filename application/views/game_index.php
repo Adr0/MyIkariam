@@ -6,7 +6,8 @@
         <meta name="language" content="<?=$this->lang->line('content')?>">
         <meta name="description" content="MyIkariam, il BrowserGame strategico e gratuito ambientato nell'antichità.">
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
-<?if($this->Player_Model->now_town->build_start > 0){
+<?php 
+if($this->Player_Model->now_town->build_start > 0){
     $level_text = 'pos'.$this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'].'_level';
     $type_text = 'pos'.$this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'].'_type';
     $level = $this->Player_Model->now_town->$level_text;
@@ -16,22 +17,22 @@
     $ostalos = $end_date - time();
 ?>
         <title><?=$this->lang->line('ikariam')?> - <?=format_time($ostalos)?> - <?=$this->lang->line('world')?> <?=ucfirst($this->session->userdata('universe'))?></title>
-<?}else{?>
+<?php }else{ ?>
         <title><?=$this->lang->line('ikariam')?> - <?=$this->lang->line('world')?> <?=ucfirst($this->session->userdata('universe'))?></title>
-<?}?>
+<?php } ?>
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-        <link href="<?php echo base_url();?>design/skin/ik_common_<?=$this->config->item('style_version')?>.css" rel="stylesheet" type="text/css" media="screen">
-        <link href="<?php echo base_url();?>design/skin/ik_<?=$page?>_<?=$this->config->item('style_version')?>.css" rel="stylesheet" type="text/css" media="screen">
+        <link href="<?php echo base_url();?>design/skin/ik_common_<?php echo $this->configValue->style_version;?>.css" rel="stylesheet" type="text/css" media="screen">
+        <link href="<?php echo base_url();?>design/skin/ik_<?=$page?>_<?php echo $this->configValue->style_version;?>.css" rel="stylesheet" type="text/css" media="screen">
     
 
-		<?if($this->config->item('easter')){?>
+		<?php if($this->configValue->easter_design != '0'){?>
         <link href="<?php echo base_url();?>design/skin/specialsEaster.css" rel="stylesheet" type="text/css" media="screen">
-<?}?>		
+<?php } ?>		
 				
 				
 				
 				
-				<script type="text/javascript" src="<?php echo base_url();?>design/js/complete-<?=$this->config->item('script_version')?>.js"></script>
+				<script type="text/javascript" src="<?php echo base_url();?>design/js/complete-<?php echo $this->configValue->script_version;?>.js"></script>
                <script type="text/javascript">
 		/* <![CDATA[ */
 		var Event = YAHOO.util.Event,
@@ -461,11 +462,20 @@ $selected = ($this->Player_Model->town_id == $town->id) ? 'selected="selected"' 
                         </a>
                     </li>
                     <li class="version">
-                        <a href="<?=$this->config->item('base_url')?>game/version/" title="<?=$this->lang->line('version')?>">
-                            <span class="textLabel">v.<?=$this->config->item('game_version')?></span>
+                        <a href="<?=$this->config->item('base_url')?>game/version/" title="<?php echo $this->lang->line('version');?>">
+                            <span class="textLabel">v.<?php echo $this->configValue->game_version;?></span>
                         </a>
                     </li>
-                    <li class="serverTime">
+                    <?php
+					if($this->Player_Model->user->rank >= 2) {
+					?>
+					<li class="admin">
+                        <a href="<?=$this->config->item('base_url')?>acp/" title="<?=$this->lang->line('acp_name')?>">
+                            <span class="textLabel" style="color:red;"><?=$this->lang->line('acp_name')?></span>
+                        </a>
+                    </li>
+					<?php } ?>
+					<li class="serverTime">
                         <a>
                             <span class="textLabel" id="servertime"><?=date('d.m.Y H:i:s',time())?></span>
                         </a>
@@ -648,7 +658,7 @@ function updateNoteLayer(responseText) {
                 Dom.get("message").style.height = (panelHeight-75) + "px";
             }, panel, true);
             avatarNotes = new Notes();
-            avatarNotes.setMaxChars(<?if($this->Player_Model->user->premium_account > 0){?><?=$this->config->item('notes_premium')?><?}else{?><?=$this->config->item('notes_default')?><?}?>);
+            avatarNotes.setMaxChars(<?if($this->Player_Model->user->premium_account > 0){?><?php echo $this->configValue->notes_premium; }else{ echo $this->configValue->notes_default; }?>);
             avatarNotes.init(Dom.get("message"), Dom.get("chars"));
             Dom.get("resizablepanel_c").style.top = getCookie("ikariam_notes_y", "80px");
             Dom.get("resizablepanel_c").style.left = getCookie("ikariam_notes_x", "375px");
@@ -698,9 +708,6 @@ function getCookie ( check_name, def_val ) {
         return def_val;
     }
 }
-<?if(!$_POST){?>
-//document.getElementsByTagName("DIV")[0].style.display = 'none';
-<?}?>
 </script>
         </body>
 </html>

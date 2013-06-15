@@ -128,13 +128,17 @@ class View_Model extends CI_Model
 			case 'sendAllyMex':
                 $this->load->view('view/'.$location);
             break;
-            default: $this->load->view('view/null'); break;
+            case 'acp_index':
+		    case 'acp_users':
+			case 'acp_updates':
+			case 'acp_users':
+			case 'acp_config':
+			    $this->load->view('acp/view/'.$location);
+			break;			
+			default: $this->load->view('view/null'); break;
         
 		}
-    }
-
-	                 
-	
+    } 
 
     /**
      * Отображение левой части
@@ -202,7 +206,14 @@ class View_Model extends CI_Model
             case 'plunder':
             case 'colonize':
             case 'transport':
-            case 'sendSpy':
+            case 'acp_index':
+		    case 'acp_users':
+			case 'acp_updates':
+			case 'acp_users':
+			case 'acp_config':
+			    $this->load->view('acp/sidebox/acp_menu');
+			break;
+			case 'sendSpy':
                 $this->load->view('sidebox/back_to_island');
             default: break;
         }
@@ -271,9 +282,16 @@ class View_Model extends CI_Model
             case 'colonize': $caption = $this->lang->line('colonize'); $file = '_island'; break;
             case 'premiumTradeAdvisor': $caption = $this->lang->line('constructions_review'); $file = 'tradeAdvisor'; break;
             case 'highscore': $caption = $this->lang->line('top_list'); $file = 'null'; break;
-            
+            case 'acp_index':
+		    case 'acp_users':
+			case 'acp_users':
+			case 'acp_config':
+			case 'acp_updates':
+			    $file = 'null';
+			break;
 			default:
-                 $file = $location; break;
+                 $file = $location;
+				 break;
             break;
         }
         $this->load->view('bread/'.$file, array('caption' => $caption, 'type' => $type));
