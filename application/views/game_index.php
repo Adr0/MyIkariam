@@ -13,7 +13,8 @@ if($this->Player_Model->now_town->build_start > 0){
     $level = $this->Player_Model->now_town->$level_text;
     $type = $this->Player_Model->now_town->$type_text;
     $cost = $this->Data_Model->building_cost($type, $level, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-    $end_date = $this->Player_Model->now_town->build_start + $cost['time'];
+    $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
+	$end_date = $this->Player_Model->now_town->build_start + $cost['time'];
     $ostalos = $end_date - time();
 ?>
         <title><?=$this->lang->line('ikariam')?> - <?=format_time($ostalos)?> - <?=$this->lang->line('world')?> <?=ucfirst($this->session->userdata('universe'))?></title>

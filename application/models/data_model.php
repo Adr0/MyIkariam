@@ -867,7 +867,8 @@ class Data_Model extends CI_Model
             $max_level = count($time_array)-1;
         }else{$return['time'] = 0;}
         $return['max_level'] = $max_level;
-        // скидки на цены
+        
+		// скидки на цены
         $minus_wood = 0;
         $minus_wine = 0;
         $minus_marble = 0;

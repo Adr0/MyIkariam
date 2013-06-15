@@ -10,13 +10,12 @@
 
 <div id="unitConstructionList" class="dynamic"><h3 class="header"><?=$this->lang->line('buildings_construction_list')?></h3>
     <div class="content">
-<?if($this->Player_Model->armys[$this->Player_Model->town_id]->ships_line != ''){
+<?php if($this->Player_Model->armys[$this->Player_Model->town_id]->ships_line != ''){
     $ostalos_all = 0;
-?>
-<?
         $type = $this->Player_Model->ships_line[$this->Player_Model->town_id][0]['type'];
         $count = $this->Player_Model->ships_line[$this->Player_Model->town_id][0]['count'];
         $cost = $this->Data_Model->army_cost_by_type($type, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
+        $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
         $end_date =  $this->Player_Model->armys[$this->Player_Model->town_id]->ships_start + $cost['time'];
         $ostalos = $end_date - time();
         if ($ostalos < 0){ $ostalos = 0; }

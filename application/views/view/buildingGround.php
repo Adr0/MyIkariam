@@ -36,10 +36,11 @@
         ($i == 24 and $this->Player_Model->research->res2_12 == 0) or
         ($i == 25 and $this->Player_Model->research->res4_10 == 0) or
         ($i == 26 and $this->Player_Model->research->res3_4 == 0)){ continue; }
+        $buildings_count++;
+        $building_id=$i;
+        $cost = $this->Data_Model->building_cost($building_id,0, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
+	    $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
 ?>
-<?$buildings_count++?>
-<?$building_id=$i?>
-<?$cost = $this->Data_Model->building_cost($building_id,0, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id])?>
                 <li class="building <?=$this->Data_Model->building_class_by_type($building_id)?>">
                     <div class="buildinginfo">
                         <h4><?=$this->Data_Model->building_name_by_type($building_id)?></h4>

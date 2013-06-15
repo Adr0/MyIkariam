@@ -1,13 +1,12 @@
 <div id="mainview">
-<?include_once('building_description.php')?>
+<?php include_once('building_description.php'); ?>
     <form id="buildForm"  action="<?=$this->config->item('base_url')?>actions/fleet/<?=$position?>/" method="POST">
-        <input type=hidden name="action" value="buildUnits">
+        <input type="hidden "name="action" value="buildUnits">
         <div class="contentBox01h">
             <h3 class="header">Chế tạo tàu</h3>
             <div class="content">
                 <ul id="units">
-<?for($i = 16; $i <= 22; $i++){?>
-<?
+<?php for($i = 16; $i <= 22; $i++){
     if (($i == 16) or
         ($i == 17 and $this->Player_Model->research->res1_8 > 0) or
         ($i == 18 and $this->Player_Model->research->res1_12 > 0) or
@@ -15,8 +14,7 @@
         ($i == 20 and $this->Player_Model->research->res1_9 > 0) or
         ($i == 21 and $this->Player_Model->research->res1_13 > 0) or
         ($i == 22 and $this->Player_Model->research->res3_14 > 0)){
-?>
-<?
+
     $max_wood = 0;
     $max_sulfur = 0;
     $max_wine = 0;
@@ -90,7 +88,7 @@
                             <a class="setMax" href="#max" onClick="sliders['slider_<?=$this->Data_Model->army_class_by_type($i)?>'].setActualValue(<?=$max?>); return false;" title="Chế tạo nhiều nhất có thể">
                                 <span class="textLabel">Max</span>
                             </a>
-                            <input class="button" type=submit value="Chiêu mộ!">
+                            <input class="button" type="submit" value="Chiêu mộ!">
                         </div>
 <?}}?>
                         <div class="costs">

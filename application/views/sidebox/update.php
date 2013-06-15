@@ -1,4 +1,4 @@
-<?
+<?php 
 if ($position > 0 or ($position == 0 and $page == 'townHall')){
     $level_text = 'pos'.$position.'_level';
     $type_text = 'pos'.$position.'_type';
@@ -10,6 +10,7 @@ if ($position > 0 or ($position == 0 and $page == 'townHall')){
         if ($class == $this->Player_Model->build_line[$this->Player_Model->town_id][$i]['type']){$real_level++;}
     }
     $cost = $this->Data_Model->building_cost($type, $real_level, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
+	$cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
 ?>
 
 <div id="buildingUpgrade" class="dynamic">

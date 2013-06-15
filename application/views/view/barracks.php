@@ -22,14 +22,14 @@
         ($i == 12 and $this->Player_Model->research->res3_15 > 0) or // 11
         ($i == 13 and $this->Player_Model->research->res2_9 > 0) or // 5
         ($i == 14 and $this->Player_Model->research->res3_8 > 0)){ // 9
-?>
-<?
+
     $max_wood = 0;
     $max_sulfur = 0;
     $max_wine = 0;
     $max_crystal = 0;
     $max_peoples = 0;
     $cost = $this->Data_Model->army_cost_by_type($i, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
+    $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
     $class = $this->Data_Model->army_class_by_type($i);
     if ($cost['wood'] > 0){ $max_wood = floor($this->Player_Model->now_town->wood/$cost['wood']);}
     if ($cost['sulfur'] > 0){ $max_sulfur = floor($this->Player_Model->now_town->sulfur/$cost['sulfur']); }

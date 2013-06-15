@@ -5,12 +5,16 @@
 class Update_Model extends CI_Model
 {
 
+    public $configValue;
+	
     /**
      * Инициализация
      */
     function __construct()
     {
         parent::__construct();
+		$this->Data_Model->Load_Config(1);
+		$this->configValue =& $this->Data_Model->temp_config_db[1];
         $this->Update_Player($this->session->userdata('id'));
     }
 
@@ -176,7 +180,8 @@ class Update_Model extends CI_Model
                        $level = $this->Player_Model->towns[$i]->$level_text;
                        $type = $this->Player_Model->towns[$i]->$type_text;
                        $cost = $this->Data_Model->building_cost($buildings[0]['type'], $level, $this->Player_Model->research, $this->Player_Model->levels[$i]);
-                       if (SizeOf($buildings) > 1)
+                       $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
+					   if (SizeOf($buildings) > 1)
                        {
                            $new_cost = $this->Data_Model->building_cost($buildings[1]['type'], $level, $this->Player_Model->research, $this->Player_Model->levels[$i]);
                            // Стоимость постройки
@@ -428,7 +433,7 @@ class Update_Model extends CI_Model
 
     function Update_Islands()
     {
-           $towns_messages = array();
+		$towns_messages = array();
            // Пробегаемся по островам
            foreach ($this->Player_Model->islands as $island)
            {
@@ -438,9 +443,11 @@ class Update_Model extends CI_Model
                    $res_count = ($is == 0) ? 'wood_count' : 'trade_count';
                    $res_start = ($is == 0) ? 'wood_start' : 'trade_start';
                    $res_name = ($is == 0) ? 'Лесопилка' : $this->Data_Model->island_building_by_resource($island->trade_resource);
-                   // Цены для улучшения леса
+                   
+				   // Цены для улучшения леса
                    $cost = $this->Data_Model->island_cost($is,$island->$res_level);
-                   $need_wood = $cost['wood'] - $island->$res_count;
+                   $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
+				   $need_wood = $cost['wood'] - $island->$res_count;
                    $need_wood = ($need_wood < 0) ? 0 : $need_wood;
                    if ($island->$res_start > 0)
                    {

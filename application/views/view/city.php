@@ -1,4 +1,4 @@
-<?$position = $param1?>
+<?php $position = $param1;?>
 <div id="mainview" class="phase<?=$this->Player_Model->now_town->pos0_level?>">
     <ul id="locations">
 <?php
@@ -11,16 +11,16 @@ for ($i = 0; $i <= 14; $i++)
     $sub_class = ($i > 0) & ($i < 3) ? 'shore' : 'land';
     $sub_class = ($i == 14) ? 'wall' : $sub_class;
     $image = ($level == 0 and $class == 0) ? 'flag' : 'buildingimg';
-?>
+    
+	if ($this->Player_Model->now_town->build_line != '' and $this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'] == $i){
 
-<?if ($this->Player_Model->now_town->build_line != '' and $this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'] == $i){?>
-<?
     $type_text = 'pos'.$this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'].'_type';
     $level_text = 'pos'.$this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'].'_level';
     $level = $this->Player_Model->now_town->$level_text;
     $type = $this->Player_Model->build_line[$this->Player_Model->town_id][0]['type'];
     $cost = $this->Data_Model->building_cost($type, $level, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-    $end_date = $this->Player_Model->now_town->build_start + $cost['time'];
+    $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
+	$end_date = $this->Player_Model->now_town->build_start + $cost['time'];
     $ostalos = $end_date - time();
 ?>
 

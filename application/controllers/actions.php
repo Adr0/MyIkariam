@@ -112,11 +112,13 @@ class Actions extends CI_Controller
         {
             $level_text = 'pos'.$position.'_level';
             $type_text = 'pos'.$position.'_type';
-            // Уровень здания
+            
+			// Уровень здания
             $level = $this->Player_Model->now_town->$level_text;
             $type = $this->Player_Model->now_town->$type_text;
             if ($type == 0){ $type = $this->Player_Model->build_line[$this->Player_Model->town_id][0]['type']; }
-            // Получаем цены
+            
+			// Получаем цены
             if ($this->Player_Model->now_town->build_line != '' and $this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'] == $position)
             {
                 $cost = $this->Data_Model->building_cost($type,$level, $this->Player_Model->research,$this->Player_Model->levels[$this->Player_Model->town_id]);

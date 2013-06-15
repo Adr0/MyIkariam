@@ -1,5 +1,6 @@
-<?
+<?php
     $cost = $this->Data_Model->island_cost(0,$this->Island_Model->island->wood_level);
+    $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
     $end_time = $this->Island_Model->island->wood_start + $cost['time'];
     $ostalos = $end_time - time();
     $need_wood = $cost['wood'] - $this->Island_Model->island->wood_count;
@@ -15,7 +16,7 @@
         </a>
     </h3>
 
-<?if($this->Island_Model->island->wood_start > 0){?>
+<?php if($this->Island_Model->island->wood_start > 0){?>
 
     <div class="content">
 

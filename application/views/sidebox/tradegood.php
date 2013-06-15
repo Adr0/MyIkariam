@@ -1,6 +1,6 @@
-<?if ($this->Player_Model->research->res2_3 > 0){?>
-<?
+<?if ($this->Player_Model->research->res2_3 > 0){
     $cost = $this->Data_Model->island_cost(1,$this->Island_Model->island->trade_level);
+    $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
     $end_time = $this->Island_Model->island->trade_start + $cost['time'];
     $ostalos = $end_time - time();
     $need_wood = $cost['wood'] - $this->Island_Model->island->trade_count;
