@@ -151,7 +151,7 @@ CREATE TABLE `alpha_config` (
   `script_version` varchar(20) NOT NULL,
   `admin_email` text CHARACTER SET utf8 NOT NULL,
   `board_link` text CHARACTER SET utf8 NOT NULL,
-  `game_speed` int(11) NOT NULL DEFAULT '1',
+  `game_speed` int(11) NOT NULL DEFAULT '50',
   `easter_design` enum('0', '1') NOT NULL,
   `double_login` enum('0', '1') NOT NULL,
   `standard_capacity` int(11) NOT NULL,
@@ -168,7 +168,7 @@ CREATE TABLE `alpha_config` (
 -- Dumping data for table `alpha_config`
 --
 
-INSERT INTO `alpha_config` VALUES(1, 'MyIkariam', '0.0.1 Alpha 1', '0.0.1', '0.0.1', 'test@test.com', 'http://', 1, '0', '0', 3000, 500, 5, 5, 200, 7000, 604800);
+INSERT INTO `alpha_config` VALUES(1, 'MyIkariam', '0.0.1 Alpha 1', '0.0.1', '0.0.1', 'test@test.com', 'http://', 50, '0', '0', 3000, 500, 5, 5, 200, 7000, 604800);
 
 -- --------------------------------------------------------
 
@@ -307,41 +307,41 @@ INSERT INTO `alpha_islands` VALUES(71, 'Dakoos', 9, 9, 5, 4, 8, 2, 12, 0, 12355,
 INSERT INTO `alpha_islands` VALUES(72, 'Honitia', 9, 10, 1, 3, 5, 4, 9, 0, 9002, 0, 0, 12, 0, 351, 0, 367, 0, 400, 0, 429, 0, 689, 0, 713, 126, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(73, 'Tehyios', 9, 14, 5, 4, 7, 2, 2, 0, 0, 0, 0, 437, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(74, 'Rahios', 9, 19, 2, 4, 4, 2, 2, 0, 0, 0, 0, 501, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(75, 'Uskeuos', 9, 22, 1, 3, 6, 2, 2, 0, 0, 0, 0, 79, 0, 500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(75, 'Uskeuos', 9, 22, 1, 3, 6, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(76, 'Straidios', 9, 25, 3, 1, 4, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(77, 'Sackyos', 10, 3, 5, 3, 8, 14, 12, 0, 65571, 0, 0, 666, 0, 667, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 202, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(78, 'Peroeos', 10, 4, 2, 3, 2, 2, 2, 0, 0, 0, 0, 26, 0, 220, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(79, 'Untutia', 10, 6, 2, 2, 4, 36, 29, 0, 0, 0, 0, 717, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(80, 'Smakios', 10, 8, 3, 1, 2, 4, 2, 0, 0, 0, 0, 448, 0, 469, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(81, 'Takios', 10, 9, 5, 1, 1, 19, 9, 70088, 9388, 0, 0, 551, 0, 681, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(82, 'Mosuos', 10, 10, 4, 2, 5, 8, 11, 0, 12846, 0, 0, 65, 92, 85, 0, 712, 0, 744, 0, 684, 0, 0, 0, 0, 0, 238, 0, 1);
-INSERT INTO `alpha_islands` VALUES(83, 'Swauxuos', 10, 17, 2, 1, 6, 4, 2, 1614, 0, 0, 0, 10, 0, 398, 0, 402, 0, 466, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(77, 'Sackyos', 10, 3, 5, 3, 8, 14, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(78, 'Peroeos', 10, 4, 2, 3, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(79, 'Untutia', 10, 6, 2, 2, 4, 36, 29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(80, 'Smakios', 10, 8, 3, 1, 2, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(81, 'Takios', 10, 9, 5, 1, 1, 19, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(82, 'Mosuos', 10, 10, 4, 2, 5, 8, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(83, 'Swauxuos', 10, 17, 2, 1, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(84, 'Tysoios', 10, 22, 5, 3, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(85, 'Wotios', 11, 9, 4, 1, 5, 8, 2, 1065, 0, 0, 0, 620, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(86, 'Lihios', 11, 11, 3, 3, 5, 2, 8, 0, 2053, 0, 0, 232, 0, 357, 0, 365, 0, 496, 0, 732, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(87, 'Samootia', 11, 13, 4, 4, 2, 6, 2, 0, 0, 0, 0, 173, 0, 458, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(88, 'Ildetia', 11, 14, 3, 4, 5, 2, 2, 0, 0, 0, 0, 366, 0, 529, 0, 606, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(85, 'Wotios', 11, 9, 4, 1, 5, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(86, 'Lihios', 11, 11, 3, 3, 5, 2, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(87, 'Samootia', 11, 13, 4, 4, 2, 6, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(88, 'Ildetia', 11, 14, 3, 4, 5, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(89, 'Yeritia', 11, 15, 3, 3, 6, 2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 753, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(90, 'Soixios', 11, 16, 1, 3, 8, 2, 2, 0, 0, 0, 0, 1, 0, 508, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(91, 'Aleeos', 11, 18, 4, 4, 4, 2, 2, 0, 0, 0, 0, 96, 0, 278, 0, 552, 0, 658, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(90, 'Soixios', 11, 16, 1, 3, 8, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(91, 'Aleeos', 11, 18, 4, 4, 4, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(92, 'Silios', 11, 23, 5, 3, 5, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(93, 'Royios', 11, 25, 5, 3, 3, 2, 2, 0, 0, 0, 0, 410, 0, 685, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(94, 'Engoios', 12, 1, 5, 2, 1, 38, 26, 6011000, 0, 0, 0, 77, 0, 241, 0, 240, 296, 290, 139, 325, 0, 0, 195, 0, 235, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(95, 'Skeloos', 12, 2, 1, 3, 1, 19, 18, 0, 0, 0, 0, 0, 0, 0, 0, 611, 0, 0, 0, 0, 0, 0, 0, 297, 124, 293, 396, 1);
-INSERT INTO `alpha_islands` VALUES(96, 'Fuyyos', 12, 8, 4, 1, 6, 2, 2, 0, 0, 0, 0, 737, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(97, 'Cedios', 12, 14, 2, 2, 1, 18, 12, 0, 0, 0, 0, 111, 0, 675, 0, 752, 0, 0, 0, 0, 0, 0, 0, 0, 105, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(98, 'Snoduos', 12, 18, 3, 3, 6, 2, 2, 0, 0, 0, 0, 130, 0, 379, 0, 584, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(93, 'Royios', 11, 25, 5, 3, 3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(94, 'Engoios', 12, 1, 5, 2, 1, 38, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(95, 'Skeloos', 12, 2, 1, 3, 1, 19, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 297, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(96, 'Fuyyos', 12, 8, 4, 1, 6, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(97, 'Cedios', 12, 14, 2, 2, 1, 18, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 105, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(98, 'Snoduos', 12, 18, 3, 3, 6, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(99, 'Cosios', 12, 19, 3, 4, 8, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 233, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(100, 'Untyos', 12, 20, 4, 3, 8, 11, 5, 0, 0, 0, 0, 172, 0, 272, 0, 346, 0, 381, 0, 523, 0, 647, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(101, 'Threkios', 12, 22, 1, 2, 2, 2, 2, 0, 0, 0, 0, 62, 0, 108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(100, 'Untyos', 12, 20, 4, 3, 8, 11, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 523, 0, 647, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(101, 'Threkios', 12, 22, 1, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(102, 'Josios', 12, 23, 1, 4, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(103, 'Lleuhuos', 12, 25, 3, 4, 7, 31, 20, 112137, 305430, 0, 0, 449, 0, 498, 0, 668, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(104, 'Seyckoos', 13, 3, 2, 2, 1, 259, 63, 0, 0, 1348406852, 1348406852, 394, 0, 549, 621, 583, 0, 599, 295, 720, 0, 609, 0, 634, 190, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(105, 'Bloenios', 13, 7, 2, 4, 7, 2, 2, 0, 0, 0, 0, 1, 0, 46, 0, 229, 0, 359, 0, 389, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(106, 'Nusiios', 13, 8, 5, 2, 2, 3, 4, 0, 0, 0, 0, 91, 0, 208, 0, 0, 0, 403, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(107, 'Kuchiios', 13, 11, 5, 4, 4, 9, 9, 4926, 9965, 0, 0, 93, 0, 236, 0, 388, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(108, 'Shyitia', 13, 12, 5, 4, 2, 22, 14, 33313, 5117, 0, 0, 669, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(109, 'Layiios', 13, 13, 5, 4, 4, 9, 8, 4926, 10183, 0, 0, 75, 0, 264, 0, 0, 0, 0, 0, 0, 0, 740, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(103, 'Lleuhuos', 12, 25, 3, 4, 7, 31, 20, 0, 0, 0, 0, 0, 0, 0, 0, 668, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(104, 'Seyckoos', 13, 3, 2, 2, 1, 259, 63, 0, 0, 0, 0, 0, 0, 549, 621, 583, 0, 599, 295, 720, 0, 609, 0, 634, 190, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(105, 'Bloenios', 13, 7, 2, 4, 7, 2, 2, 0, 0, 0, 0, 1, 0, 46, 0, 0, 0, 0, 0, 389, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(106, 'Nusiios', 13, 8, 5, 2, 2, 3, 4, 0, 0, 0, 0, 91, 0, 208, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(107, 'Kuchiios', 13, 11, 5, 4, 4, 9, 9, 0, 0, 0, 0, 93, 0, 0, 0, 388, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(108, 'Shyitia', 13, 12, 5, 4, 2, 22, 14, 0, 5117, 0, 0, 669, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(109, 'Layiios', 13, 13, 5, 4, 4, 9, 8, 0, 0, 0, 0, 75, 0, 264, 0, 0, 0, 0, 0, 0, 0, 740, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(110, 'Angouos', 13, 18, 5, 2, 8, 3, 6, 0, 0, 0, 0, 213, 0, 0, 0, 0, 0, 705, 181, 0, 758, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(111, 'Dagios', 13, 19, 5, 3, 1, 25, 10, 115884, 0, 0, 0, 86, 0, 158, 0, 201, 0, 574, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(112, 'Nauyios', 13, 20, 1, 3, 8, 22, 9, 243000, 0, 0, 0, 76, 0, 392, 0, 506, 0, 567, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);

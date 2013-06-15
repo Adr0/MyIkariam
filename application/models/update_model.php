@@ -478,7 +478,7 @@ class Update_Model extends CI_Model
                                {
                                    $this->Data_Model->Load_Town($this->Player_Model->islands[$island->id]->$town_text);
                                    $town = $this->Data_Model->temp_towns_db[$this->Player_Model->islands[$island->id]->$town_text];
-                                   if (!isset($users_sended[$town->user]))
+                                   if(isset($town->user) and !isset($users_sended[$town->user]))
                                    {
                                        $users_sended[$town->user] = TRUE;
                                        $town_message = array(

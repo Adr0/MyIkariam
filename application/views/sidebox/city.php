@@ -71,15 +71,16 @@ if($this->Player_Model->now_town->build_line != ''){
 
     <h4><?=$this->lang->line('in_turn')?>:</h4>
     <ul>
-<?for($i = 1; $i < SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]); $i++){?>
-<?
+<?php for($i = 1; $i < SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]); $i++){
+
         $level_text = 'pos'.$this->Player_Model->build_line[$this->Player_Model->town_id][$i]['position'].'_level';
         $type_text = 'pos'.$this->Player_Model->build_line[$this->Player_Model->town_id][$i]['position'].'_type';
         $level = $this->Player_Model->now_town->$level_text;
         $type = $this->Player_Model->build_line[$this->Player_Model->town_id][$i]['type'];
         $levels[$this->Player_Model->build_line[$this->Player_Model->town_id][$i]['position']] = ($levels[$this->Player_Model->build_line[$this->Player_Model->town_id][$i]['position']] > 0) ? $levels[$this->Player_Model->build_line[$this->Player_Model->town_id][$i]['position']]+1 : $level;
         $cost = $this->Data_Model->building_cost($type, $levels[$this->Player_Model->build_line[$this->Player_Model->town_id][$i]['position']], $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-        $end_date = $this->Player_Model->now_town->build_start + $cost['time'];
+        $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
+		$end_date = $this->Player_Model->now_town->build_start + $cost['time'];
         $ostalos = $end_date - time();
         if ($ostalos < 0){ $ostalos = 0; }
         $ostalos_all = $ostalos_all + $ostalos;
