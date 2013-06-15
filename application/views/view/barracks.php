@@ -1,13 +1,12 @@
 <div id="mainview">
 <?include_once('building_description.php')?>
     <form id="buildForm"  action="<?=$this->config->item('base_url')?>actions/army/<?=$position?>/" method="POST">
-        <input type=hidden name="action" value="buildUnits">
+        <input type="hidden" name="action" value="buildUnits">
         <div class="contentBox01h">
             <h3 class="header"><?=$this->lang->line('recruit_units')?></h3>
             <div class="content">
                 <ul id="units">
-<?for($i = 1; $i <= 14; $i++){?>
-<?
+<?php for($i = 1; $i <= 14; $i++){
     if (($i == 1 and $this->Player_Model->research->res4_3 > 0) or // 4
         ($i == 2 and $this->Player_Model->research->res4_12 > 0) or // 12
         ($i == 3) or // 1
@@ -81,8 +80,8 @@
                         <div class="forminput">
                             <?=$this->lang->line('is_upgrading')?>
                         </div>
-<?}else{?>
-<?if(   ($i == 1 and $level < 4) or // 4
+<?php }else{ 
+if(   ($i == 1 and $level < 4) or // 4
         ($i == 2 and $level < 12) or // 12
         ($i == 4 and $level < 6) or // 6
         ($i == 5 and $level < 2) or // 2
@@ -96,7 +95,7 @@
         ($i == 13 and $level < 5) or // 5
         ($i == 14 and $level < 9)){ // 9?>
                         <div class="forminput"><?=$this->lang->line('building_low')?></div>
-<?}else{?>
+<?php }else{ ?>
                         <div class="forminput">
                             <input class="textfield" id="textfield_<?=$this->Data_Model->army_class_by_type($i)?>" type="text" name="<?=$i?>"  value="0" size="4" maxlength="4">
                             <a class="setMax" href="#max" onClick="sliders['slider_<?=$this->Data_Model->army_class_by_type($i)?>'].setActualValue(<?=$max?>); return false;" title="<?=$this->lang->line('recruit_max')?>">
@@ -104,7 +103,7 @@
                             </a>
                             <input class="button" type=submit value="<?=$this->lang->line('recruit')?>!">
                         </div>
-<?}}?>
+<?php }} ?>
 
                         <div class="costs">
                             <h5>Стоимость:</h5>

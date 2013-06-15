@@ -337,7 +337,8 @@ class Update_Model extends CI_Model
 
                            // Переменные
                            $cost = $this->Data_Model->army_cost_by_type($army[0]['type'], $this->Player_Model->research, $this->Player_Model->levels[$i]);
-                           $ELAPSED_ARMY = time() - $army_start;
+                           $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
+						   $ELAPSED_ARMY = time() - $army_start;
                            $count = floor($ELAPSED_ARMY/$cost['time']);
                            $class = $this->Data_Model->army_class_by_type($army[0]['type']);
                            // Если построен хотя бы один
