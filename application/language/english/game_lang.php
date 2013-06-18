@@ -109,10 +109,11 @@ $lang['island_building_crystal'] = 'Quặng pha lê';
 $lang['island_building_marble'] = 'Quặng mỏ';
 $lang['island_building_wine'] = 'Vườn nho';
 
-$lang['mission_1'] = 'Chiếm làm thuộc địa';
-$lang['mission_2'] = 'Giao thông vận tải';
-$lang['mission_3'] = 'Vận chuyển hàng hóa';
-$lang['mission_4'] = 'Vận chuyển hàng hóa';
+$lang['mission_1'] = 'Chiếm làm thuộc địa'; // colonizzazione
+$lang['mission_2'] = 'Giao thông vận tải'; // Transporter
+$lang['mission_3'] = 'Vận chuyển hàng hóa'; //Freight Scambio commerciale
+$lang['mission_4'] = 'Vận chuyển hàng hóa'; // Battle?
+$lang['mission_5'] = 'Plunder';
 
 $lang['research1_1_name'] = 'Xưởng mộc';
 $lang['research1_1_desc'] = 'Những cây gỗ trong những khu rừng trên hòn đảo của chúng ta rất khoẻ, thậm chí chúng có thể được dùng làm khiên cho Phalanx. Và một cột gỗ chắc chắn có thể chống đỡ được mọi mái nhà cho những công trình của chúng ta. Nhưng để làm được điều đó, chúng phải đc lựa chọn và gia công cẩn thận! Một xưởng mộc trong thành phố sẽ quản lý việc này và sẽ giúp chúng ta tiết kiệm đáng kể lượng gỗ cần dùng trong xây dựng Cho phép: xây Xưởng mộc';
