@@ -5,8 +5,8 @@ class Player_Model extends CI_Model {
 	/**
 	 * We must start all array and object of all game
 	 */
-	public $missions, $configValue, $user, $towns, $now_island, $research, $notes, $islands = null;
-	public $fleets, $spyes, $ways, $research_advisor, $army_gold_need, $all_transports, $resource_production, $tradegood_production_bonus, $plus_sulfur, $tradegood_production, $resource_production_bonus, $plus_wood, $saldo, $corruption, $missions_loading, $units_count, $peoples_gold, $max_peoples, $good, $plus, $minus, $army_line, $ships_line, $my_fleets, $town_id, $already_build, $armys, $build_line, $garisson_limit, $capacity, $warehouses_levels, $warehouses, $scientists, $capital_id, $levels, $peoples, $now_town = 0;
+	public $reports, $missions, $user, $towns, $now_island, $research, $notes, $islands = null;
+	public $wall, $fleets, $reports_count, $spyes, $ways, $research_advisor, $army_gold_need, $all_transports, $resource_production, $tradegood_production_bonus, $plus_sulfur, $tradegood_production, $resource_production_bonus, $plus_wood, $saldo, $corruption, $missions_loading, $units_count, $peoples_gold, $max_peoples, $good, $plus, $minus, $army_line, $ships_line, $my_fleets, $town_id, $already_build, $armys, $build_line, $garisson_limit, $capacity, $warehouses_levels, $warehouses, $scientists, $capital_id, $levels, $peoples, $now_town = 0;
 	
 	/**
 	 * Construct function
@@ -28,9 +28,6 @@ class Player_Model extends CI_Model {
 			$this->Data_Model->Load_User($id);
 			$this->user =& $this->Data_Model->temp_user_db[$id];
 			
-			$this->Data_Model->Load_Config(1);
-			$this->configValue =& $this->Data_Model->temp_config_db[1];
-			
 			// come prima carichiamo i valori delle ricerche dell'utente
 			$this->Data_Model->Load_Research($id);
 			$this->research =& $this->Data_Model->temp_research_db[$id];
@@ -47,6 +44,13 @@ class Player_Model extends CI_Model {
             $this->plus_capacity = 1;
             $this->research_advisor = false;
 				
+			// Battle Reports
+			$this->db->from($this->session->userdata('universe').'_reports');
+            $this->db->where('attacker =', $this->Player_Model->user->id);
+            $this->db->or_where('defender =', $this->Player_Model->user->id); 
+            $this->reports = $this->db->get();
+			$this->reports_count = count($this->reports);
+			
 			//Potrei caricare le note scritte dall'utente
 			$notes_query = $this->db->get_where($this->session->userdata('universe').'_notes', array('user' => $id));
             $this->notes = $notes_query->row();  
@@ -72,7 +76,7 @@ class Player_Model extends CI_Model {
 				    continue; 
 				}
                 
-				$this->capacity[$town->id] = $this->configValue->standard_capacity;
+				$this->capacity[$town->id] = getConfig('standard_capacity');
                 
 				// Уровни зданий
                 for ($i = 1; $i <=26; $i++)
@@ -82,9 +86,9 @@ class Player_Model extends CI_Model {
                 
 				$this->armys[$town->id] = array();
                 $this->warehouses[$town->id] = 0;
-                //$this->army_gold_need[$town->id] = 0; #< Da attivare aggiungendo la variabile nell'elenco delle pubbliche
+                $this->army_gold_need[$town->id] = 0;
                 $this->corruption[$town->id] = 0;
-                //$this->units_count[$town->id] = 0;#< Da attivare aggiungendo la variabile nell'elenco delle pubbliche
+                $this->units_count[$town->id] = 0;
                 $this->spyes[$town->id] = array();
                 
 				// Carichiamo la città
@@ -115,14 +119,19 @@ class Player_Model extends CI_Model {
 				// Semplice calcolo della capacità
                 for ($i = 0; $i <= 14; $i++)
                 {
-                    $pos_type = 'pos'.$i.'_type'; $pos_level = 'pos'.$i.'_level';
+                    $pos_type = 'pos'.$i.'_type';
+					$pos_level = 'pos'.$i.'_level';
                     if ($town->$pos_type == 6)
 					{
     					$this->capacity[$town->id] = $this->capacity[$town->id] + ($town->$pos_level*8000);
 						$this->warehouses[$town->id]++; 
 						$this->warehouses_levels[$town->id][] = $town->$pos_level; 
 					}
-                    
+                    elseif ($town->$pos_type == 7)
+					{
+    					$this->wall[$town->id] = $town->$pos_level;	
+					}
+					
 					// Se l'edificio è costruito allora esiste
                     if ($town->$pos_level > 0)
 					{
@@ -168,41 +177,44 @@ class Player_Model extends CI_Model {
                 $this->plus[$town->id]['capital'] = 0;
                 $this->plus[$town->id]['research'] = 0;
 
-					// Исследования
-                    if ($this->research->res3_1 > 0 and $this->capital_id == $town->id)
-                    {
-                        $this->max_peoples[$town->id] = $this->max_peoples[$town->id] + 50;
-                        $this->good[$town->id] = $this->good[$town->id] + 50;
-                        $this->plus[$town->id]['capital'] = $this->plus[$town->id]['capital'] + 50;
-                    }
-                    if ($this->research->res2_8 > 0)
-                    {
-                        $this->good[$town->id] = $this->good[$town->id] + 25;
-                        $this->plus[$town->id]['research'] = $this->plus[$town->id]['research'] + 250;
-                    }
-                    if ($this->research->res2_14 > 0 and $this->capital_id == $town->id)
-                    {
-                        $this->max_peoples[$town->id] = $this->max_peoples[$town->id] + 200;
-                        $this->good[$town->id] = $this->good[$town->id] + 200;
-                        $this->plus[$town->id]['capital'] = $this->plus[$town->id]['capital'] + 200;
-                    }
-                    if ($this->research->res2_15 > 0)
-                    {
-                        $this->max_peoples[$town->id] = $this->max_peoples[$town->id] + (22*$this->research->res2_15);
-                        $this->good[$town->id] = $this->good[$town->id] + (15*$this->research->res2_15);
-                        $this->plus[$town->id]['research'] = $this->plus[$town->id]['research'] + (15*$this->research->res2_15);
-                    }
+				// Исследования
+                if ($this->research->res3_1 > 0 and $this->capital_id == $town->id)
+                {
+                    $this->max_peoples[$town->id] = $this->max_peoples[$town->id] + 50;
+                    $this->good[$town->id] = $this->good[$town->id] + 50;
+                    $this->plus[$town->id]['capital'] = $this->plus[$town->id]['capital'] + 50;
+                }
+                
+				if ($this->research->res2_8 > 0)
+                {
+                    $this->good[$town->id] = $this->good[$town->id] + 25;
+                    $this->plus[$town->id]['research'] = $this->plus[$town->id]['research'] + 250;
+                }
+                
+				if ($this->research->res2_14 > 0 and $this->capital_id == $town->id)
+                {
+                    $this->max_peoples[$town->id] = $this->max_peoples[$town->id] + 200;
+                    $this->good[$town->id] = $this->good[$town->id] + 200;
+                    $this->plus[$town->id]['capital'] = $this->plus[$town->id]['capital'] + 200;
+                }
+                
+				if ($this->research->res2_15 > 0)
+                {
+                    $this->max_peoples[$town->id] = $this->max_peoples[$town->id] + (22*$this->research->res2_15);
+                    $this->good[$town->id] = $this->good[$town->id] + (15*$this->research->res2_15);
+                    $this->plus[$town->id]['research'] = $this->plus[$town->id]['research'] + (15*$this->research->res2_15);
+                }
                         
-				    $this->plus[$town->id]['tavern'] = $this->levels[$town->id][8];
-                    $this->plus[$town->id]['wine'] = $town->tavern_wine*60;
-                    $this->good[$town->id] = ($this->plus[$town->id]['base'] + $this->plus[$town->id]['capital'] + $this->plus[$town->id]['research'] + $this->plus[$town->id]['tavern'] + $this->plus[$town->id]['wine']) - ($this->minus[$town->id]['peoples']);
+    		    $this->plus[$town->id]['tavern'] = $this->levels[$town->id][8];
+                $this->plus[$town->id]['wine'] = $town->tavern_wine*60;
+                $this->good[$town->id] = ($this->plus[$town->id]['base'] + $this->plus[$town->id]['capital'] + $this->plus[$town->id]['research'] + $this->plus[$town->id]['tavern'] + $this->plus[$town->id]['wine']) - ($this->minus[$town->id]['peoples']);
                     
-					// Очереди армии и флота
-                    $this->army_line[$town->id] = $this->Data_Model->load_army_line($this->armys[$town->id]->army_line);
-                    $this->ships_line[$town->id] = $this->Data_Model->load_army_line($this->armys[$town->id]->ships_line);
-                    $this->my_fleets[$town->id] = 0;
+	    		// Очереди армии и флота
+                $this->army_line[$town->id] = $this->Data_Model->load_army_line($this->armys[$town->id]->army_line);
+                $this->ships_line[$town->id] = $this->Data_Model->load_army_line($this->armys[$town->id]->ships_line);
+                $this->my_fleets[$town->id] = 0;
 
-					// Spie
+		    	// Spie
                     $this->Data_Model->Load_Spyes($town->id);
                     if (isset($this->Data_Model->temp_spyes_db[$town->id]))
                     {
@@ -296,7 +308,7 @@ class Player_Model extends CI_Model {
                         }
                         $this->Data_Model->Load_Town($mission->to);
                         $this->Data_Model->Load_Town($mission->from);
-                        $this->Data_Model->Load_User($this->Data_Model->temp_towns_db[$mission->to]->user);
+					    $this->Data_Model->Load_User($this->Data_Model->temp_towns_db[$mission->to]->user);
                         $this->Data_Model->Load_User($this->Data_Model->temp_towns_db[$mission->from]->user);
                         $this->Data_Model->Load_Island($this->Data_Model->temp_towns_db[$mission->to]->island);
                         $this->Data_Model->Load_Island($this->Data_Model->temp_towns_db[$mission->from]->island);
@@ -349,8 +361,7 @@ class Player_Model extends CI_Model {
 	
 	function Check_Double_Login($user, $universe)
     {
-        $this->Data_Model->Load_Config(1);
-		if ($this->Data_Model->temp_config_db[1]->double_login == '1' and ($user->blocked_time == 0) and ($this->session->userdata('id') > 0) and ($user->id != $this->session->userdata('id')) and ($this->session->userdata('universe') == $universe))
+		if (getConfig('double_login') == '1' and ($user->blocked_time == 0) and ($this->session->userdata('id') > 0) and ($user->id != $this->session->userdata('id')) and ($this->session->userdata('universe') == $universe))
         {
             $this->db->insert($universe.'_double_login', array('account_from' => $this->session->userdata('id'),'account_to' => $user->id,'login_time' => time(), 'ip_address' => $_SERVER['REMOTE_ADDR']));
             $user->double_login++;

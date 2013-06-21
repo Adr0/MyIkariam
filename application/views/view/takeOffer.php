@@ -138,7 +138,7 @@
 <script type="text/javascript">
 var transporterCount = new transportController({
 	'availableTransporters' : <?=$this->Player_Model->user->transports?>,
-	'capacityPerTransport' : <?php echo $this->configValue->transport_capacity;?>,
+	'capacityPerTransport' : <?php echo getConfig('transport_capacity');?>,
 	'spaceReserved' : 0
 });
 transporterCount.subscribe('usedTransChanged', function(v) {

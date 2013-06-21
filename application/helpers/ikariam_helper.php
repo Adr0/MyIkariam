@@ -39,7 +39,17 @@
         return $return;
     }
 
-    function premium_time($seconds)
+    function getConfig($item)
+	{
+	    $CI =& get_instance();
+		$CI->db->select($item);
+		$universe = ($CI->session->userdata('universe')) ? $CI->session->userdata('universe') : 'alpha';
+		$CI->db->from($universe.'_config');
+		$query = $CI->db->get();
+		return $query->row()->$item;
+	}
+	
+	function premium_time($seconds)
     {
         $CI =& get_instance();
 

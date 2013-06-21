@@ -9,7 +9,7 @@
 
 <?php if ($this->Player_Model->now_town->build_line != '' and $this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'] == $position){
     $cost = $this->Data_Model->building_cost($class, $level, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-    $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
+    $cost['time'] = floor($cost['time'] / getConfig('game_speed'));
 	$end_date = $this->Player_Model->now_town->build_start + $cost['time'];
     $ostalos = $end_date - time();
     $one_percent = ($cost['time']/100);
@@ -61,17 +61,17 @@
 				</script>
 
     </div>
-<?}?>
+<?php } ?>
 
-<? $city_type = ($this->Player_Model->capital_id == $this->Player_Model->town_id) ? 'Thủ đô' : 'Thuộc địa'?>
+<?php $city_type = ($this->Player_Model->capital_id == $this->Player_Model->town_id) ? 'Thủ đô' : 'Thuộc địa';?>
     
     <div id="CityOverview" class="contentBox">
-        <h3 class="header"><?=$city_type?> "<?=$this->Player_Model->now_town->name?>"
+        <h3 class="header"><?php echo $city_type;?> "<?=$this->Player_Model->now_town->name?>"
             <a href="<?=$this->config->item('base_url')?>game/renameCity/" title="Đổi tên thành phố">Đặt tên lại</a>
         </h3>
 
         <div class="content">
-            <img class="citizen" src="<?=$this->config->item('style_url')?>skin/characters/y100_citizen_faceright.gif" width="42" height="100" title="" alt="">
+            <img class="citizen" src="<?=$this->config->item('style_url')?>skin/characters/y100_citizen_faceright.gif" width="42" height="100" title="citizen" alt="citizen">
             <ul class="stats">
                 <li class="space">
                     <span class="textLabel">Không gian cư trú: </span>
@@ -95,12 +95,12 @@
                         <span title="Từ chối: tình hình hiện nay"><?=number_format($this->Player_Model->corruption[$this->Player_Model->town_id]*100)?>%</span>
                     </span>
                 </li>
-                <li class="happiness happiness_<?=$this->Data_Model->good_class_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>">
+                <li class="happiness happiness_<?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>">
                     <span class="textLabel">Mức độ hài lòng với cuộc sống: </span><?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>
                 </li>
             </ul>
             
-<?
+<?php
 // Строим полосу жителей по процентам
     $all_px = 620;   // всего пикселей
     $min_px = 60;    // минимальный размер
@@ -123,7 +123,7 @@
                     </span> 
                     <span class="production">
                         <span class="textLabel">Sản xuất </span>
-<?$scientists_gold_need = ($this->Player_Model->research->res3_13 > 0) ? 3 : 6?>
+<?php $scientists_gold_need = ($this->Player_Model->research->res3_13 > 0) ? 3 : 6;?>
                         <img src="<?=$this->config->item('style_url')?>skin/resources/icon_gold.gif" alt="Золото"> <?if($this->Player_Model->saldo[$this->Player_Model->town_id] > 0){?>+<?}?><?=floor($this->Player_Model->saldo[$this->Player_Model->town_id])?>
                     </span>
                 </div>
@@ -173,14 +173,14 @@
 				
             <div id="notices">			
                 <h4>Chú ý:</h4>
-<?if($this->Player_Model->corruption[$this->Player_Model->town_id] > 0){?>
+<?php if($this->Player_Model->corruption[$this->Player_Model->town_id] > 0){?>
                 <div class="warning">
                     <h5>Có tham nhũng trong thuộc địa này!</h5>
                     <p>Năng suất và cảm xúc trong thành phố đang xuống dốc! Nâng cấp Phủ Thủ hiến của bạn - Bạn có bao nhiêu thuộc địa thì nên có bấy nhiêu cấp độ!</p>
                 </div>
-<?}else{?>
+<?php }else{ ?>
                 <p>Không có rắc rối nào! Chúc mừng bạn, mọi chuyện trong thành phố đều ổn!</p>
-<?}?>
+<?php } ?>
             </div>			
         </div>
 						
@@ -196,7 +196,7 @@
                     <h4>Phần thưởng</h4>
                     <div class="cat basic">
                         <h5>Phần thưởng cơ bản</h5>
-<?
+<?php
 // Строим полосу плюсов по процентам
     $all_px = 400;   // всего пикселей
     $min_px = 60;    // минимальный размер
@@ -217,8 +217,8 @@
                     </div>
                     <div class="cat wine">
                         <h5>Rượu</h5>
-<?$tavern_position = $this->Data_Model->get_position(8, $this->Player_Model->now_town)?>
-<?if($this->Player_Model->levels[$this->Player_Model->town_id][8] > 0 and $tavern_position > 0){
+<?php $tavern_position = $this->Data_Model->get_position(8, $this->Player_Model->now_town);
+if($this->Player_Model->levels[$this->Player_Model->town_id][8] > 0 and $tavern_position > 0){
 
 // Строим полосу плюсов по процентам
     $all_px = 400;   // всего пикселей
@@ -233,9 +233,9 @@
 ?>
                         <div class="tavern" style="left:100px;width:<?=floor($tavern_percent*$one_px)+$tavern_px?>px"><span class="value">+<?=$this->Player_Model->levels[$this->Player_Model->town_id][8]*12?></span> <img src="<?=$this->config->item('style_url')?>skin/buildings/tavern_30x30.gif" width="30" height="30" title="Cấp độ quán rượu" alt="Cấp độ quán rượu"></div>
                         <div class="serving" style="left:<?=floor($tavern_percent*$one_px)+$base_px+100?>px;width:<?=floor($serving_percent*$one_px)+$serving_px?>px"><span class="value">+<?=$this->Player_Model->now_town->tavern_wine*60?></span> <img src="<?=$this->config->item('style_url')?>skin/resources/icon_wine.gif" width="30" height="30" title="Phục vụ rượu" alt="Phục vụ rượu"></div>
-<?}else{?>
+<?php }else{ ?>
                         <p>Không có quán rượu nào trong thành phố!</p>
-<?}?>
+<?php } ?>
                     </div>
                     <div class="cat culture">
                         <h5>Văn hóa</h5>
@@ -247,7 +247,7 @@
                     <h4>Các khoản giảm</h4>
                     <div class="cat overpopulation" >
                         <h5>Dân số:</h5>
-<?
+<?php
     $peoples_percent = ($this->Player_Model->peoples[$this->Player_Model->town_id]/$this->Player_Model->max_peoples[$this->Player_Model->town_id])*$all_px;
 ?>
                         <div class="bar" style="left:100px;width:<?=floor($peoples_percent)?>px;"><span class="value">-<?=number_format($this->Player_Model->peoples[$this->Player_Model->town_id])?></span></div>
@@ -255,7 +255,7 @@
                 </div>
 
 								
-                <div class="happiness happiness_<?=$this->Data_Model->good_class_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>">
+                <div class="happiness happiness_<?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>">
                     <h4>Cảm xúc tổng cộng:</h4>		
                     <div class="value"><?=number_format($this->Player_Model->good[$this->Player_Model->town_id])?></div>
                     <div class="text"><?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$this->Player_Model->town_id])?></div>

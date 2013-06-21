@@ -55,7 +55,7 @@
 <?}?>
                         </select>
                     </li>
-                    <li class="premiumDuration"><?php echo format_time($this->configValue->trade_route_time);?></li>
+                    <li class="premiumDuration"><?php echo format_time(getConfig('trade_route_time'));?></li>
                     <li class="premiumCost">&nbsp; -</li>
                     <li class="renew"></li>
                 </ul>
@@ -94,7 +94,7 @@ for ($i = 0; $i <= 23; $i++)
                         <input id="colonizeBtn" name="save" type="submit" value="" title="Lưu Thay đổi"><br>
                     </li>
                     <li class="status">
-                        <span style="font-size:16px;font-weight:bold;color:green;">Còn <?php echo premium_time($this->configValue->trade_route_time - (time()-$trade->start_time));?></span>
+                        <span style="font-size:16px;font-weight:bold;color:green;">Còn <?php echo premium_time(getConfig('trade_route_time') - (time()-$trade->start_time));?></span>
                     </li>
                     <li class="delete">
                         <a  href="<?=$this->config->item('base_url')?>actions/tradeRoute/<?=$trade->id?>/" title="Xóa"></a>
@@ -130,7 +130,7 @@ for ($i = 0; $i <= 23; $i++)
 <?}?>
                         </select>
                     </li>
-                    <li class="premiumDuration"><?php echo format_time($this->configValue->trade_route_time);?></li>
+                    <li class="premiumDuration"><?php echo format_time(getConfig('trade_route_time'));?></li>
 <?if(SizeOf($this->Player_Model->trade_routes) > 0){?>
                     <li class="premiumCost">10 <img height="20" width="24" alt="Амброзия" src="<?=$this->config->item('style_url')?>skin/premium/ambrosia_icon.gif"></li>
 <?if($this->Player_Model->user->ambrosy >= 10){?>

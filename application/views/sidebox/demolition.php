@@ -6,7 +6,7 @@
     
 	if ($this->Player_Model->now_town->build_line != '' and $this->Player_Model->build_line[$this->Player_Model->town_id][0]['position'] == $position){
     $cost = $this->Data_Model->building_cost($type, $level, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-    $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
+    $cost['time'] = floor($cost['time'] / getConfig('game_speed'));
     $end_date = $this->Player_Model->now_town->build_start + $cost['time'];
     $ostalos = $end_date - time();
     $one_percent = ($cost['time']/100);

@@ -144,7 +144,7 @@
 
                 <hr />
 <?php
-    $all_capacity = $this->Player_Model->user->transports * $this->configValue->transport_capacity;
+    $all_capacity = $this->Player_Model->user->transports * getConfig('transport_capacity');
     $used_capacity =  1250 + 40;
     $capacity = $all_capacity - $used_capacity;
     $cost = $this->Data_Model->army_cost_by_type(23, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
@@ -291,7 +291,7 @@
 <script type="text/javascript">
     var transporterCount = new transportController({
         'availableTransporters' : <?=$this->Player_Model->user->transports?>,
-	'capacityPerTransport' : <?php echo $this->configValue->transport_capacity;?>,
+	'capacityPerTransport' : <?php echo getConfig('transport_capacity');?>,
 	'spaceReserved' : 0
     });
     transporterCount.subscribe('usedTransChanged', function(v) {

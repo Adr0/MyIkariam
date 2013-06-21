@@ -1,10 +1,8 @@
-
-
 <div id="mainview" class="island<?=$this->Island_Model->island->type?>">
     <h3><?=$this->lang->line('towns_on_island')?> <?=$this->Island_Model->island->name?></h3>
     <ul id="cities">
-<?for ($i = 0; $i <=15; $i++){?>
-<?if ($this->Island_Model->towns[$i] == false){?>
+<?php for ($i = 0; $i <= 15; $i++){
+if ($this->Island_Model->towns[$i] == false){?>
         <li id="cityLocation<?=$i?>" class="cityLocation buildplace">
             <div class="claim"></div>
             <a href="<?=$this->config->item('base_url')?>game/colonize/<?=$this->Island_Model->island->id?>/<?=$i?>/" title="<?=$this->lang->line('colonize_here')?>">
@@ -14,32 +12,12 @@
                 </span>
             </a>
         </li>
-<?}else{
- $level = $this->Island_Model->towns[$i]->pos0_level;
-
-/*$query_alleanza = $this->db->get_where($this->session->userdata('universe').'_alliance_users', array('user_id' => $this->Island_Model->users[$i]->id));
-if ($query_alleanza->num_rows() > 0)
-{
-   $row = $query_alleanza->row();
-   $s = $row->ally_id;
-   
-}
-$querry = $this->db->get_where($this->session->userdata('universe').'_alliance_users', array('user_id' => $this->Player_Model->user->id));
-if ($querry->num_rows() > 0)
-  {
-   $row = $querry->row();
-   $ally_id = $row->ally_id;
-}
-*/
-?>
+<?php } else { 
+$level = $this->Island_Model->towns[$i]->pos0_level;?>
         <li id="cityLocation<?=$i?>" class="cityLocation city level<?=$this->Island_Model->towns[$i]->pos0_level?>">
             <div class="
-<? 
+<?php
 if($this->Island_Model->towns[$i]->pos0_level > 0){
-?>
-<? //if($s == $ally_id and $this->Island_Model->towns[$i]->user != $this->Player_Model->user->id){?>
-<!--allyCityImg-->
-<?//} 
 if ($this->Island_Model->towns[$i]->user == $this->Player_Model->user->id){?>ownCityImg<?}else{?>cityimg<?}?><?}else{?>buildCityImg<?}?>"></div>
             <div class="selectimg"></div>
 <?if($this->Island_Model->towns[$i]->pos0_level > 0){?>
@@ -82,42 +60,66 @@ $id_ally = $row->ally_id;
                 <!--<li class="noobModeInfo">Игрок под защитой богов.</li>-->
             </ul>
             <ul class="cityactions">
-<?if($this->Island_Model->users[$i]->id != $this->Player_Model->user->id){?>
-                <li class="diplomacy"><a href="<?=$this->config->item('base_url')?>game/sendIKMessage/<?=$this->Island_Model->users[$i]->id?>/" title="<?=$this->lang->line('diplomacy')?>"><span class="textLabel"><?=$this->lang->line('diplomacy')?></span></a></li>
-<?}?>
-<?if($this->Island_Model->towns[$i]->id != $this->Player_Model->town_id){?>
-<?/*
-<?if($this->Player_Model->user->transports == 0){?>
-                <li class="transport disabled" title="Сухогрузы для транспортировки недоступны!">
+            <?php if($this->Island_Model->users[$i]->id != $this->Player_Model->user->id){?>
+                <li class="diplomacy">
+				    <a href="<?=$this->config->item('base_url')?>game/sendIKMessage/<?=$this->Island_Model->users[$i]->id?>/" title="<?=$this->lang->line('diplomacy')?>">
+					    <span class="textLabel"><?=$this->lang->line('diplomacy')?></span>
+					</a>
+				</li>
+<?php }
+if($this->Island_Model->towns[$i]->id != $this->Player_Model->town_id){
+//if($this->Player_Model->user->transports == 0){?>
+                <!--<li class="transport disabled" title="Сухогрузы для транспортировки недоступны!">
                     <span class="textLabel"><?=$this->lang->line('transport_goods')?></span>
-                </li>
-<?}else{?>
- */?>
+                </li>-->
+<?php //}else{ ?>
                 <li class="transport">
                     <a href="<?=$this->config->item('base_url')?>game/transport/<?=$this->Island_Model->island->id?>/<?=$this->Island_Model->towns[$i]->id?>/" title="<?=$this->lang->line('transport_goods')?>">
                         <span class="textLabel"><?=$this->lang->line('transport_goods')?></span>
                     </a>
                 </li>
-<?/*}*/}?>
-<?if($this->Island_Model->users[$i]->id != $this->Player_Model->user->id){?>
-<?if($this->Player_Model->now_town->spyes == 0){?>
+<?php }
+if($this->Island_Model->users[$i]->id != $this->Player_Model->user->id){
+if($this->Player_Model->now_town->spyes == 0){?>
                 <li class="espionage disabled" title="<?=$this->lang->line('not_spyes')?>">
                     <span class="textLabel"><?=$this->lang->line('send_spy')?></span>
                 </li>
-<?}else{?>
+<?php }else{ ?>
                 <li class="espionage">
                     <a href="<?=$this->config->item('base_url')?>game/sendSpy/<?=$this->Island_Model->island->id?>/<?=$this->Island_Model->towns[$i]->id?>/" title="<?=$this->lang->line('send_spy')?>">
                         <span class="textLabel"><?=$this->lang->line('send_spy')?></span>
                     </a>
                 </li>
-<?}?>
-<?}?>
+<?php }
+if(($this->Player_Model->armys[$this->Player_Model->town_id]->phalanx > 0) or
+     ($this->Player_Model->armys[$this->Player_Model->town_id]->steamgiant > 0) or
+     ($this->Player_Model->armys[$this->Player_Model->town_id]->spearman > 0) or
+     ($this->Player_Model->armys[$this->Player_Model->town_id]->swordsman > 0) or
+     ($this->Player_Model->armys[$this->Player_Model->town_id]->slinger > 0) or
+     ($this->Player_Model->armys[$this->Player_Model->town_id]->archer > 0) or
+     ($this->Player_Model->armys[$this->Player_Model->town_id]->marksman > 0) or
+     ($this->Player_Model->armys[$this->Player_Model->town_id]->ram > 0) or
+     ($this->Player_Model->armys[$this->Player_Model->town_id]->catapult > 0) or
+     ($this->Player_Model->armys[$this->Player_Model->town_id]->mortar > 0) or
+     ($this->Player_Model->armys[$this->Player_Model->town_id]->gyrocopter > 0) or
+     ($this->Player_Model->armys[$this->Player_Model->town_id]->bombardier > 0) or
+     ($this->Player_Model->armys[$this->Player_Model->town_id]->cook > 0) or
+     ($this->Player_Model->armys[$this->Player_Model->town_id]->medic > 0)){?>
+                <li class="plunder">
+                    <a href="<?=$this->config->item('base_url')?>game/plunder/<?php echo $this->Island_Model->island->id;?>/<?php echo $this->Island_Model->users[$i]->id;?>/" title="<?=$this->lang->line('pillage')?>">
+                        <span class="textLabel"><?=$this->lang->line('pillage')?></span>
+                    </a>
+                </li>
+<?php }else{ ?>
+                <li class="plunder disabled" title="<?=$this->lang->line('not_pillage')?>">
+                    <span class="textLabel"><?=$this->lang->line('pillage')?></span>
+                </li>
+<?php } }?>
             </ul>
         </li>
 
 
-<?php }
-}
+<?php }  }
  if($this->Island_Model->island->id == $this->Player_Model->island_id){?>
         <li id="barbarianVilliage">
             <a href="#" id="barbarianLink" onclick="selectBarbarianVillage(); selectGroup.activate(this, 'cities'); return false;"> </a>
@@ -138,9 +140,9 @@ $id_ally = $row->ally_id;
 				<li class="name"><span class="textLabel"><?=$this->lang->line('barbarians')?>: </span>1</li>
                 <li class="name"><span class="textLabel">Livello mura:</span><?php echo $wall_level;?>
 		   
-		  <? }?></ul>
+		  <?php }?></ul>
             <ul class="cityactions" id="barbarianActions">
-<?if(($this->Player_Model->armys[$this->Player_Model->town_id]->phalanx > 0) or
+<?php if(($this->Player_Model->armys[$this->Player_Model->town_id]->phalanx > 0) or
      ($this->Player_Model->armys[$this->Player_Model->town_id]->steamgiant > 0) or
      ($this->Player_Model->armys[$this->Player_Model->town_id]->spearman > 0) or
      ($this->Player_Model->armys[$this->Player_Model->town_id]->swordsman > 0) or
@@ -155,7 +157,7 @@ $id_ally = $row->ally_id;
      ($this->Player_Model->armys[$this->Player_Model->town_id]->cook > 0) or
      ($this->Player_Model->armys[$this->Player_Model->town_id]->medic > 0)){?>
                 <li class="plunder">
-                    <a href="<?=$this->config->item('base_url')?>game/plunder/<?=$this->Player_Model->island_id?>/0/" title="<?=$this->lang->line('pillage')?>">
+                    <a href="<?=$this->config->item('base_url')?>game/plunder/<?=$this->Player_Model->island_id?>/barbarian_village/" title="<?=$this->lang->line('pillage')?>">
                         <span class="textLabel"><?=$this->lang->line('pillage')?></span>
                     </a>
                 </li>
@@ -166,7 +168,7 @@ $id_ally = $row->ally_id;
 <?}?>    
             </ul>
         </li>
-<?}?>
+<?php } ?>
     </ul>
 
     <h3><?=$this->lang->line('special_places')?> <?=$this->Island_Model->island->name?></h3>
@@ -175,7 +177,7 @@ $id_ally = $row->ally_id;
 <?$link_wood = ($this->Island_Model->island->id == $this->Player_Model->island_id) ? $this->config->item('base_url').'game/resource/'.$this->Island_Model->island->id.'/' : '#'?>
 <?$link_trade = ($this->Island_Model->island->id == $this->Player_Model->island_id) ? $this->config->item('base_url').'game/tradegood/'.$this->Island_Model->island->id.'/' : '#'?>
 <?$link_wonder = ($this->Island_Model->island->id == $this->Player_Model->island_id) ? $this->config->item('base_url').'game/wonder/'.$this->Island_Model->island->id.'/' : '#'?>
-<?$link_forum = ($this->Island_Model->island->id == $this->Player_Model->island_id) ? $this->config->item('base_url').'game/agora/'.$this->Island_Model->island->id.'/' : '#'?>
+<?$link_forum = ($this->Island_Model->island->id == $this->Player_Model->island_id) ? $this->config->item('base_url').'game/islandBoard/'.$this->Island_Model->island->id.'/' : '#'?>
 
             <a href="<?=$link_wood?>" title="<?=$this->Data_Model->island_building_by_resource(0)?> <?=$this->Island_Model->island->wood_level?>">
                 <span class="textLabel"><?=$this->Data_Model->island_building_by_resource(0)?></span>
@@ -194,18 +196,18 @@ $id_ally = $row->ally_id;
             </a>
         </li>
 <?}?>
-        <li class="forum"><a title="<?=$this->lang->line('agora')?>" href="<?=$link_forum?>">
+        <li class="forum"><a title="<?=$this->lang->line('agora')?>" href="<?php echo $link_forum;?>">
                 <span class="textLabel"><?=$this->lang->line('agora')?></span>
             </a>
         </li>
     </ul>
 </div>
-<?$town_id = $param2?>
-<?if($town_id >= 0){?>
+<?php $town_id = $param2;
+if($town_id >= 0){?>
 <script language="JavaScript">
     Event.onDOMReady(function() {
         selectCity(<?=$this->Data_Model->temp_towns_db[$town_id]->position?>, <?=$town_id?>, 1);
         selectGroup.activate(document.getElementById("city_<?=$town_id?>"), 'cities');
     });
 </script>
-<?}?>
+<?php } ?>

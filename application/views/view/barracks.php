@@ -28,7 +28,7 @@
     $max_crystal = 0;
     $max_peoples = 0;
     $cost = $this->Data_Model->army_cost_by_type($i, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-    $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
+    $cost['time'] = floor($cost['time'] / getConfig('game_speed'));
     $class = $this->Data_Model->army_class_by_type($i);
     if ($cost['wood'] > 0){ $max_wood = floor($this->Player_Model->now_town->wood/$cost['wood']);}
     if ($cost['sulfur'] > 0){ $max_sulfur = floor($this->Player_Model->now_town->sulfur/$cost['sulfur']); }

@@ -1,8 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class ACP extends CI_Controller {
-
-	public $configValue;
 	
 	/**
 	 * Construct function
@@ -35,9 +33,6 @@ class ACP extends CI_Controller {
         {
             $this->lang->load('acp');
         }
-		
-		$this->Data_Model->Load_Config(1);
-		$this->configValue =& $this->Data_Model->temp_config_db[1];
 	}
 	
 	/*
@@ -60,24 +55,24 @@ class ACP extends CI_Controller {
 	
 	public function config($id = 1)
 	{
-		$this->show('acp_config', $this->configValue);
+		$this->show('acp_config');
 
 	    if($_POST)
 		{
 		    $initial_config = array(
-			            'game_name' => ($this->input->post('game_name') == $this->configValue->game_name) ? null : $this->input->post('game_name'),
-			            'game_speed' => ($this->input->post('game_speed') == $this->configValue->game_speed) ? null : $this->input->post('game_speed'),
-			            'admin_email' => ($this->input->post('admin_email') == $this->configValue->admin_email) ? null : $this->input->post('admin_email'),
-			            'board_link' => ($this->input->post('board_url') == $this->configValue->board_link) ? null : $this->input->post('board_url'),
-			            'easter_design' => ($this->input->post('easter_design') == $this->configValue->easter_design) ? null : $this->input->post('easter_design'),
-			            'double_login' => ($this->input->post('double_login') == $this->configValue->double_login) ? null : $this->input->post('double_login'),
-			            'standard_capacity' => ($this->input->post('standard_capacity') == $this->configValue->standard_capacity) ? null : $this->input->post('standard_capacity'),
-			            'transport_capacity' => ($this->input->post('transport_capacity') == $this->configValue->transport_capacity) ? null : $this->input->post('transport_capacity'),
-						'town_queue_size' => ($this->input->post('town_queue_size') == $this->configValue->town_queue_size) ? null : $this->input->post('town_queue_size'),
-			            'army_queue_size' => ($this->input->post('army_queue_size') == $this->configValue->army_queue_size) ? null : $this->input->post('army_queue_size'),
-			            'notes_default' => ($this->input->post('notes_default') == $this->configValue->notes_default) ? null : $this->input->post('notes_default'),
-			            'notes_premium' => ($this->input->post('notes_premium') == $this->configValue->notes_premium) ? null : $this->input->post('notes_premium'),
-			            'trade_route_time' => ($this->input->post('trade_route_time') == $this->configValue->trade_route_time) ? null : $this->input->post('trade_route_time'),
+			            'game_name' => ($this->input->post('game_name') == getConfig('game_name')) ? null : $this->input->post('game_name'),
+			            'game_speed' => ($this->input->post('game_speed') == getConfig('game_speed')) ? null : $this->input->post('game_speed'),
+			            'admin_email' => ($this->input->post('admin_email') == getConfig('admin_email')) ? null : $this->input->post('admin_email'),
+			            'board_link' => ($this->input->post('board_url') == getConfig('board_link')) ? null : $this->input->post('board_url'),
+			            'easter_design' => ($this->input->post('easter_design') == getConfig('easter_design')) ? null : $this->input->post('easter_design'),
+			            'double_login' => ($this->input->post('double_login') == getConfig('double_login')) ? null : $this->input->post('double_login'),
+			            'standard_capacity' => ($this->input->post('standard_capacity') == getConfig('standard_capacity')) ? null : $this->input->post('standard_capacity'),
+			            'transport_capacity' => ($this->input->post('transport_capacity') == getConfig('transport_capacity')) ? null : $this->input->post('transport_capacity'),
+						'town_queue_size' => ($this->input->post('town_queue_size') == getConfig('town_queue_size')) ? null : $this->input->post('town_queue_size'),
+			            'army_queue_size' => ($this->input->post('army_queue_size') == getConfig('army_queue_size')) ? null : $this->input->post('army_queue_size'),
+			            'notes_default' => ($this->input->post('notes_default') == getConfig('notes_default')) ? null : $this->input->post('notes_default'),
+			            'notes_premium' => ($this->input->post('notes_premium') == getConfig('notes_premium')) ? null : $this->input->post('notes_premium'),
+			            'trade_route_time' => ($this->input->post('trade_route_time') == getConfig('trade_route_time')) ? null : $this->input->post('trade_route_time'),
 			);
 			
 			$final_config = array();

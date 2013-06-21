@@ -3,8 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="language" content="<?=$this->lang->line('content')?>">
-        <meta name="description" content="MyIkariam, il BrowserGame strategico e gratuito ambientato nell'antichità.">
+        <meta name="language" content="<?php echo $this->session->userdata('language');?>">
+        <meta name="description" content="MyIkariam, il browserGame strategico e gratuito ambientato nell'antichità.">
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
 <?php 
 if($this->Player_Model->now_town->build_start > 0){
@@ -13,28 +13,25 @@ if($this->Player_Model->now_town->build_start > 0){
     $level = $this->Player_Model->now_town->$level_text;
     $type = $this->Player_Model->now_town->$type_text;
     $cost = $this->Data_Model->building_cost($type, $level, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-    $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
+    $cost['time'] = floor($cost['time'] / getConfig('game_speed'));
 	$end_date = $this->Player_Model->now_town->build_start + $cost['time'];
     $ostalos = $end_date - time();
 ?>
-        <title><?=$this->lang->line('ikariam')?> - <?=format_time($ostalos)?> - <?=$this->lang->line('world')?> <?=ucfirst($this->session->userdata('universe'))?></title>
+        <title><?php echo getConfig('game_name');?> - <?php echo format_time($ostalos);?> - <?=$this->lang->line('world')?> <?=ucfirst($this->session->userdata('universe'))?></title>
 <?php }else{ ?>
-        <title><?=$this->lang->line('ikariam')?> - <?=$this->lang->line('world')?> <?=ucfirst($this->session->userdata('universe'))?></title>
+        <title><?php echo getConfig('game_name');?> - <?php echo $this->lang->line('world');?> <?=ucfirst($this->session->userdata('universe'))?></title>
 <?php } ?>
-	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-        <link href="<?php echo base_url();?>design/skin/ik_common_<?php echo $this->configValue->style_version;?>.css" rel="stylesheet" type="text/css" media="screen">
-        <link href="<?php echo base_url();?>design/skin/ik_<?=$page?>_<?php echo $this->configValue->style_version;?>.css" rel="stylesheet" type="text/css" media="screen">
+	    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link href="<?php echo base_url();?>design/skin/ik_common_<?php echo getConfig('style_version');?>.css" rel="stylesheet" type="text/css" media="screen">
+        <?php if($page != 'plunder'){?><link href="<?php echo base_url();?>design/skin/ik_<?php echo $page;?>_<?php echo getConfig('style_version');?>.css" rel="stylesheet" type="text/css" media="screen"><?php }?>
     
 
-		<?php if($this->configValue->easter_design != '0'){?>
-        <link href="<?php echo base_url();?>design/skin/specialsEaster.css" rel="stylesheet" type="text/css" media="screen">
-<?php } ?>		
+		<?php if(getConfig('easter_design') != '0'){?>
+            <link href="<?php echo base_url();?>design/skin/specialsEaster.css" rel="stylesheet" type="text/css" media="screen">
+        <?php } ?>		
 				
-				
-				
-				
-				<script type="text/javascript" src="<?php echo base_url();?>design/js/complete-<?php echo $this->configValue->script_version;?>.js"></script>
-               <script type="text/javascript">
+		<script type="text/javascript" src="<?php echo base_url();?>design/js/complete-<?php echo getConfig('script_version');?>.js"></script>
+        <script type="text/javascript">
 		/* <![CDATA[ */
 		var Event = YAHOO.util.Event,
 		Dom   = YAHOO.util.Dom,
@@ -236,18 +233,18 @@ if($this->Player_Model->now_town->build_start > 0){
 <?php foreach($this->Player_Model->towns as $town){
 $island = $this->Player_Model->islands[$town->island];
 $selected = ($this->Player_Model->town_id == $town->id) ? 'selected="selected"' : ''?>
-<?switch($this->Player_Model->user->options_select){?>
-<?case 0:?>
+<?php switch($this->Player_Model->user->options_select){
+case 0:?>
                     <option class="" value="<?=$town->id?>" <?=$selected?> title="" ><p><?=$town->name?></p></option>
-<?break;?>
-<?php case 1:?>
+<?php break;
+      case 1:?>
                     <option class="coords" value="<?=$town->id?>" <?=$selected?> title="<?=$this->lang->line('trade_resource')?>: <?=$this->Data_Model->resource_name_by_type($island->trade_resource)?>" ><p>[<?=$island->x?>:<?=$island->y?>]&nbsp;<?=$town->name?></p></option>
-<?break;?>
-<?case 2:?>
+<?php break;
+case 2:?>
                     <option class="tradegood<?=$island->trade_resource?>" value="<?=$town->id?>" <?=$selected?> title="[<?=$island->x?>:<?=$island->y?>]" ><p><?=$town->name?></p></option>
-<?break;?>
-<?}?>
-<?}?>
+<?php break;
+}
+}?>
                 </select>
             </li>
 
@@ -351,18 +348,16 @@ $selected = ($this->Player_Model->town_id == $town->id) ? 'selected="selected"' 
 </div>
 
 <div id="advisors">
-
-    <h3><?=$this->lang->line('overviews')?></h3>
     <ul>
         <li id="advCities">
             <a href="<?=$this->config->item('base_url')?>game/tradeAdvisor/" title="<?=$this->lang->line('trade_advisor_title')?>" class="<?if($this->Player_Model->user->premium_account > 0){?>premium<?}else{?>normal<?}?><?if($this->Player_Model->new_towns_messages > 0){?>active<?}?>">
                 <span class="textLabel"><?=$this->lang->line('trade_advisor_name')?></span>
             </a>
-<?if($this->Player_Model->user->premium_account > 0){?>
+<?php if($this->Player_Model->user->premium_account > 0){?>
             <a class="pluslink" href="<?=$this->config->item('base_url')?>game/premiumTradeAdvisor/" title="<?=$this->lang->line('to_view')?>">
-<?}else{?>
+<?php }else{ ?>
             <a class="plusteaser" href="<?=$this->config->item('base_url')?>game/premiumDetails/" title="<?=$this->lang->line('to_view')?>">
-<?}?>
+<?php } ?>
                 <span class="textLabel"><?=$this->lang->line('to_view')?></span>
             </a>
         </li>
@@ -370,11 +365,11 @@ $selected = ($this->Player_Model->town_id == $town->id) ? 'selected="selected"' 
             <a href="<?=$this->config->item('base_url')?>game/militaryAdvisorMilitaryMovements/" title="<?=$this->lang->line('military_advisor_title')?>" class="<?if($this->Player_Model->user->premium_account > 0){?>premium<?}else{?>normal<?}?>">
                 <span class="textLabel"><?=$this->lang->line('military_advisor_name')?></span>
             </a>
-<?if($this->Player_Model->user->premium_account > 0){?>
+<?php if($this->Player_Model->user->premium_account > 0){?>
             <a class="pluslink" href="<?=$this->config->item('base_url')?>game/premiumMilitaryAdvisor/" title="<?=$this->lang->line('to_view')?>">
-<?}else{?>
+<?php }else{ ?>
             <a class="plusteaser" href="<?=$this->config->item('base_url')?>game/premiumDetails/" title="<?=$this->lang->line('to_view')?>">
-<?}?>
+<?php } ?>
                 <span class="textLabel"><?=$this->lang->line('to_view')?></span>
             </a>
         </li>
@@ -382,11 +377,11 @@ $selected = ($this->Player_Model->town_id == $town->id) ? 'selected="selected"' 
             <a href="<?=$this->config->item('base_url')?>game/researchAdvisor/" title="<?=$this->lang->line('research_advisor_title')?>" class="<?php if($this->Player_Model->user->premium_account > 0){?>premium<?php }else{ ?>normal<?php } if($this->Player_Model->research_advisor){?>active<?php } ?>">
                 <span class="textLabel"><?=$this->lang->line('research_advisor_name')?></span>
             </a>
-<?if($this->Player_Model->user->premium_account > 0){?>
+<?php if($this->Player_Model->user->premium_account > 0){?>
             <a class="pluslink" href="<?=$this->config->item('base_url')?>game/premiumResearchAdvisor/" title="<?=$this->lang->line('to_view')?>">
-<?}else{?>
+<?php }else{ ?>
             <a class="plusteaser" href="<?=$this->config->item('base_url')?>game/premiumDetails/" title="<?=$this->lang->line('to_view')?>">
-<?}?>
+<?php } ?>
                 <span class="textLabel"><?=$this->lang->line('to_view')?></span>
             </a>
 	</li>
@@ -394,11 +389,11 @@ $selected = ($this->Player_Model->town_id == $town->id) ? 'selected="selected"' 
             <a href="<?=$this->config->item('base_url')?>game/diplomacyAdvisor/" title="<?=$this->lang->line('diplomacy_advisor_title')?>" class="<?if($this->Player_Model->user->premium_account > 0){?>premium<?}else{?>normal<?}?><?if($this->Player_Model->new_user_messages > 0){?>active<?}?>">
                 <span class="textLabel"><?=$this->lang->line('diplomacy_advisor_name')?></span>
             </a>
-<?if($this->Player_Model->user->premium_account > 0){?>
+<?php if($this->Player_Model->user->premium_account > 0){?>
             <a class="pluslink" href="<?=$this->config->item('base_url')?>game/premiumDiplomacyAdvisor/" title="<?=$this->lang->line('to_view')?>">
-<?}else{?>
+<?php }else{ ?>
             <a class="plusteaser" href="<?=$this->config->item('base_url')?>game/premiumDetails/" title="<?=$this->lang->line('to_view')?>">
-<?}?>
+<?php } ?>
                 <span class="textLabel"><?=$this->lang->line('to_view')?></span>
             </a>
 	</li>
@@ -410,7 +405,7 @@ $selected = ($this->Player_Model->town_id == $town->id) ? 'selected="selected"' 
  <?}?> 
 
 <div id="footer">
-    <span class="copyright">&copy; 2013 by Idro</span>
+    <span class="copyright">&copy; 2013 by Idro | Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></span>
 </div>
 
 <div id="conExtraDiv1"><span></span></div>
@@ -464,7 +459,7 @@ $selected = ($this->Player_Model->town_id == $town->id) ? 'selected="selected"' 
                     </li>
                     <li class="version">
                         <a href="<?=$this->config->item('base_url')?>game/version/" title="<?php echo $this->lang->line('version');?>">
-                            <span class="textLabel">v.<?php echo $this->configValue->game_version;?></span>
+                            <span class="textLabel">v.<?php echo getConfig('game_version');?></span>
                         </a>
                     </li>
                     <?php
@@ -478,7 +473,7 @@ $selected = ($this->Player_Model->town_id == $town->id) ? 'selected="selected"' 
 					<?php } ?>
 					<li class="serverTime">
                         <a>
-                            <span class="textLabel" id="servertime"><?=date('d.m.Y H:i:s',time())?></span>
+                            <span class="textLabel" id="servertime"><?php echo date('d.m.Y H:i:s',time());?></span>
                         </a>
                     </li>
                 </ul>
@@ -578,22 +573,22 @@ function jsTitleTag(nextETA) {
     var cnt = new Timer(nextETA, <?=time()?>, 1);
     cnt.subscribe("update", function() {
         var timeargs = this.enddate - Math.floor(this.currenttime/1000) *1000;
-        var title = "<?=$this->lang->line('ikariam')?> - ";
+        var title = "<?php echo getConfig('game_name');?> - ";
         if (timeargs != "")
             title += getTimestring(timeargs, 3, undefined, undefined, undefined, true) + " - ";
         title += "<?=$this->lang->line('world')?> <?=ucfirst($this->session->userdata('universe'))?>";
         top.document.title = title;
     })
     cnt.subscribe("finished", function() {
-        top.document.title = "<?=$this->lang->line('ikariam')?>" + " - <?=$this->lang->line('world')?> <?=ucfirst($this->session->userdata('universe'))?>";
+        top.document.title = "<?php echo getConfig('game_name');?>" + " - <?=$this->lang->line('world')?> <?=ucfirst($this->session->userdata('universe'))?>";
     });
     cnt.startTimer();
     return cnt;
 }
 
-<?if($this->Player_Model->now_town->build_start > 0){?>
+<?php if($this->Player_Model->now_town->build_start > 0){?>
 titleTag = new jsTitleTag(<?=$end_date?>)
-<?}?>
+<?php } ?>
 
 var avatarNotes = null;
 function switchNoteDisplay() {
@@ -619,6 +614,7 @@ function switchNoteDisplay() {
         avatarNotes.save();
     }
 }
+
 if (getCookie('notes') == 1) {
     switchNoteDisplay();
 }
@@ -659,7 +655,7 @@ function updateNoteLayer(responseText) {
                 Dom.get("message").style.height = (panelHeight-75) + "px";
             }, panel, true);
             avatarNotes = new Notes();
-            avatarNotes.setMaxChars(<?if($this->Player_Model->user->premium_account > 0){?><?php echo $this->configValue->notes_premium; }else{ echo $this->configValue->notes_default; }?>);
+            avatarNotes.setMaxChars(<?php if($this->Player_Model->user->premium_account > 0){?><?php echo getConfig('notes_premium'); }else{ echo getConfig('notes_default'); }?>);
             avatarNotes.init(Dom.get("message"), Dom.get("chars"));
             Dom.get("resizablepanel_c").style.top = getCookie("ikariam_notes_y", "80px");
             Dom.get("resizablepanel_c").style.left = getCookie("ikariam_notes_x", "375px");

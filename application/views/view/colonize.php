@@ -82,7 +82,7 @@ Event.onDOMReady( function() {
                 </ul>
             </div>
 <?php }else{
-    $all_capacity = $this->Player_Model->user->transports * $this->configValue->transport_capacity;
+    $all_capacity = $this->Player_Model->user->transports * getConfig('transport_capacity');
     $used_capacity =  1250 + 40;
     $capacity = $all_capacity - $used_capacity;
     $cost = $this->Data_Model->army_cost_by_type(23, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
@@ -95,7 +95,7 @@ Event.onDOMReady( function() {
 <script type="text/javascript" src="<?=$this->config->item('script_url')?>js/transportController.js"></script>
 <script type="text/javascript">
 var transporterDisplay;
-Event.onDOMReady(function() {transporterDisplay = new transportController(<?=$this->Player_Model->user->transports?>, <?php echo $this->configValue->transport_capacity;?>, Dom.get("transporterCount"), 40+1250);});
+Event.onDOMReady(function() {transporterDisplay = new transportController(<?=$this->Player_Model->user->transports?>, <?php echo getConfig('transport_capacity');?>, Dom.get("transporterCount"), 40+1250);});
 </script>
 <p><?=$this->lang->line('more_resources')?></p>
 <form action="<?=$this->config->item('base_url')?>actions/colonize/<?=$id?>/<?=$position?>/" method="post">

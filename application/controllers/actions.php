@@ -7,10 +7,7 @@ require_once "game.php";
  */
 
 class Actions extends CI_Controller
-{
-
-    public $configValue;
-	
+{	
 	function __construct()
     {
         parent::__construct();
@@ -41,8 +38,6 @@ class Actions extends CI_Controller
             $this->lang->load('game');
         }
         //$this->game = new Game;
-		$this->Data_Model->Load_Config(1);
-		$this->configValue =& $this->Data_Model->temp_config_db[1];
     }
 
     function show($location, $param1 = 0, $param2 = 0, $param3 = 0)
@@ -275,7 +270,7 @@ class Actions extends CI_Controller
             ($id != 13 or $this->Player_Model->research->res2_13 > 0) and
             ($id != 14 or ($id == 14 and $this->Player_Model->now_town->spyes_start == 0)) and
             ($type == 0 or $type == $id) and
-            (SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]) <= $this->configValue->town_queue_size) and (SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]) > 0 and $this->Player_Model->user->premium_account > 0) or SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]) == 0)
+            (SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]) <= getConfig('town_queue_size')) and (SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]) > 0 and $this->Player_Model->user->premium_account > 0) or SizeOf($this->Player_Model->build_line[$this->Player_Model->town_id]) == 0)
         {
             // Получаем цены
             $cost = $this->Data_Model->building_cost($id, $level, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
@@ -623,7 +618,7 @@ class Actions extends CI_Controller
     {
         $position = $this->Data_Model->get_position(5, $this->Player_Model->now_town);
         if (($this->Player_Model->now_town->build_line == '' or $this->Player_Model->build_line[$this->Player_Model->town_id][0]['type'] != 5) and
-           (strlen($this->Player_Model->armys[$this->Player_Model->town_id]->army_line) <= $this->configValue->army_queue_size * 4))
+           (strlen($this->Player_Model->armys[$this->Player_Model->town_id]->army_line) <= getConfig('army_queue_size') * 4))
         {
             if ($position > 0 and $position == $id)
             {
@@ -702,7 +697,7 @@ class Actions extends CI_Controller
     {
         $position = $this->Data_Model->get_position(4, $this->Player_Model->now_town);
         if (($this->Player_Model->now_town->build_line == '' or $this->Player_Model->build_line[$this->Player_Model->town_id][0]['type'] != 4) and
-           (strlen($this->Player_Model->armys[$this->Player_Model->town_id]->ships_line) <= $this->configValue->army_queue_size *4) )
+           (strlen($this->Player_Model->armys[$this->Player_Model->town_id]->ships_line) <= getConfig('army_queue_size') * 4))
         {
             if ($position > 0 and $position == $id)
             {
@@ -975,7 +970,7 @@ class Actions extends CI_Controller
                                              <br>Если Вам понадобится помощь, то Вы сможете найти ее на форуме Икариам ('.$this->config->item('forum_url').').<br><br>Удачи в игре,<br>Ваша команда Икариам.</p>
                                             </body>
                                             </html>';
-                    $this->email->from($this->configValue->admin_email, 'Гермес');
+                    $this->email->from(getConfig('admin_email'), 'Гермес');
                     $this->email->to($this->Player_Model->user->email);
                     $this->email->subject('Ваша активация для Икариам!');
                     $this->email->message($message);
@@ -1025,7 +1020,7 @@ class Actions extends CI_Controller
     function saveAvatarNotes()
     {
         $notes = strip_tags($_POST['notes']);
-        if (strlen($notes <= $this->configValue->notes_default) or (strlen($notes <= $this->configValue->notes_premium and $this->Player_Model->user->premium_account > 0)))
+        if (strlen($notes <= getConfig('notes_default')) or (strlen($notes <= getConfig('notes_premium') and $this->Player_Model->user->premium_account > 0)))
         {
             $this->db->set('text', $notes);
             $this->db->where(array('user' => $this->Player_Model->user->id));
@@ -1033,7 +1028,7 @@ class Actions extends CI_Controller
         }
     }
 
-  function transport($island = 0, $town = 0)
+    function transport($island = 0, $town = 0)
     {
         $island = floor($island);
         $town = floor($town);
@@ -1058,7 +1053,7 @@ class Actions extends CI_Controller
                 $crystal = $this->Player_Model->now_town->crystal - $cargo_crystal;
                 $sulfur = $this->Player_Model->now_town->sulfur - $cargo_sulfur;
                 $transports = $this->Player_Model->user->transports - $transporters;
-                if(isset($this->Data_Model->temp_towns_db[$town]) and ($this->Player_Model->user->transports >= $transporters) and ($transporters != 0) and ($wood >= 0) and ($wine >= 0) and ($crystal >= 0) and ($sulfur >= 0) and ($transports >= 0) and ($transporters * $this->configValue->transport_capacity >= $cargo_wood + $cargo_wine + $cargo_marble + $cargo_crystal + $cargo_sulfur) and ($cargo_wood + $cargo_wine + $cargo_marble + $cargo_crystal + $cargo_sulfur != 0))
+                if(isset($this->Data_Model->temp_towns_db[$town]) and ($this->Player_Model->user->transports >= $transporters) and ($transporters != 0) and ($wood >= 0) and ($wine >= 0) and ($crystal >= 0) and ($sulfur >= 0) and ($transports >= 0) and ($transporters * getConfig('transport_capacity') >= $cargo_wood + $cargo_wine + $cargo_marble + $cargo_crystal + $cargo_sulfur) and ($cargo_wood + $cargo_wine + $cargo_marble + $cargo_crystal + $cargo_sulfur != 0))
                 {
                     // subtract the resources
                     $this->Player_Model->now_town->wood = $wood;
@@ -1102,7 +1097,70 @@ class Actions extends CI_Controller
         }
     }
 
-    function colonize($id = 0, $position = -1)
+    /**
+	 * Con questa funzione ricevo i dati dal form per attaccare
+	 * TODO: add support for barbarian village.
+	 */
+	function attack($island = 0, $id = 0, $level = null)
+	{
+	    $island = floor($island);
+        $id = floor($id);
+        $transporters = isset($_POST['transporter']) ? $_POST['transporter'] : 0;
+		$transports = $this->Player_Model->user->transports - $transporters;
+
+		if (($this->Player_Model->user->transports >= $transporters) and ($transporters > 0) and ($transports >= 0) and ($this->Player_Model->now_town->actions > 0))
+        {
+            // Settiamo la destinazione
+			$this->load->model('Island_Model');
+            $this->Island_Model->Load_Island($island);
+			
+			$this->load->model('Battle_Model');
+            $this->Player_Model->now_town->actions = $this->Player_Model->now_town->actions - 1;
+            $this->db->set('actions', $this->Player_Model->now_town->actions);
+			$this->Player_Model->user->transports = $transports;
+			$this->db->where(array('id' => $this->Player_Model->user->town));
+			$this->db->update($this->session->userdata('universe').'_towns');
+
+            $this->db->set('transports', $transports);
+            $this->db->where(array('id' => $this->Player_Model->user->id));
+            $this->db->update($this->session->userdata('universe').'_users');
+			
+			$mission_array = array('user' => $this->Player_Model->user->id, 'from' => $this->Player_Model->now_town->id, 'to' => $id, 'loading_from_start' => time(), 'mission_type' => 5, 'wood' => 0, 'wine' => 0, 'marble' => 0, 'crystal' => 0, 'sulfur' => 0, 'ship_transport' => $transporters);
+			
+			$this->Data_Model->Load_Army($this->Player_Model->now_town->id);
+			/* Set the attacker troops. */
+            for($i = 1; $i <= 15; $i++)
+			{
+			    if(isset($_POST['cargo_army_'.$i]))
+				{
+					// Leviamo i soldati dalla città
+	    			$class = $this->Data_Model->army_class_by_type($i);
+					$this->db->set($this->Data_Model->army_class_by_type($i), $this->Player_Model->armys[$this->Player_Model->user->town]->$class - $_POST['cargo_army_'.$i]);
+					$mission_array += array($this->Data_Model->army_class_by_type($i) => $_POST['cargo_army_'.$i]);
+					
+				}
+				else 
+				{
+                    $mission_array += array($this->Data_Model->army_class_by_type($i) => 0);	
+				}
+			
+			}
+			$this->db->where(array('city' => $this->Player_Model->user->town));
+            $this->db->update($this->session->userdata('universe').'_army');
+			
+			// add a mission
+            $this->db->insert($this->session->userdata('universe').'_missions', $mission_array);
+                    
+			// Bring the player to the port
+            $this->show('port');
+			
+		}else
+        {
+            $this->Error($this->lang->line('enough_action_points'));
+        }
+	}
+	
+	function colonize($id = 0, $position = -1)
     {
         $id = floor($id);
         $position = floor($position);
@@ -1169,7 +1227,7 @@ class Actions extends CI_Controller
                                 $peoples = $this->Player_Model->now_town->peoples - 40;
                                 $gold = $this->Player_Model->user->gold - 9000;
                                 $transports = $this->Player_Model->user->transports - $transporters;
-                                if(($this->Player_Model->user->transports >= $transporters) and ($wood >= 0) and ($wine >= 0) and ($crystal >= 0) and ($sulfur >= 0) and ($peoples >= 0) and ($gold >= 0) and ($transports >= 0) and ($transporters*$this->configValue->transport_capacity >= $sendresource + $sendwine + $sendmarble + $sendcrystal + $sendsulfur + 1250 + 40))
+                                if(($this->Player_Model->user->transports >= $transporters) and ($wood >= 0) and ($wine >= 0) and ($crystal >= 0) and ($sulfur >= 0) and ($peoples >= 0) and ($gold >= 0) and ($transports >= 0) and ($transporters * getConfig('transport_capacity') >= $sendresource + $sendwine + $sendmarble + $sendcrystal + $sendsulfur + 1250 + 40))
                                 {
                                     if($this->Island_Model->island->$city_text == 0)
                                     {
@@ -1901,27 +1959,25 @@ class Actions extends CI_Controller
     }
     
 	// agora
-	function agora()
+	function islandBoard()
 	{
-	 if (isset($_POST['commento']))
-	 {
-                    $contenuto = $_POST['commento'];
-                    $autore = $this->Player_Model->user->login;
-                    $data = array(
-                        'autore' => $autore ,
-                        'contenuto' => $contenuto ,
-                        'isola' => $this->Player_Model->island_id 
-             		    
-					);
+	    if (isset($_POST['commento']))
+	    {
+            $content = $_POST['comment'];
+            $author  = $this->Player_Model->user->login;
+            $data = array(
+                    'author' => $author,
+                    'content' => $content,
+                    'island' => $this->Player_Model->island_id 
+       		);
 
             $this->db->insert($this->session->userdata('universe').'_agora', $data); 
-             redirect($this->config->item('base_url').'game/agora/', 'refresh');
-		  }  
-          else
-		  { 
-           $this->show('error');
-		  }
-	
+            redirect($this->config->item('base_url').'game/islandBoard/', 'refresh');
+		}  
+        else
+		{ 
+            $this->show('error');
+		}
 	}
 	
 	// ambasciata
@@ -2044,73 +2100,6 @@ class Actions extends CI_Controller
 
 		}
 	
-	
-	// attacco
-	function attacco($island = 0, $town = 0)
-	{
-	    $island = floor($island);
-        $town = floor($town);
-		if ($this->Player_Model->now_town->actions > 0)
-        {
-            if ($island > 0 and $town >= 0)
-            {
-                $this->Data_Model->Load_Town($town);
-                $this->load->model('Island_Model');
-                $this->Island_Model->Load_Island($island);
-                // Получаем данные
-                $cargo1 = isset($_POST['cargo_army_1']) ? $_POST['cargo_army_1'] : 0;
-                $cargo2 = isset($_POST['cargo_army_2']) ? $_POST['cargo_army_2'] : 0;
-                $cargo3 = isset($_POST['cargo_army_3']) ? $_POST['cargo_army_3'] : 0;
-                $cargo4 = isset($_POST['cargo_army_4']) ? $_POST['cargo_army_4'] : 0;
-                $cargo5 = isset($_POST['cargo_army_5']) ? $_POST['cargo_army_5'] : 0;
-                $cargo6 = isset($_POST['cargo_army_6']) ? $_POST['cargo_army_6'] : 0;
-				$cargo7 = isset($_POST['cargo_army_7']) ? $_POST['cargo_army_7'] : 0;
-				$cargo8 = isset($_POST['cargo_army_8']) ? $_POST['cargo_army_8'] : 0;
-				$cargo9 = isset($_POST['cargo_army_9']) ? $_POST['cargo_army_9'] : 0;
-                $cargo10 = isset($_POST['cargo_army_10']) ? $_POST['cargo_army_10'] : 0;
-                $cargo11 = isset($_POST['cargo_army_11']) ? $_POST['cargo_army_11'] : 0;
-                $cargo12 = isset($_POST['cargo_army_12']) ? $_POST['cargo_army_cargo_tradegood4'] : 0;
-                $cargo13 = isset($_POST['cargo_army_13']) ? $_POST['cargo_army_cargo_tradegood4'] : 0;				
-				$cargo6 = isset($_POST['transporters']) ? $_POST['transporters'] : 0;
-                // Подсчитываем ресурсы
-                $soldati1 = $this->Player_Model->now_town->armys - $soldatii;
-                $wine = $this->Player_Model->now_town->wine - $cargo_wine;
-                $marble = $this->Player_Model->now_town->marble - $cargo_marble;
-                $crystal = $this->Player_Model->now_town->crystal - $cargo_crystal;
-                $sulfur = $this->Player_Model->now_town->sulfur - $cargo_sulfur;
-                $transports = $this->Player_Model->user->transports - $transporters;
-                if(isset($this->Data_Model->temp_towns_db[$town]) and ($this->Player_Model->user->transports >= $transporters) and ($soldati1 >= 0) and ($wine >= 0) and ($crystal >= 0) and ($sulfur >= 0) and ($transports >= 0) and ($transporters*$this->configValue->transport_capacity >= $soldati + $cargo_wine + $cargo_marble + $cargo_crystal + $cargo_sulfur))
-                {
-                    // Вычитаем ресурсы
-                    $this->Player_Model->now_town->armys = $armys;
-                    $this->Player_Model->now_town->wine = $wine;
-                    $this->Player_Model->now_town->marble = $marble;
-                    $this->Player_Model->now_town->crystal = $crystal;
-                    $this->Player_Model->now_town->sulfur = $sulfur;
-                    $this->Player_Model->now_town->actions = $this->Player_Model->now_town->actions - 1;
-                    $this->db->set('wood', $armys);
-                    $this->db->set('wine', $wine);
-                    $this->db->set('marble', $marble);
-                    $this->db->set('crystal', $crystal);
-                    $this->db->set('sulfur', $sulfur);
-                    $this->db->set('actions', $this->Player_Model->now_town->actions);
-                    $this->db->where(array('id' => $this->Player_Model->now_town->id));
-                    $this->db->update($this->session->userdata('universe').'_towns');
-                    $this->Player_Model->user->transports = $transports;
-                    $this->db->set('transports', $transports);
-                    $this->db->where(array('id' => $this->Player_Model->user->id));
-                    $this->db->update($this->session->userdata('universe').'_users');
-                    // Добавляем миссию
-                    $this->db->insert($this->session->userdata('universe').'_missions', array('user' => $this->Player_Model->user->id, 'from' => $this->Player_Model->now_town->id, 'to' => $town, 'loading_from_start' => time(), 'mission_type' => 2, 'wood' => $cargo_wood, 'wine' => $cargo_wine, 'marble' => $cargo_marble, 'crystal' => $cargo_crystal, 'sulfur' => $cargo_sulfur, 'ship_transport' => $transporters));
-                }
-            }
-            $this->show('port');
-        }
-        else
-        {
-            $this->Error('Недостаточно баллов действий!');
-        }
-    }
 	// ambrosia pagata
 	function doAmbrosia()
 	{

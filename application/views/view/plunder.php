@@ -1,8 +1,6 @@
-<?$position = $param1?>
+<?php $position = $param1;?>
 <script type="text/javascript" src="<?=$this->config->item('base_url')?>design/js/transportController.js"></script>
-
 <script type="text/javascript">
-
 function getAllChildNodesWithClassName(obj, childNodesWithClassName) {
     if (!childNodesWithClassName) {
         var childNodesWithClassName = new Array;
@@ -104,9 +102,9 @@ function splitParameterStringToArray(str) {
 
 
 function plusMinus(obj) {
-
+    
     var thisObj = this;
-
+    
     // Plusminus-Box
     thisObj.plusMinusObj = obj;
     // Plus-Button
@@ -114,19 +112,18 @@ function plusMinus(obj) {
     // Minus-Button
     thisObj.plusMinusObj.minusButtonObj = getChildNodeWithClassName(obj, 'minus');
     thisObj.plusMinusObj.inputObj = getChildNodeWithClassName(obj, 'value');
-
+    
     // Parameter min iund max stehen als StyleClass im Quelltext
     var arr = splitParameterStringToArray(thisObj.plusMinusObj.inputObj.className);
     var min = (Number(arr['min']))?parseInt(arr['min']):0;
     var max = (Number(arr['max']) || arr['max']==0)?parseInt(arr['max']):999;
-
+    
     thisObj.action = '';
-    //alert(thisObj.plusMinusObj.innerHTML);
-
+    
     this.setMax = function(val) {
     	max = val;
     }
-
+    
     this.setValue = function(val, avoidFireAction) {
         thisObj.plusMinusObj.inputObj.value = val;
         if (!avoidFireAction) {
@@ -138,15 +135,14 @@ function plusMinus(obj) {
     this.getValue = function () {
         return (thisObj.plusMinusObj.inputObj.value);
     }
-
+    
     this.minus = function() {
-        //alert(thisObj.plusMinusObj.inputObj.value);
-        if (thisObj.plusMinusObj.inputObj.value>min) {
+    	if (thisObj.plusMinusObj.inputObj.value>min) {
             thisObj.setValue(parseInt(thisObj.getValue())-1);
         } else {
             thisObj.setValue(min);
         }
-        thisObj.minusAction(thisObj.plusMinusObj.inputObj.value);
+        thisObj.minusAction(thisObj.plusMinusObj.inputObj.value);    
     }
     this.minusAction = function(value) { // Dummy, bitte ableiten
     }
@@ -155,13 +151,13 @@ function plusMinus(obj) {
             thisObj.setValue(parseInt(thisObj.getValue())+1);
         } else {
             thisObj.setValue(max);
-        }
+        }    
         thisObj.plusAction(thisObj.plusMinusObj.inputObj.value);
     }
-
+    
     this.plusAction = function(value) { // Dummy, bitte ableiten
     }
-
+    
     this.testValue = function() {
         if (thisObj.plusMinusObj.inputObj.value<min) {
             thisObj.setValue(min);
@@ -174,7 +170,7 @@ function plusMinus(obj) {
     }
     this.testValueAction = function() { // Dummy, bitte ableiten
     }
-
+    
     this.minusInterval = function() {
         if (thisObj.action == 'minus') {
             thisObj.minus();
@@ -189,11 +185,11 @@ function plusMinus(obj) {
     }
     addListener(thisObj.plusMinusObj.minusButtonObj, 'mousedown', function() {
         thisObj.action = 'minus';
-        thisObj.minusInterval();
+        thisObj.minusInterval();  
     });
     addListener(thisObj.plusMinusObj.plusButtonObj, 'mousedown', function() {
         thisObj.action = 'plus';
-        thisObj.plusInterval();
+        thisObj.plusInterval();  
     });
     addListener(thisObj.plusMinusObj.minusButtonObj, 'mouseup', function() {
         thisObj.action = '';
@@ -215,27 +211,26 @@ function plusMinus(obj) {
     });
     addListener(thisObj.plusMinusObj.inputObj, 'keyup', function() {
         thisObj.testValue();
-        thisObj.setValueAction(thisObj.getValue());
+        thisObj.setValueAction(thisObj.getValue());    
     });
 }
 </script>
-
 <script type="text/javascript">
 
 	var transporterDisplay;
 	var tempUnitTime = 0;
-
-	var textOk = "Грабить город!";
-    var textNoTransporters = "Недостаточно сухогрузов. Поэтому награбленное Вашими войсками не будет доставлено.";
-	var textNoTroops = "Войска не выбраны.";
-
+	
+	var textOk = "Saccheggia città!";
+    var textNoTransporters = "Nessuna nave commerciale selezionata. Le tue truppe di saccheggio non porteranno a casa nessun bottino.";
+	var textNoTroops = "Non hai selezionato alcuna unità"; 
+	
     var jsClassOk = 'ok';
     var jsClassNoTransporters = 'warning';
     var jsClassNoTroops = 'warning';
-
+    	
 	Event.onDOMReady(function() {
 		transporterDisplay = new armyTransportController(
-			0,
+			18,
 			500,
 			Dom.get("transporterCount"),
 			Dom.get("extraTransporter"),
@@ -251,7 +246,7 @@ function plusMinus(obj) {
 			Dom.get('plunderbutton')
 			);
 		});
-
+	
 </script>
 
 <div id="mainview">
@@ -262,11 +257,18 @@ function plusMinus(obj) {
     <div id="notices">
     </div>
 			
-    <form  action="<?=$this->config->item('base_url')?>actions/transport/attack/<?=$position?>/" id="plunderForm"  method="POST">			
+    <?php
+	if($param1 == 'barbarian_village')
+	{
+	    echo '<form action="'.$this->config->item('base_url').'actions/attack/'.$param3.'/'.$param1.'/'.$param2.'" id="plunderForm" method="POST">';
+	}
+	else 
+	    echo '<form action="'.$this->config->item('base_url').'actions/attack/'.$this->Island_Model->island->id.'/'.$position.'/" id="plunderForm" method="POST">';
+	?>
         <div id="selectArmy" class="contentBox01h">
             <h3 class="header">Отправить армию</h3>
             <div class="content">
-                <p>Вы отправили войска из <?=$this->Player_Model->now_town->name?> для разграбления города <strong><?if($position == 0){?>Деревня Варваров<?}else{?><?=$this->Data_Model->temp_towns_db[$position]->name?><?}?></strong>.</p>
+                <p>Вы отправили войска из <?php echo $this->Player_Model->now_town->name;?> для разграбления города <strong><?php if($position == 'barbarian_village'){?>Деревня Варваров<?}else{ echo $this->Data_Model->temp_towns_db[$position]->name;}?></strong>.</p>
                 <ul class="assignUnits">
 <?php for($i = 1; $i <= 14; $i++){
 $class = $this->Data_Model->army_class_by_type($i);
@@ -283,7 +285,8 @@ $cost = $this->Data_Model->army_cost_by_type($i, $this->Player_Model->research, 
                             </div>
 
                                         <script type="text/javascript">
-                                        create_slider({
+                                         Event.onDOMReady(function() {
+                                         create_slider({
                                             dir : 'ltr',
                                             id: "slider_<?=$i?>",
                                             maxValue: <?=$this->Player_Model->armys[$this->Player_Model->town_id]->$class?>,
@@ -296,8 +299,7 @@ $cost = $this->Data_Model->army_cost_by_type($i, $this->Player_Model->research, 
                                             bg_value: "actualValue_<?=$i?>",
                                             textfield: "cargo_army_<?=$i?>"
                                         });
-                                        Event.onDOMReady(function() {
-											var s=sliders["slider_<?=$i?>"];
+                                        	var s=sliders["slider_<?=$i?>"];
 											s.upkeep=<?=number_format($cost['gold'])?>;
 											s.weight=0;
 											s.unitJourneyTime=600;
@@ -312,13 +314,13 @@ $cost = $this->Data_Model->army_cost_by_type($i, $this->Player_Model->research, 
                         <input class="textfield" id="cargo_army_<?=$i?>" type="text" name="cargo_army_<?=$i?>"  value="0" size="4" maxlength="9">
                         <input type="hidden" id="cargo_army_<?=$i?>_upkeep" name="cargo_army_<?=$i?>_upkeep" value="1">
                     </li>
-<?}}?>
+<?php }} ?>
                 </ul>
 
                 <hr>
                 <div id="missionSummary">
                     <div class="plunderInfo">
-                        <div class="targetName"><span class="textLabel">Цель: </span><?if($position == 0){?>Деревня Варваров<?}else{?><?=$this->Data_Model->temp_towns_db[$position]->name?><?}?></div>
+                        <div class="targetName"><span class="textLabel">Цель: </span><?php if($position == 'barbarian_village'){?>Деревня Варваров<?}else{?><?=$this->Data_Model->temp_towns_db[$position]->name?><?}?></div>
                         <div class="upkeep"><span class="textLabel">Доп. содержание: </span><span id="upkeepPerHour">0</span> в час</div>
                     </div>
                     <div class="newSummary">
@@ -326,13 +328,10 @@ $cost = $this->Data_Model->army_cost_by_type($i, $this->Player_Model->research, 
                             <span class="textLabel">Транспортер: </span>
                             <div class="neededTransporter"><span id="transporterCount">0</span></div>
                             <div id="plusminus" class="plusminus">
-                                <input id="extraTransporter" class="textfield" type="text" size="3" maxlength="4" value="0" name="transporter">
-                                <a id="summary_plus" href="javascript:void(0);" class="plus"></a>
-                                <a id="summary_minus" href="javascript:void(0);" class="minus"></a>
-                            </div><!--<input class="value text min=0 max=0" type="text" size="3" maxlength="4" value="0" name="transporter" id="extraTransporter"/>
-                                <a href="javascript:plusMinus();" class="plus"></a>
-                                <a href="javascript:;" class="minus"></a>
-                            </div>-->
+								<input class="value text min=0 max=<?php echo $this->Player_Model->user->transports;?>"  type="text" size="3" maxlength="4" value="0" name="transporter" id="extraTransporter">
+								<a href="javascript:;" class="plus"></a>
+								<a href="javascript:;" class="minus"></a>
+							</div>
                             <div class="sumTransporter" id="sumTransporter">0</div>
                         </div>
                         <div class="freight">
@@ -343,46 +342,59 @@ $cost = $this->Data_Model->army_cost_by_type($i, $this->Player_Model->research, 
                             <div id="journeyTime">-</div>
                             <div id="returnTime">-</div>
                         </div>
-                            		<script type="text/javascript">
+                        <script type="text/javascript">
+                            		
+                            				
                                             var temp = new plusMinus(document.getElementById('plusminus'), 10, 40);
                                             var transporterCountElem = Dom.get('transporterCount');
                                             var totalFreightElem = Dom.get('totalFreight');
+                                            
                                             temp.setValueAction = function(val) {
+                                            	
                                                 val = Number(val);
+                                                
                                                 if(isNaN(val)) {
                                                 	val = 0;
                                                 	temp.setValue(0);
+                                                	
                                                 	return;
                                                 }
                                                 tempMath = (val+ parseInt(transporterCountElem.innerHTML));
                                                 Dom.get('sumTransporter').innerHTML = tempMath;
-                                                if(tempMath > 0 && tempUnitTime < 600) {
-                                                	Dom.get('journeyTime').innerHTML = getTimestring(600*1000, 3);
-                                                	Dom.get('returnTime').innerHTML = getTimestring(1200*1000, 3);
-                                                } else {
-                                                	if(tempUnitTime > 0) {
-	                                                	Dom.get('journeyTime').innerHTML = getTimestring(tempUnitTime*1000, 3);
-	                                                	Dom.get('returnTime').innerHTML = getTimestring(tempUnitTime*2000, 3);
-	                                                } else {
-	                                                	Dom.get('journeyTime').innerHTML = "-";
-	                                                	Dom.get('returnTime').innerHTML = "-";
-	                                                }
-                                                }
-                                                temp.setMax(0-parseInt(transporterCountElem.innerHTML));
-                                                totalFreightElem.innerHTML = (val+ parseInt(transporterCountElem.innerHTML))*500;
+                                                //alert(tempUnitTime)  ;
+                                                                                                    if(tempMath > 0 && tempUnitTime < 600) { 
+                                                        Dom.get('journeyTime').innerHTML = getTimestring(600*1000, 3);
+                                                        Dom.get('returnTime').innerHTML = getTimestring(1200*1000, 3);
+                                                    } else {
+                                                        if(tempUnitTime > 0) {
+                                                            Dom.get('journeyTime').innerHTML = getTimestring(tempUnitTime*1000, 3);
+                                                            Dom.get('returnTime').innerHTML = getTimestring(tempUnitTime*2000, 3);
+                                                        } else {
+                                                            Dom.get('journeyTime').innerHTML = "-";
+                                                            Dom.get('returnTime').innerHTML = "-";
+                                                        }
+                                                    }
+                                                    temp.setMax(<?php echo $this->Player_Model->user->transports;?>-parseInt(transporterCountElem.innerHTML));
+                                                    totalFreightElem.innerHTML = (val+ parseInt(transporterCountElem.innerHTML))*500;  
+                                                
                                                 if(tempUnitTime > 0 && tempMath > 0) {
+                                                		
                                                 		Dom.get('plunderbutton').className = "ok";
                                                 		Dom.get('plunderbutton').title = textOk;
                                                 } else if (tempUnitTime > 0 && tempMath <= 0) {
+                                                		
                                                 		Dom.get('plunderbutton').className = "warning";
                                                 		Dom.get('plunderbutton').title = textNoTransporters;
                                                 } else {
+                                                		
                                                 		Dom.get('plunderbutton').className = "warning";
                                                 		Dom.get('plunderbutton').title = textNoTroops;
                                                 }
+                                                
+                                               
                                             }
-                                        </script>
-
+                                            
+                                        </script>  
                         <div class="submit">
                             <a href="#" id="plunderbutton" class="warning" onclick="Dom.get('plunderForm').submit();" title="Войска не выбраны." value=""></a>
                         </div>

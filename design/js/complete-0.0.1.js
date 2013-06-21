@@ -254,7 +254,7 @@ if(xmlHttp){xmlHttp.open('POST',aUrl,true);xmlHttp.onreadystatechange=function()
 function ajaxRequestPost(aUrl,params,aFunction,aSync){if(typeof(aSync)=='undefinied'){aSync=true;}
 var xmlHttp=null;if(typeof XMLHttpRequest!='undefined'){xmlHttp=new XMLHttpRequest();}
 if(!xmlHttp){try{xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");}catch(e){try{xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");}catch(e){xmlHttp=null;}}}
-if(xmlHttp){xmlHttp.open('POST',aUrl,aSync);xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");xmlHttp.setRequestHeader("Content-length",params.length);xmlHttp.setRequestHeader("Connection","close");xmlHttp.onreadystatechange=function(){if(xmlHttp.readyState==4&&"undefined"!=typeof(aFunction)){var tmp=new aFunction(xmlHttp.responseText);}};xmlHttp.send(params);}}
+if(xmlHttp){xmlHttp.open('POST',aUrl,aSync);xmlHttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");xmlHttp.onreadystatechange=function(){if(xmlHttp.readyState==4&&"undefined"!=typeof(aFunction)){var tmp=new aFunction(xmlHttp.responseText);}};xmlHttp.send(params);}}
 var shortenValue=IKARIAM.helpers.shortenValue;var locaNumberFormat=IKARIAM.helpers.locaNumberFormat;var number_format=IKARIAM.helpers.number_format;
 function loadURL(dest,objectId){try{xmlhttp=window.XMLHttpRequest?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP");document.getElementById(objectId).innerHTML="Loading...";}catch(e){}
 xmlhttp.onreadystatechange=function(){if(xmlhttp.readyState==4){if(xmlhttp.status==200){document.getElementById(objectId).innerHTML=xmlhttp.responseText;}}}

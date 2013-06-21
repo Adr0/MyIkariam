@@ -1,8 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Main extends CI_Controller {
-
-	public $configValue;
 	
 	/**
 	 * Construct function
@@ -10,10 +8,6 @@ class Main extends CI_Controller {
 	public function __construct()
 	{
 	    parent::__construct();
-		
-		//Load config
-		$this->Data_Model->Load_Config(1);
-		$this->configValue =& $this->Data_Model->temp_config_db[1];
 		
 		$this->load->model('Player_Model');
 		if ($this->session->userdata('language'))
@@ -24,6 +18,8 @@ class Main extends CI_Controller {
         {
             $this->lang->load('welcome');
         }
+		if($this->db->installed == false)
+		    redirect('/install/', 'refresh');
 	}
 	
 	function error()
@@ -85,8 +81,8 @@ class Main extends CI_Controller {
         
 		// Регистрируем
         if (count($errors) == 0)
-        {
-            $login = strip_tags($_POST['name']);
+        {	
+		    $login = strip_tags($_POST['name']);
             $password = strip_tags($_POST['password']);
 
             $user_query = $this->db->get_where($_POST['universe'].'_users', array('login' => $login));
@@ -155,7 +151,7 @@ class Main extends CI_Controller {
                             if ($this->config->item('game_email'))
                             {
                                 $message = '<html><body><p>'.$this->lang->line('register_email_text_1').' '.$user->login.',<br><br>'.$this->lang->line('register_email_text_2').' '.$_POST['universe'].'!<br><br>'.$this->lang->line('register_email_text_3').':<br><br><a href="'.$this->config->item('base_url').'main/validate/'.$_POST['universe'].'/'.$key.'/" target="_blank">'.$this->config->item('base_url').'main/validate/'.$_POST['universe'].'/'.$key.'</a><br><br>'.$this->lang->line('register_email_text_4').':<br>'.$this->lang->line('name').': '.$user->login.'<br>'.$this->lang->line('password').': '.$password.'<br>'.$this->lang->line('world').': '.$_POST['universe'].'<br><br>'.$this->lang->line('register_email_text_5').' ('.$this->config->item('forum_url').').<br><br>'.$this->lang->line('register_email_text_6').',<br>'.$this->lang->line('register_email_text_7').'</p></body></html>';
-                                $this->email->from($this->configValue->admin_email, $this->lang->line('register_email_from'));
+                                $this->email->from(getConfig('admin_email'), $this->lang->line('register_email_from'));
                                 $this->email->to($_POST['email']);
                                 $this->email->subject($user->login.', '.$this->lang->line('register_email_title'));
                                 $this->email->message($message);
@@ -245,14 +241,14 @@ class Main extends CI_Controller {
                 }
                 else
                 {
-                    $user = $user_query->row();
+		            $user = $user_query->row();
                     $password = $key = random_key(8);
                     $this->db->set('password', md5($password));
                     $this->db->where(array('id' => $user->id));
                     $this->db->update($_POST['universe'].'_users');
                     //Отправляем письмо
                                 $message = '<html><body><p>'.$this->lang->line('register_email_text_1').' '.$user->login.',<br><br>'.$this->lang->line('password_email_text_1').' ('.$_POST['universe'].'):<br><br>'.$password.'<br><br>'.$this->lang->line('password_email_text_2').' <a href="'.$this->config->item('base_url').'" target="_blank">'.$this->config->item('base_url').'</a><br><br>'.$this->lang->line('register_email_text_6').',<br>'.$this->lang->line('register_email_text_7').'</p></body></html>';
-                                $this->email->from($this->configValue->admin_email, $this->lang->line('register_email_from'));
+                                $this->email->from(getConfig('admin_email'), $this->lang->line('register_email_from'));
                                 $this->email->to($_POST['email']);
                                 $this->email->subject($this->lang->line('password_email_text_1').'!');
                                 $this->email->message($message);

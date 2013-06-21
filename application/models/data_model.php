@@ -2,20 +2,17 @@
 class Data_Model extends CI_Model
 {
 
-    public $temp_config_db, $temp_user_db, $temp_spyes_db, $temp_trade_routes_db, $temp_missions_db, $temp_research_db, $temp_towns_db, $temp_islands_db, $temp_army_db = null;
+    public $temp_user_db, $temp_spyes_db, $temp_trade_routes_db, $temp_missions_db, $temp_research_db, $temp_towns_db, $temp_islands_db, $temp_army_db = null;
 
 	function __construct()
     {
         // Call the Model constructor
         parent::__construct();
-                if ($this->session->userdata('language'))
-                {
-                    $this->lang->load('game', $this->session->userdata('language'));
-                }
-                else
-                {
-                    $this->lang->load('game');
-                }
+        
+		if ($this->session->userdata('language'))
+            $this->lang->load('game', $this->session->userdata('language'));
+        else
+            $this->lang->load('game');
     }
 
     function Load_User($id = 0)
@@ -26,54 +23,57 @@ class Data_Model extends CI_Model
                 $this->temp_user_db[$id] = $return;
         }}
     }
-
-    function Load_Config($id = 0)
-    {
-        if ($id > 0)
-		{
-		    if (!isset($temp_config_db[$id]))
-			{
-                $query = $this->db->get_where($this->session->userdata('universe').'_config', array('id' => $id));
-                $return = $query->row();
-                $this->temp_config_db[$id] = $return;
-            }
-		}
-    }
 	
 	function Load_Town($id = 0)
     {
-        if ($id > 0){if (!isset($temp_towns_db[$id])){
+        if ($id > 0)
+		{
+		    if (!isset($temp_towns_db[$id]))
+			{
                 $query = $this->db->get_where($this->session->userdata('universe').'_towns', array('id' => $id));
                 $return = $query->row();
                 $this->temp_towns_db[$id] = $return;
-        }}
+            }
+		}
     }
 
     function Load_Island($id = 0)
     {
-        if ($id > 0){if (!isset($temp_islands_db[$id])){
+        if ($id > 0)
+		{   
+		    if (!isset($temp_islands_db[$id]))
+			{
                 $query = $this->db->get_where($this->session->userdata('universe').'_islands', array('id' => $id));
                 $return = $query->row();
                 $this->temp_islands_db[$id] = $return;
-        }}
+            }
+		}
     }
     
     function Load_Research($id = 0)
     {
-        if ($id > 0){if (!isset($temp_research_db[$id])){
+        if ($id > 0)
+		{
+		    if (!isset($temp_research_db[$id]))
+			{
                 $query = $this->db->get_where($this->session->userdata('universe').'_research', array('user' => $id));
                 $return = $query->row();
                 $this->temp_research_db[$id] = $return;
-        }}
+            }
+		}
     }
     
     function Load_Army($id = 0)
     {
-        if ($id > 0){if (!isset($temp_army_db[$id])){
+        if ($id > 0)
+		{
+		    if (!isset($temp_army_db[$id]))
+			{
                 $query = $this->db->get_where($this->session->userdata('universe').'_army', array('city' => $id));
                 $return = $query->row();
                 $this->temp_army_db[$id] = $return;
-        }}
+            }
+		}
     }
     
     function Load_Missions($id = 0, $towns)
@@ -202,8 +202,8 @@ class Data_Model extends CI_Model
             case 23: return $this->lang->line('army23_desc'); break;
         }
     }
-
-    /**
+	
+	/**
      * Класс юнита по типу
      * @param <int> $type
      * @return <string>
@@ -212,10 +212,10 @@ class Data_Model extends CI_Model
     {
         switch($type)
         {
-            case 1: return 'phalanx'; break;
+            case 1: return 'phalanx'; break; //opliti
             case 2: return 'steamgiant'; break;
-            case 3: return 'spearman'; break;
-            case 4: return 'swordsman'; break;
+            case 3: return 'spearman'; break;  
+            case 4: return 'swordsman'; break; 
             case 5: return 'slinger'; break;
             case 6: return 'archer'; break;
             case 7: return 'marksman'; break;
@@ -237,7 +237,7 @@ class Data_Model extends CI_Model
             case 23: return 'ship_transport'; break;
         }
     }
-
+	
     /**
      * Цены на армию
      * @param <int> $type
@@ -258,7 +258,8 @@ class Data_Model extends CI_Model
         $crystal = '0 0 0 0 0 0 0 0 0 0 0 0 0 450 0 0 0 0 0 0 0 750 0';
         $gold = '3 12 1 4 2 4 3 15 25 30 15 45 10 20 0 40 30 90 45 50 130 70 0';
         $time = '300 900 300 814 600 850 631 1383 2068 2040 1197 2700 929 2293 0 2400 1800 2400 3000 3000 3000 3600 0';
-        // Параметры
+        
+		// Параметры
         $defence = '1 3 0 0 0 0 0 1 0 0 0 0 0 0 1 6 3 8 4 0 2 3 0';
         $health = '56 184 13 18 8 16 12 88 54 32 29 40 22 12 12 120 110 236 132 86 56 47 30';
         $class = '1 2 1 1 1 1 1 2 2 2 2 2 1 1 1 2 2 2 2 2 2 2 2';
@@ -931,35 +932,6 @@ class Data_Model extends CI_Model
     {
         if ($count <= -50)
         {
-            return 'Ярость';
-        }
-        elseif($count > -50 and $count <= -1)
-        {
-            return 'Горе';
-        }
-        elseif($count >= 0 and $count < 50)
-        {
-            return 'Нейтрально';
-        }
-        elseif($count >= 50 and $count < 300)
-        {
-            return 'Счастье';
-        }
-        elseif($count >= 300)
-        {
-            return 'Эйфория';
-        }
-    }
-
-    /**
-     * Класс счастья по количеству
-     * @param <int> $count
-     * @return <string>
-     */
-    function good_class_by_count($count = 0)
-    {
-        if ($count <= -50)
-        {
             return 'outraged';
         }
         elseif($count > -50 and $count <= -1)
@@ -1616,11 +1588,11 @@ class Data_Model extends CI_Model
         $distance = sqrt((($x1-$x2)*($x1-$x2))+(($y1-$y2)*($y1-$y2)));
         if (($x1 == $x2 and $y1 == $y2) or ($distance <=0))
         {
-            $time = (1200/$speed*1*60)/2;
+            $time = (20/$speed*1*60)/2; //era 1200 /
         }
         else
         {
-            $time = 1200/$speed*$distance*60;
+            $time = 20/$speed*$distance*60; // era 1200/..
         }
         return $time;
     }
@@ -1641,6 +1613,7 @@ class Data_Model extends CI_Model
             case 2: return $this->lang->line('mission_2'); break;
             case 3: return $this->lang->line('mission_3'); break;
             case 4: return $this->lang->line('mission_4'); break;
+			case 5: return $this->lang->line('mission_5'); break;
         }
     }
 

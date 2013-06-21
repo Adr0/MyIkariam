@@ -245,12 +245,12 @@ Event.onDOMReady(function() {
     var MyTutorial = new Tutorial();
         MyTutorial.registerDefaultBehavior();
        // MyTutorial.animateArrow();
-<?if ($active){?>
+<?php if ($active){?>
     MyTutorial.showMessageAndGoToNextState();
     MyTutorial.animateArrowOnClose();
-<?}else{?>
+<?php }else{ ?>
     MyTutorial.animateArrow();
-<?}?>
+<?php } ?>
 });
 
 </script>

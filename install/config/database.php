@@ -38,6 +38,7 @@
 $db['default']['username'] = "%USERNAME%";
 $db['default']['password'] = "%PASSWORD%";
 $db['default']['database'] = "%DATABASE%";
+$db['default']['installed'] = true;
 
 // The following values can probably stay the same.
 $db['default']['hostname'] = "%HOSTNAME%";

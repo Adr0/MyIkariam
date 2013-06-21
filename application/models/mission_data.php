@@ -1,9 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
       	
-		// Пока что берем данные сухогруза, а потом будут братсья данные всех кораблей
-        $cost = $this->Data_Model->army_cost_by_type(23, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
+	// Пока что берем данные сухогруза, а потом будут братсья данные всех кораблей
+    $cost = $this->Data_Model->army_cost_by_type(23, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
     
-	   // Prelevo le coordinate delle due città
+	// Prelevo le coordinate delle due città
     $x1 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->from]->island]->x;
     $x2 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->to]->island]->x;
     $y1 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->from]->island]->y;
@@ -20,7 +20,7 @@
 	// Если загрузки не было в начале значит она должна быть в конце пути
     $loading_time = 0;
    
-   // Получаем город
+    // Получаем город
     $trade_town = $this->Data_Model->temp_towns_db[$mission->to];
     $from_town = $this->Data_Model->temp_towns_db[$mission->from];
     if($mission->loading_from_start == $mission->mission_start)
@@ -63,8 +63,8 @@
     $loading_end = $mission_end + $loading_time;
     // Осталось до возврата
     // $return_end = ($mission->return_start-$mission->mission_start)*$mission->percent;
-    // Если мы возвращаемся
-    $return_end = 2147483647;
+    // Se torniamo indietro
+    $return_end = ($mission->return_start-$mission->mission_start)*$mission->percent;
     if ($mission->return_start > 0)
     {
         if ($mission->percent == 0) { $mission->percent = 1; }

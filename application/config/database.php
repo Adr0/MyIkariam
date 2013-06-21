@@ -38,6 +38,7 @@
 $db['default']['username'] = "";
 $db['default']['password'] = "";
 $db['default']['database'] = "";
+$db['default']['installed'] = false;
 
 // The following values can probably stay the same.
 $db['default']['hostname'] = "localhost";

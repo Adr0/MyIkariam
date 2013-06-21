@@ -96,6 +96,8 @@ class View_Model extends CI_Model
             case 'port':
             case 'merchantNavy':
             case 'militaryAdvisorMilitaryMovements':
+			case 'militaryAdvisorReportView':
+			case 'militaryAdvisorCombatReports':
             case 'transport':
             case 'sendSpy':
             case 'premiumTradeAdvisor':
@@ -107,7 +109,7 @@ class View_Model extends CI_Model
             case 'abolishColony':
             case 'safehouseMissions':
             case 'safehouseReports':
-            case 'agora':
+            case 'islandBoard':
 			case 'diplomacyAdvisor':
             case 'diplomacyAdvisorOutBox':
             case 'sendIKMessage':
@@ -194,6 +196,8 @@ class View_Model extends CI_Model
             case 'finances':
             case 'merchantNavy':
             case 'militaryAdvisorMilitaryMovements':
+			case 'militaryAdvisorReportView':
+			case 'militaryAdvisorCombatReports':
             case 'premiumTradeAdvisor':
             case 'takeOffer':
             case 'researchOverview':
@@ -229,8 +233,11 @@ class View_Model extends CI_Model
             case 'fleetGarrisonEdit': $location = 'shipyard'; break;
         }
         $caption = $this->Data_Model->building_name_by_type($this->Data_Model->building_type_by_class($location));
-        @$pos_text = 'pos'.$param1.'_type';
-        @$type = ($param1 > 0 and $param1 <= 15) ? $this->Player_Model->now_town->$pos_text : $this->Data_Model->building_type_by_class($location);
+        if(isset($param1) and !is_array($param1) and !is_object($param1))
+		{
+		    $pos_text = 'pos'.$param1.'_type';
+            $type = ($param1 > 0 and $param1 <= 15) ? $this->Player_Model->now_town->$pos_text : $this->Data_Model->building_type_by_class($location);
+		}
         switch($location)
         {
             case 'demolition': $caption = $this->lang->line('confirm'); $file = 'building';break;
@@ -268,7 +275,12 @@ class View_Model extends CI_Model
             case 'sendIKMessage': $caption = $this->lang->line('create_message'); $file = 'world'; break;
             case 'tradeAdvisorTradeRoute':
             case 'tradeAdvisor': $caption = $this->lang->line('mayor'); $file = 'world'; break;
-            case 'militaryAdvisorMilitaryMovements': $caption = $this->lang->line('military_advisor'); $file = 'world'; break;
+            case 'militaryAdvisorMilitaryMovements':
+			case 'militaryAdvisorReportView':
+            case 'militaryAdvisorCombatReports':
+                $caption = $this->lang->line('military_advisor');
+				$file = 'world';
+			break;
             case 'error': $caption = $this->lang->line('error'); $file = 'null'; break;
             case 'options': $caption = $this->lang->line('options'); $file = 'null'; break;
             case 'finances': $caption = $this->lang->line('finances'); $file = 'null'; break;
@@ -294,7 +306,7 @@ class View_Model extends CI_Model
 				 break;
             break;
         }
-        $this->load->view('bread/'.$file, array('caption' => $caption, 'type' => $type));
+        $this->load->view('bread/'.$file, array('caption' => $caption, 'type' => @$type));
     }
 
 }

@@ -7,7 +7,7 @@
     <h3 class="header"><?=$this->lang->line('transport_capacity')?><a class="help" href="<?=$this->config->item('base_url')?>game/shipDescription/23/" title="<?=$this->lang->line('help')?>"><span class="textLabel"><?=$this->lang->line('help')?>?</span></a></h3>
     <div class="content">
     	<p><?=$this->lang->line('transport_capacity_text')?></p>
-        <p><strong><?=$this->lang->line('capacity_ship')?>: </strong><?php echo number_format($this->configValue->transport_capacity);?></p>
+        <p><strong><?=$this->lang->line('capacity_ship')?>: </strong><?php echo number_format(getConfig('transport_capacity'));?></p>
     </div>
     <div class="footer"></div>
 </div>

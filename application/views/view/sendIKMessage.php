@@ -6,7 +6,7 @@
         <form action="<?=$this->config->item('base_url')?>actions/messages/send/<?=$param1?>/" method="post">
             <div id="mailRecipient">
                 <span class="maillabels"><label>Người nhận:</label></span>
-                <span><?=$this->Data_Model->temp_users_db[$param1]->login?></span>
+                <span><?=$this->Data_Model->temp_user_db[$param1]->login?></span>
             </div>
             <div id="mailSubject">
                 <span class="maillabels"><label for="treaties">Đề tài:</label></span>

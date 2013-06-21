@@ -1,8 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Game extends CI_Controller {
-
-	public $configValue;
 	
 	/**
 	 * Construct function
@@ -55,10 +53,8 @@ class Game extends CI_Controller {
         {
             $this->lang->load('game');
         }
-		
-		//Load config
-		$this->Data_Model->Load_Config(1);
-		$this->configValue =& $this->Data_Model->temp_config_db[1];
+		$this->load->model('Battle_Model');
+
 	}
 	
 	/**
@@ -75,9 +71,7 @@ class Game extends CI_Controller {
      */
     public function index()
     {
-        $this->Data_Model->Load_Config(1);
-		$config =& $this->Data_Model->temp_config_db[1];
-		$this->show('city', $config);
+		$this->show('city');
     }
 	
 	
@@ -401,6 +395,25 @@ class Game extends CI_Controller {
         $this->show('militaryAdvisorMilitaryMovements');
     }
 
+    function militaryAdvisorCombatReports()
+    {
+        $this->show('militaryAdvisorCombatReports');
+    }
+		
+	function militaryAdvisorReportView($id = 0)
+	{
+	    if($id > 0)
+		{
+		    $query = $this->db->get_where($this->session->userdata('universe').'_reports', array('id' => $id));
+			if ($query) 
+			{
+			    $row = $query->row();
+				$this->show('militaryAdvisorReportView', $row->text);
+			}
+        }
+	  
+	}
+	
     /**
      * Информация по исследованиям
      * @param <int> $way
@@ -507,7 +520,7 @@ class Game extends CI_Controller {
         if ($id > 0 and $id != $this->Player_Model->user->id)
         {
             $this->Data_Model->Load_User($id);
-            if (isset($this->Data_Model->temp_users_db[$id]))
+            if (isset($this->Data_Model->temp_user_db[$id]))
             {
                 $this->show('sendIKMessage', $id, $island);
             }
@@ -572,19 +585,19 @@ class Game extends CI_Controller {
            }
            else
            {
-               if ($island == 0)
-               {
-                   $island = $this->Player_Model->island_id;
-               }
-               $this->load->model('Island_Model');
-               $this->Island_Model->Load_Island($island);
-               $this->show('plunder', $id);
-           }
-       }
-       else
-       {
-           $this->show('error', 'Город не найден!');
-       }
+                if ($island == 0)
+                {
+                    $island = $this->Player_Model->island_id;
+                }
+                $this->load->model('Island_Model');
+                $this->Island_Model->Load_Island($island);
+     		    $this->show('plunder', $id);
+            }
+        }
+        else
+        {
+            $this->show('error', 'Город не найден!');
+        }
     }
 
     function finances()
@@ -735,9 +748,11 @@ class Game extends CI_Controller {
 	}
     
 	// agora
-	function agora()
+	function islandBoard($id = 0)
 	{
-    $this->show('agora');
+        $this->load->model('Island_Model');
+        $this->Island_Model->Load_Island($id);
+		$this->show('islandBoard');
 	}	
 	
 	function safehouseMissions($spy = 0)

@@ -19,7 +19,7 @@
     $level = $this->Player_Model->now_town->$level_text;
     if ($position == 0 and $id > 1) { $level = 0; }
     $cost = $this->Data_Model->building_cost($id,$level-1,$this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-    $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
+    $cost['time'] = floor($cost['time'] / getConfig('game_speed'));
     $cost_max = $this->Data_Model->building_cost($id,$cost['max_level']-1,$this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
     $wood = ($cost_max['wood'] > 0) ? true : false;
     $wine = ($cost_max['wine'] > 0) ? true : false;

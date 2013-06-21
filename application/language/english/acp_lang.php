@@ -26,5 +26,5 @@ $lang['config_trade_route_time']            = 'Trade route time';
 $lang['config_send_button']                 = 'Send';
 
 $lang['acp_menu_title']                     = 'Menu';
-$lang['menu_index_title']                  = 'Index';
+$lang['menu_index_title']                   = 'Index';
 $lang['menu_config_title']                  = 'Config';

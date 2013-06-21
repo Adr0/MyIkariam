@@ -39,7 +39,7 @@
         $buildings_count++;
         $building_id=$i;
         $cost = $this->Data_Model->building_cost($building_id,0, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-	    $cost['time'] = floor($cost['time'] / $this->configValue->game_speed);
+	    $cost['time'] = floor($cost['time'] / getConfig('game_speed'));
 ?>
                 <li class="building <?=$this->Data_Model->building_class_by_type($building_id)?>">
                     <div class="buildinginfo">

@@ -43,43 +43,42 @@
 
 <body>
     <div class="products">
-        <?=require_once('languages.php')?>
+        <?php require_once('languages.php');?>
     </div>
 	<div id="wrapper">
         <div id="page" >
             <div id="header">
-                
-                <a id="btn-login" class="btn-login" href="javascript:void(0)" title="<?=$this->lang->line('login')?>"><?=$this->lang->line('login')?></a>
+                <a id="btn-login" class="btn-login" href="javascript:void(0)" title="<?=$this->lang->line('login')?>"><?php echo $this->lang->line('login');?></a>
                     <div id="loginWrapper">
                         <div class="boxTop"></div>
                         <div class="boxMiddle" id="login">
                             <form id="loginForm" name="loginForm" method="post" action="<?php echo base_url();?>main/login">
                                 <input name="action" type="hidden" value="login">
                                 <div class="input-wrap">
-                                    <label for="logServer"><?=$this->lang->line('world')?></label>
+                                    <label for="logServer"><?php echo $this->lang->line('world');?></label>
                                     <select name="universe" id="logServer" class="validate[required]">
                                         <option class="" value="alpha" fbUrl="" cookieName="" cookiePW="">Alpha</option>
                                     </select>
                                 </div>
 
                                 <div class="input-wrap">
-                                    <label for="loginName"><?=$this->lang->line('name')?></label>
+                                    <label for="loginName"><?php echo $this->lang->line('name');?></label>
                                     <input id="loginName" name="name" type="text" value="" class="validate[required]">
                                 </div>
                                 <div class="input-wrap">
-                                    <label for="loginPassword"><?=$this->lang->line('password')?></label>
+                                    <label for="loginPassword"><?php echo $this->lang->line('password');?></label>
                                     <input id="loginPassword" name="password" type="password" value="" class="validate[required]" />
                                 </div>
-                                <button type="submit" id="loginBtn" class="btn-login btn-big"><?=$this->lang->line('login')?></button>
+                                <button type="submit" id="loginBtn" class="btn-login btn-big"><?php echo $this->lang->line('login');?></button>
                                 
-<?if ($this->config->item('game_email')){?>
-                                <a id="pwLost" class="login-lnk" href="javascript:void(0)" title="<?=$this->lang->line('link_lost_title')?>"><?=$this->lang->line('link_lost_text')?></a>
-<?}else{?><br><br><br><?}?>
+<?php if ($this->config->item('game_email')){?>
+                                <a id="pwLost" class="login-lnk" href="javascript:void(0)" title="<?php echo $this->lang->line('link_lost_title');?>"><?php echo $this->lang->line('link_lost_text');?></a>
+<?php }else{ ?><br><br><br><?php } ?>
                             </form>
                         </div>
                         <div class="boxBottom"></div>
                     </div>
-                <h2 id="logo"><a id="logoimg" href="<?php echo base_url();?>"><?=$this->lang->line('ikariam')?></a></h2>
+                <h2 id="logo"><a id="logoimg" href="<?php echo base_url();?>"><?php echo $this->lang->line('ikariam');?></a></h2>
                 </div>
                 <div id="container">
                     <div id="sidebarWrapper">
@@ -89,7 +88,7 @@
                             <div id="registerWrapper" class="clearfix">
                                 <div id="registerTop"></div>
                                 <div id="register">
-                                    <h1><?=$this->lang->line('register_free')?></h1>
+                                    <h1><?php echo $this->lang->line('register_free');?></h1>
                                     <form id="registerForm" name="registerForm" action="<?php echo base_url();?>main/register" method="post">
                                     <input name="action" type="hidden" value="register">
                                     <div class="input-wrap">
@@ -133,10 +132,10 @@
                                 <div class="lnkmenu">
                                 </div>
                                 <ul id="menu" class="clearfix">
-                                    <li><a id="tab1" class="current" href="<?php echo base_url();?>/main/page/index"><?=$this->lang->line('link_home_text')?></a>/li>
-                                    <li><a id="tab2" href="<?php echo base_url();?>/main/page/gametour_extended"><?=$this->lang->line('link_tour_text')?></a></li>
-                                    <li><a id="tab3" href="<?php echo base_url();?>/main/page/media"><?=$this->lang->line('link_media_text')?></a></li>
-                                    <li><a id="tab4" href="<?php echo base_url();?>/main/page/rules"><?=$this->lang->line('rules')?></a></li>
+                                    <li><a id="tab1" class="current" href="<?php echo base_url();?>main/page/index"><?=$this->lang->line('link_home_text')?></a>/li>
+                                    <li><a id="tab2" href="<?php echo base_url();?>main/page/gametour_extended"><?=$this->lang->line('link_tour_text')?></a></li>
+                                    <li><a id="tab3" href="<?php echo base_url();?>main/page/media"><?=$this->lang->line('link_media_text')?></a></li>
+                                    <li><a id="tab4" href="<?php echo base_url();?>main/page/rules"><?=$this->lang->line('rules')?></a></li>
 
                                 </ul>
                             </div>
@@ -146,7 +145,7 @@
                             <div id="pageContentWrapper">
                                 <div id="pageContentTop"></div>
                                 <div id="pageContent" class="page-content clearfix">
-                                    <?require_once('main/index.php')?>
+                                    <?php require_once('main/index.php');?>
                                 </div>
 
                                 <div id="extraContent" class="page-content">
@@ -186,7 +185,7 @@
                         <div id="footer-menu" class="clearfix">
                             <ul	class="clearfix">
                             </ul>
-                            <p class="copyright">© 2010 by Nexus.</p>
+                            <p class="copyright">© 2013 by XxidroxX.</p>
                         </div>
                     </div>
                 </div>
