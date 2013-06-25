@@ -2,7 +2,7 @@
     <h3 class="header"><?=$this->lang->line('review')?></h3>
     <div class="content">
     	<ul class="researchLeftMenu">
-    		<li class="scientists"><?=$this->lang->line('scientists')?>: <?=floor($this->Player_Model->scientists)?></li>
+    		<li class="scientists"><?=$this->lang->line('scientists')?>: <?php echo floor($this->Player_Model->scientists);?></li>
         	<li class="points"><?=$this->lang->line('research_points')?>: <?=number_format($this->Player_Model->research->points)?></li>
         	<li class="time"><?=$this->lang->line('per_hour')?>: <?=floor($this->Player_Model->plus_research*$this->Player_Model->scientists)?></li>
         </ul>

@@ -52,7 +52,7 @@ class Actions extends CI_Controller
      */
     function Error($error = '')
     {
-                $this->show('error', $error);
+        $this->show('error', $error);
     }
     
     /**
@@ -1125,6 +1125,8 @@ class Actions extends CI_Controller
             $this->db->where(array('id' => $this->Player_Model->user->id));
             $this->db->update($this->session->userdata('universe').'_users');
 			
+			if($id == 'barbarian_village')
+			    $id = 'barbarian_village,'.$level.','.$island;
 			$mission_array = array('user' => $this->Player_Model->user->id, 'from' => $this->Player_Model->now_town->id, 'to' => $id, 'loading_from_start' => time(), 'mission_type' => 5, 'wood' => 0, 'wine' => 0, 'marble' => 0, 'crystal' => 0, 'sulfur' => 0, 'ship_transport' => $transporters);
 			
 			$this->Data_Model->Load_Army($this->Player_Model->now_town->id);
@@ -1150,11 +1152,15 @@ class Actions extends CI_Controller
 			
 			// add a mission
             $this->db->insert($this->session->userdata('universe').'_missions', $mission_array);
-                    
+            
+			if ($this->Player_Model->user->tutorial <= 9)
+                $this->tutorials('set', 10);
+            
 			// Bring the player to the port
             $this->show('port');
 			
-		}else
+		}
+		else
         {
             $this->Error($this->lang->line('enough_action_points'));
         }

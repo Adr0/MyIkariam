@@ -26,8 +26,8 @@
 								    <th colspan="2">Non ci sono aggiornamenti</th>
 								</tr>
 								<tr>
-								    <th>Versione attuale: <?php echo $this->config->item('game_version');?></th>
-									<th>Ultima versione stabile: 0.0.1</th>
+								    <th>Versione attuale: <?php echo getConfig('game_version');?></th>
+									<th>Ultima versione stabile: 0.0.2</th>
 								</tr>
                             </tbody>
 						</table>

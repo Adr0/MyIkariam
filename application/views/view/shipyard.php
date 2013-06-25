@@ -1,7 +1,7 @@
 <div id="mainview">
 <?php include_once('building_description.php'); ?>
     <form id="buildForm"  action="<?=$this->config->item('base_url')?>actions/fleet/<?=$position?>/" method="POST">
-        <input type="hidden "name="action" value="buildUnits">
+        <input type="hidden" name="action" value="buildUnits">
         <div class="contentBox01h">
             <h3 class="header">Chế tạo tàu</h3>
             <div class="content">
@@ -21,7 +21,8 @@
     $max_crystal = 0;
     $max_peoples = 0;
     $cost = $this->Data_Model->army_cost_by_type($i, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
-    $class = $this->Data_Model->army_class_by_type($i);
+    $cost['time'] = floor($cost['time'] / getConfig('game_speed'));
+	$class = $this->Data_Model->army_class_by_type($i);
     if ($cost['wood'] > 0){ $max_wood = floor($this->Player_Model->now_town->wood/$cost['wood']);}
     if ($cost['sulfur'] > 0){ $max_sulfur = floor($this->Player_Model->now_town->sulfur/$cost['sulfur']); }
     if ($cost['wine'] > 0){ $max_wine = floor($this->Player_Model->now_town->wine/$cost['wine']); }

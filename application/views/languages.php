@@ -42,7 +42,7 @@ if(child==parent){return true;}else{return false;}},hidePanel:function(panel,lin
 
     <div id="mmoContent" class="mmonewsout">
         <!-- logo -->
-        <!--<a id="mmoLogo" href="http://us.mmogame.com?kid=1-29845-03845-1003-1011218a"></a>-->
+        <a id="mmoLogo" href="http://us.mmogame.com?kid=1-29845-03845-1003-1011218a"></a>
 
         <div id="mmoNews">
 			<div class="mmoBoxLeft"></div>
@@ -50,7 +50,7 @@ if(child==parent){return true;}else{return false;}},hidePanel:function(panel,lin
 				<div class="mmoNewsContent">
 					<div id="mmoNewsticker">
 						<ul>
-							<li><center><?=$this->config->item('head_news')?></center></li>
+							<li><center><?php echo getConfig('head_news');?></center></li>
 						</ul>
 					</div>
 				</div>
@@ -72,7 +72,7 @@ if(child==parent){return true;}else{return false;}},hidePanel:function(panel,lin
                         </div>
                         <div class="mmoOptionsDivInvisible" id="mmoOptionsDiv1">
                             <ul class="mmoLangList mmoListHeight" id="mmoList1">
-                                <li <?if($this->session->userdata('language') == 'english' or ($this->session->userdata('language') == '' and $this->config->item('language') == 'english')){?>class="mmoActive"<?}?>>
+                                <li <?php if($this->session->userdata('language') == 'english' or ($this->session->userdata('language') == '' and $this->config->item('language') == 'english')){?>class="mmoActive"<?}?>>
 								    <a href="<?=$this->config->item('base_url')?>main/language/english/" target="_top" class="mmoflag mmo_EN">English</a>
 								</li>
                                 <li <?if($this->session->userdata('language') == 'italiano' or ($this->session->userdata('language') == '' and $this->config->item('language') == 'italiano')){?>class="mmoActive"<?}?>>

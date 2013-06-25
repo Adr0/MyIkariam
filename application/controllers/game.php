@@ -54,7 +54,6 @@ class Game extends CI_Controller {
             $this->lang->load('game');
         }
 		$this->load->model('Battle_Model');
-
 	}
 	
 	/**
@@ -575,11 +574,11 @@ class Game extends CI_Controller {
         }
     }
 
-    function plunder($island = 0, $id = 0)
+    function plunder($island = 0, $id = 0, $level = 0)
     {
-       if($island > 0 and $id >= 0)
+       if($island > 0 and $id >= 0 or $id == 'barbarian_village')
        {
-           if(isset($this->Data_Model->temp_towns_db[$id]) and $this->Data_Model->temp_towns_db[$id]->user == $this->Player_Model->user->id)
+           if($id != 'barbarian_village' and isset($this->Data_Model->temp_towns_db[$id]) and $this->Data_Model->temp_towns_db[$id]->user == $this->Player_Model->user->id )
            {
                $this->show('error', 'Невозможно ограбить свой город!');
            }
@@ -591,7 +590,10 @@ class Game extends CI_Controller {
                 }
                 $this->load->model('Island_Model');
                 $this->Island_Model->Load_Island($island);
-     		    $this->show('plunder', $id);
+     		    if($id != 'barbarian_village')
+				    $this->show('plunder', $id);
+				else
+				    $this->show('plunder', $id, $level);
             }
         }
         else
@@ -713,7 +715,16 @@ class Game extends CI_Controller {
 	// versione
 	function version()
 	{
-	    $this->show('version');
+		// Load language
+		if ($this->session->userdata('language'))
+        {
+            $this->lang->load('changelog', $this->session->userdata('language'));
+        }
+        else
+        {
+            $this->lang->load('changelog');
+        }
+		$this->show('version', lang('changelog'));
 	}
 	
 	// ambasciata 

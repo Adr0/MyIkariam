@@ -17,19 +17,18 @@
     <th><?=$this->lang->line('scientists')?></th>
     <th><?=$this->lang->line('amount')?></th>
 </tr>
-<?
+<?php
     $summ_dohod = 0;
     $summ_rashod = 0;
     $summ_ostalos = 0;
-?>
-<?foreach($this->Player_Model->towns as $town){?>
-<?
-    $dohod = $this->Player_Model->towns[$town->id]->peoples*3;
-    $rashod = $this->Player_Model->towns[$town->id]->scientists*$this->Player_Model->scientists_gold_need*-1;
+    
+	foreach($this->Player_Model->towns as $town){
+    $dohod = $this->Player_Model->towns[$town->id]->peoples * 3;
+    $rashod = $this->Player_Model->towns[$town->id]->scientists * $this->Player_Model->scientists_gold_need * -1;
 
     $summ_dohod = $summ_dohod + $dohod;
     $summ_rashod = $summ_rashod + $rashod;
-    $summ_ostalos = $summ_dohod+$summ_rashod;
+    $summ_ostalos = $summ_dohod + $summ_rashod;
 ?>
     <tr >
         <td class="city"><?=$town->name?></td>
@@ -46,7 +45,7 @@
  	</tr>
 </table>
 
-<?
+<?php
     $army_gold = 0;
     $fleet_gold = 0;
     $army_gold_research = 0;

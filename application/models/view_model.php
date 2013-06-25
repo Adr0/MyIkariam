@@ -306,7 +306,8 @@ class View_Model extends CI_Model
 				 break;
             break;
         }
-        $this->load->view('bread/'.$file, array('caption' => $caption, 'type' => @$type));
+		if(!isset($type)) $type = null;
+        $this->load->view('bread/'.$file, array('caption' => $caption, 'type' => $type));
     }
 
 }

@@ -17,10 +17,4 @@ $config['game_email'] = TRUE;  // To resolve sending of letters (Adjust SMTP) //
  
 $config['trade_route_time'] = 604800;                 // Duration of a trading route - da levare
 */
-
-/**
- * News
- */
-$config['head_news'] = 'Benvenuto ad Ikariam!'; // TODO: move into db
-
 ?>

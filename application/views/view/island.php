@@ -106,7 +106,7 @@ if(($this->Player_Model->armys[$this->Player_Model->town_id]->phalanx > 0) or
      ($this->Player_Model->armys[$this->Player_Model->town_id]->cook > 0) or
      ($this->Player_Model->armys[$this->Player_Model->town_id]->medic > 0)){?>
                 <li class="plunder">
-                    <a href="<?=$this->config->item('base_url')?>game/plunder/<?php echo $this->Island_Model->island->id;?>/<?php echo $this->Island_Model->users[$i]->id;?>/" title="<?=$this->lang->line('pillage')?>">
+                    <a href="<?=$this->config->item('base_url')?>game/plunder/<?php echo $this->Island_Model->island->id;?>/<?php echo $this->Island_Model->towns[$i]->id;?>/" title="<?=$this->lang->line('pillage')?>">
                         <span class="textLabel"><?=$this->lang->line('pillage')?></span>
                     </a>
                 </li>
@@ -126,17 +126,19 @@ if(($this->Player_Model->armys[$this->Player_Model->town_id]->phalanx > 0) or
             <ul class="cityinfo" id="barbarianInformation">
                 <li class="name"><span class="textLabel"><?=$this->lang->line('name')?>: </span><?=$this->lang->line('barbarian_village')?></li>
                 <li class="citylevel"><span class="textLabel"><?=$this->lang->line('city_level')?>: </span><? 
+				// This code is orrible, we must change it
 				$this->db->select('barbarian_village');
 				$this->db->where('id', $this->Player_Model->island_id); 
 				$select = $this->db->get_where($this->session->userdata('universe').'_islands');
 				foreach ($select->result() as $row)
-{
-   echo $row->barbarian_village;
+                {
+                    $barbarian_level = $row->barbarian_village;
+					echo $barbarian_level;
 
 				?>
 				</li>
                 <?php $barbarian_number = $this->Data_Model->barbarian_number_by_level($row->barbarian_village);
-				      $wall_level = $this->Data_Model->barbarian_wall_level($row->barbarian_village)?>
+				      $wall_level = $this->Data_Model->barbarian_wall_by_level($row->barbarian_village)?>
 				<li class="name"><span class="textLabel"><?=$this->lang->line('barbarians')?>: </span>1</li>
                 <li class="name"><span class="textLabel">Livello mura:</span><?php echo $wall_level;?>
 		   
@@ -157,7 +159,7 @@ if(($this->Player_Model->armys[$this->Player_Model->town_id]->phalanx > 0) or
      ($this->Player_Model->armys[$this->Player_Model->town_id]->cook > 0) or
      ($this->Player_Model->armys[$this->Player_Model->town_id]->medic > 0)){?>
                 <li class="plunder">
-                    <a href="<?=$this->config->item('base_url')?>game/plunder/<?=$this->Player_Model->island_id?>/barbarian_village/" title="<?=$this->lang->line('pillage')?>">
+                    <a href="<?=$this->config->item('base_url')?>game/plunder/<?=$this->Player_Model->island_id?>/barbarian_village/<?php echo $barbarian_level;?>" title="<?=$this->lang->line('pillage')?>">
                         <span class="textLabel"><?=$this->lang->line('pillage')?></span>
                     </a>
                 </li>

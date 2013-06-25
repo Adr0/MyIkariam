@@ -4,13 +4,19 @@
     $cost = $this->Data_Model->army_cost_by_type(23, $this->Player_Model->research, $this->Player_Model->levels[$this->Player_Model->town_id]);
     
 	// Prelevo le coordinate delle due città
-    $x1 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->from]->island]->x;
-    $x2 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->to]->island]->x;
-    $y1 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->from]->island]->y;
-    $y2 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->to]->island]->y;
-    
-	// Ottengo il tempo di volo
-    $time = $this->Data_Model->time_by_coords($x1,$x2,$y1,$y2,$cost['speed']);
+    if(is_int($mission->to))
+	{
+	    $x1 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->from]->island]->x;
+        $x2 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->to]->island]->x;
+        $y1 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->from]->island]->y;
+        $y2 = $this->Data_Model->temp_islands_db[$this->Data_Model->temp_towns_db[$mission->to]->island]->y;
+		// Ottengo il tempo di volo
+        $time = $this->Data_Model->time_by_coords($x1,$x2,$y1,$y2,$cost['speed']);
+	}
+	else
+	{
+	    $time = 300;
+	}
     
     $mission_elapsed = time() - $mission->mission_start;
     
@@ -21,25 +27,34 @@
     $loading_time = 0;
    
     // Получаем город
-    $trade_town = $this->Data_Model->temp_towns_db[$mission->to];
+    if(is_int($mission->to))
+	{
+	    $trade_town = $this->Data_Model->temp_towns_db[$mission->to];
+	}
+	else
+	    $trade_town = null;
+		
     $from_town = $this->Data_Model->temp_towns_db[$mission->from];
     if($mission->loading_from_start == $mission->mission_start)
     {
-        // Уровень порта в городе
-        $port_position = $this->Data_Model->get_position(2, $trade_town);
-        if($port_position == 1 or $port_position == 2)
-        {
-            $level_text = 'pos'.$port_position.'_level';
-            $port_level = $trade_town->$level_text;
-        }
-        else
-        {
-            $port_level = 0;
-        }
-       // Находим скорость загрузки в чужом порту
-       $port_speed = $this->Data_Model->speed_by_port_level($port_level);
-       // Длительность загрузки
-       $loading_time = ($all_resources/($port_speed / 60));
+        if(is_int($mission->to))
+		{
+		    // Уровень порта в городе
+            $port_position = $this->Data_Model->get_position(2, $trade_town);
+            if($port_position == 1 or $port_position == 2)
+            {
+                $level_text = 'pos'.$port_position.'_level';
+                $port_level = $trade_town->$level_text;
+            }
+            else
+            {
+                $port_level = 0;
+            }
+            // Находим скорость загрузки в чужом порту
+            $port_speed = $this->Data_Model->speed_by_port_level($port_level);
+            // Длительность загрузки
+            $loading_time = ($all_resources/($port_speed / 60));
+		}
     }
     else
     {

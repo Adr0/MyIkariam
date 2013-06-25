@@ -70,7 +70,8 @@ class Update_Model extends CI_Model
 
            $this->db->where(array('id' => $id));
            $this->db->update($this->session->userdata('universe').'_users');
-           // Обновляем баллы науки
+           
+		   // Обновляем баллы науки
            $this->db->set('points', $this->Player_Model->research->points);
            $this->db->where(array('user' => $id));
            $this->db->update($this->session->userdata('universe').'_research');
@@ -89,11 +90,13 @@ class Update_Model extends CI_Model
                $i = $town->id;
                $elapsed = time() - $this->Player_Model->towns[$i]->last_update;
                $this->db->set('last_update', time());
-               // Вычитаем виноград за вино
+               
+			   // Вычитаем виноград за вино
                $wine_need = $this->Data_Model->wine_by_tavern_level($this->Player_Model->towns[$i]->tavern_wine);
                $this->Player_Model->towns[$i]->wine = $this->Player_Model->towns[$i]->wine - (($wine_need/3600)*$elapsed);
                if ($this->Player_Model->towns[$i]->wine < 0){ $this->Player_Model->towns[$i]->wine = 0; $this->Player_Model->towns[$i]->tavern_wine = 0; }
-               // Прирост жителей
+               
+			   // Прирост жителей
                if ($this->Player_Model->peoples[$i] < $this->Player_Model->max_peoples[$i])
                {
                    $this->Player_Model->towns[$i]->peoples = $this->Player_Model->towns[$i]->peoples + ((($this->Player_Model->good[$i]/50)/3600)*$elapsed);
@@ -159,7 +162,7 @@ class Update_Model extends CI_Model
                
 			   // Update the research points
                $add_points = $this->Player_Model->towns[$i]->scientists * $this->Player_Model->plus_research;
-			   $this->Player_Model->research->points = $this->Player_Model->research->points + (($add_points/3600) * $elapsed);
+			   $this->Player_Model->research->points = $this->Player_Model->research->points + (($add_points/3600) * $elapsed * getConfig('research_rate')); //Use research points rate
                
 			   // Строим здания в городах
                if ($this->Player_Model->towns[$i]->build_line != '')
@@ -735,7 +738,7 @@ class Update_Model extends CI_Model
                             if ($mission->sulfur > 0){$text .= '<li class="sulfur"><span class="textLabel">Сера: </span>'.($mission->sulfur).'</li>';}
                             $text .= '</ul>';
                             $text_from = 'Ваш торговый флот из <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->from]->island.'/'.$mission->from.'/">'.$this->Data_Model->temp_towns_db[$mission->from]->name.'</a> прибыл в <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->to]->island.'/'.$mission->to.'/">'.$this->Data_Model->temp_towns_db[$mission->to]->name.'</a> и привез следующие товары: <ul class="resources">'.$text;
-                            if ($mission->user != $trade_town->user)
+                            if ($mission->user != $trade_town->user and is_int($mission->to))
                             {        
                                 $text_to = 'Торговый флот из <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->from]->island.'/'.$mission->from.'/">'.$this->Data_Model->temp_towns_db[$mission->from]->name.'</a> прибыл в ваш город <a href="'.$this->config->item('base_url').'game/island/'.$this->Data_Model->temp_towns_db[$mission->to]->island.'/'.$mission->to.'/">'.$this->Data_Model->temp_towns_db[$mission->to]->name.'</a> и привез следующие товары: <ul class="resources">'.$text;
                                 $town_to_message = array(
@@ -911,28 +914,59 @@ class Update_Model extends CI_Model
 							/* Set the defender troops.*/
                             // Devo considerare se sto attaccando un villaggio dei barbari o una città reale	
                             // Devo considerare il livello delle mura del difensore								
-							$this->Data_Model->Load_Army($mission->to);
 							$this->Battle_Model->Load_Mission($mission);
-							$def_army = array();
-                            
-							// Carico il difensore
-							// TODO: si crea un bug quando il difensore non ha truppe
-							for($i = 1; $i <= 14; $i++)
+							if(is_int($mission->to))
 							{
-							    $class = $this->Data_Model->army_class_by_type($i);
-								if($this->Data_Model->temp_army_db[$mission->to]->$class > 0)
+							    $this->Data_Model->Load_Army($mission->to);
+							    $this->Battle_Model->Load_Mission($mission);
+							    $def_army = array();
+                            
+							    // Carico il difensore
+							    for($i = 1; $i <= 14; $i++)
 							    {
-									$def_army += array($class => $this->Data_Model->temp_army_db[$mission->to]->$class); 
-								}
-								else
-								    $def_army += array($class => 0);
-							}
-							$this->Player_Model->Load_Player($mission->to);
-							$wall = ($this->Player_Model->wall[$this->mission->to]) ? $this->Player_Model->wall[$this->mission->to] : 0;							    
-							$this->Battle_Model->setDefenderTroops($def_army, $wall);
+							        $class = $this->Data_Model->army_class_by_type($i);
+								   
+ 								    if($this->Data_Model->temp_army_db[$mission->to]->$class > 0)
+     									$def_army += array($class => $this->Data_Model->temp_army_db[$mission->to]->$class); 
+								    else
+								        $def_army += array($class => 0);
+							    }
 							
-							// Carico l'attaccante
-							unset($this->Data_Model->temp_army_db[$mission->to]);
+							    // Semplice calcolo della capacità
+                                for ($i = 0; $i <= 14; $i++)
+                                {
+                                    $pos_type = 'pos'.$i.'_type';
+					                $pos_level = 'pos'.$i.'_level';
+                                    if ($trade_town->$pos_type == 7)
+					                    $wall = $trade_town->$pos_level;
+								    elseif($trade_town->$pos_type == 6)
+									    $warehouses_levels[] = $trade_town->$pos_level; 	
+									else
+								        $wall = $warehouses_levels = 0;
+					            }
+				                $this->Battle_Model->setDefenderTroops($def_army, $wall, $warehouses_levels, $trade_town);
+							
+							    unset($this->Data_Model->temp_army_db[$mission->to]);
+							}
+							else
+							{
+                                $array = explode(',',$mission->to);
+		                        $bresource = $this->Data_Model->barbarian_resources_by_level($array[1]);
+								$barbarian_array = array(
+								    'level'   => $array[1],
+									'wall'    => $this->Data_Model->barbarian_wall_by_level($array[1]),
+									'troops'  => $this->Data_Model->barbarian_number_by_level($array[1]),
+									'island'  => $array[2],
+									'wood'    => $bresource['wood'],
+									'wine'    => $bresource['wine'],
+									'crystal' => $bresource['crystal'],
+									'marble'  => $bresource['marble'],
+									'sulfur'  => $bresource['sulfur'],									
+								);
+                      								
+								$this->Battle_Model->setBarbarianTroops($barbarian_array);
+						    }
+							
 							$this->Data_Model->Load_Army($mission->from);
 							$att_army = array();
 							for($i = 1; $i <= 14; $i++)
@@ -945,9 +979,6 @@ class Update_Model extends CI_Model
                             }
 							$this->Battle_Model->setAttackerTroops($att_army);
 							
-							// We set the transporters ship
-							$this->Battle_Model->ship_transport = $mission->ship_transport;
-							
 							// Do battle
 							$this->Battle_Model->battle();
 							
@@ -955,52 +986,78 @@ class Update_Model extends CI_Model
 							$data = array('attacker' => $mission->from, 'defender' => $mission->to, 'date' => time(), 'text' => $this->Battle_Model->representBattle());
 							$this->db->insert($this->session->userdata('universe').'_reports', $data); 
 
+							$this->Data_Model->Load_User($mission->to);
+							
 							// Mando i messaggi hai giocatori coinvolti
-							if($this->Battle_Model->result == 'win') 
+							if(is_int($mission->to))
 							{
-    							$text_to = 'Hai perso la battaglia contro: '.$mission->from;
-								$text_from = 'Hai vinto la battaglia contro: '.$mission->to;
-							}
-							elseif($this->Battle_Model->result == 'lose')
-							{
-							    $text_to = 'Hai vinto la battaglia contro: '.$mission->from;
-								$text_from = 'Hai perso la battaglia contro: '.$mission->to;
-							}
-							else
-							{
-							    $text_to = 'C\'&egrave; stata parit&agrave; contro: '.$mission->from;
-								$text_from = 'C\'&egrave; stata parit&agrave; contro: '.$mission->to;
-							}
+						      	if($this->Battle_Model->result == 'win') 
+							    {
+    							    $text_to = 'Hai perso la battaglia contro: '.$this->Player_Model->user->login;
+								    $text_from = 'Hai vinto la battaglia contro: '.$this->Data_Model->temp_user_db[$mission->to]->login;
+							    }
+							    elseif($this->Battle_Model->result == 'lose')
+							    {
+							        $text_to = 'Hai vinto la battaglia contro: '.$this->Player_Model->user->login;
+								    $text_from = 'Hai perso la battaglia contro: '.$this->Data_Model->temp_user_db[$mission->to]->login;
+							    }
+							    else
+							    {
+							        $text_to = 'C\'&egrave; stata parit&agrave; contro: '.$this->Player_Model->user->login;
+								    $text_from = 'C\'&egrave; stata parit&agrave; contro: '.$this->Data_Model->temp_user_db[$mission->to]->login;
+							    }
+							  	$text_to    .= '<br>Report: <a href="'.base_url().'game/militaryAdvisorReportView/'.$this->db->insert_id().'/">View report</a>';
+							    $text_from  .= '<br>Report: <a href="'.base_url().'game/militaryAdvisorReportView/'.$this->db->insert_id().'/">View report</a>';
+							
+							    $town_from_message = array(
+                                    'user' => $mission->user,
+                                    'town' => $mission->from,
+                                    'date' => $mission->mission_start + $time,
+                                    'text' => $text_from
+                                );  
+                                $town_to_message = array(
+                                    'user' => $trade_town->id,
+                                    'town' => $mission->to,
+                                    'date' => $mission->mission_start + $time,
+                                    'text' => $text_to
+                                );
+								$towns_messages[] = $town_from_message;
+								$towns_messages[] = $town_to_message;
 								
-							$text_to    .= '<br>Report: <a href="'.base_url().'game/militaryAdvisorReportView/'.$this->db->insert_id().'/">View report</a>';
-							$text_from  .= '<br>Report: <a href="'.base_url().'game/militaryAdvisorReportView/'.$this->db->insert_id().'/">View report</a>';
+								// Qua dovremmo aggiornare i soldati del difensore
+						        for($i = 1; $i <= 14; $i++)
+						        {
+								    $class = $this->Data_Model->army_class_by_type($i);
+								    if(isset($this->Battle_Model->defenderTroops[$class]))
+									    $this->db->set($class, $this->Battle_Model->defenderTroops[$class]);
+								}		
+							    $this->db->where(array('city' => $mission->to));
+							    $this->db->update($this->session->userdata('universe').'_army');
+                            }
+                            else
+                            {							
+								if($this->Battle_Model->result == 'win') 
+							    {
+								    $text_from = 'Hai vinto la battaglia contro il villaggio dei barbari';
+							    }
+							    elseif($this->Battle_Model->result == 'lose')
+							    {
+								    $text_from = 'Hai perso la battaglia contro il villaggio dei barbari';
+							    }
+							    else
+							    {
+							        $text_from = 'C\'&egrave; stata parit&agrave; contro il villaggio dei barbari';
+							    }
+							    $text_from  .= '<br>Report: <a href="'.base_url().'game/militaryAdvisorReportView/'.$this->db->insert_id().'/">View report</a>';
 							
-							$town_from_message = array(
-                                'user' => $mission->user,
-                                'town' => $mission->from,
-                                'date' => $mission->mission_start + $time,
-                                'text' => $text_from
-                            );  
-                            $town_to_message = array(
-                                'user' => $trade_town->id,
-                                'town' => $mission->to,
-                                'date' => $mission->mission_start + $time,
-                                'text' => $text_to
-                            ); 
-							$towns_messages[] = $town_from_message;
-							$towns_messages[] = $town_to_message;
-							
-							// Qua dovremmo aggiornare i soldati del difensore
-						    for($i = 1; $i <= 14; $i++)
-						    {
-								$class = $this->Data_Model->army_class_by_type($i);
-								if(isset($this->Battle_Model->defenderTroops[$class]))
-								{
-								    $this->db->set($class, $this->Battle_Model->defenderTroops[$class]);
-								}
-							}		
-							$this->db->where(array('city' => $mission->to));
-							$this->db->update($this->session->userdata('universe').'_army');
+							    $town_from_message = array(
+                                    'user' => $mission->user,
+                                    'town' => $mission->from,
+                                    'date' => $mission->mission_start + $time,
+                                    'text' => $text_from
+                                ); 
+								$towns_messages[] = $town_from_message;
+							}
 							
 							for($i = 1; $i <= 14; $i++)
 							{

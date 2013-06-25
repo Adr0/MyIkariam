@@ -1423,11 +1423,11 @@ ul{position:relative;height:50px;background-image:url(layout/assignworkers_bg_st
 #setWorkers .costs
 #valueResearchCosts.negative{color:#c61d1a}
 #setWorkers
-.setMin{position:absolute;display:block;width:24px;height:24px;top:88px;left:114px;background-image:url(img/resource/btn_min.gif)}
+.setMin{position:absolute;display:block;width:24px;height:24px;top:88px;left:114px;background-image:url(img/resource/btn_min.png)}
 #setWorkers .setMin
 .textLabel{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 #setWorkers
-.setMax{position:absolute;display:block;width:24px;height:24px;top:88px;left:512px;background-image:url(img/resource/btn_max.gif)}
+.setMax{position:absolute;display:block;width:24px;height:24px;top:88px;left:512px;background-image:url(img/resource/btn_max.png)}
 #setWorkers .setMax
 .textLabel{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 #setWorkers
@@ -1877,11 +1877,11 @@ li.ship_submarine{background-image:url(characters/fleet/40x40/ship_submarine_r_4
 #mainview .sliderinput .sliderbg
 .sliderthumb{position:absolute;width:16px;height:30px;background-image:url(interface/slider_build_thumb.gif);cursor:pointer}
 #mainview .sliderinput
-.setMin{position:absolute;display:block;width:24px;height:24px;top:3px;left:0px;background-image:url(img/resource/btn_min.gif)}
+.setMin{position:absolute;display:block;width:24px;height:24px;top:3px;left:0px;background-image:url(img/resource/btn_min.png)}
 #mainview .sliderinput .setMin
 .textLabel{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 #mainview .sliderinput
-.setMax{position:absolute;display:block;width:24px;height:24px;top:3px;left:376px;background-image:url(img/resource/btn_max.gif)}
+.setMax{position:absolute;display:block;width:24px;height:24px;top:3px;left:376px;background-image:url(img/resource/btn_max.png)}
 #mainview .sliderinput .setMax
 .textLabel{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 #missionSummary{position:relative;padding-top:10px}

@@ -1,4 +1,15 @@
-﻿<head>
+<?php
+        $config['base_url'] = $this->config->item('base_url').'game/version/';
+        $config['total_rows'] = SizeOf($param1);
+        $config['per_page'] = '4';
+        $config['num_links'] = 3;
+        $config['next_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_max.png" title="След. 4">';
+        $config['last_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_max.png" title="В Конец">';
+        $config['prev_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_min.png" title="Пред. 4">';
+        $config['first_link'] = '<img src="'.$this->config->item('style_url').'skin/img/resource/btn_min.png" title="В Начало">';
+        $this->pagination->initialize($config);
+?>
+<head>
 <style type="text/css">
 #version #container #mainview .table01 td.desc {text-align:left}
 #version #container #mainview .table01 td.version{vertical-align:top}
@@ -13,40 +24,22 @@
     <h1>ChangeLog</h1>
     <table cellpadding="0" cellspacing="0" class="table01">
         <tr>
-            <th>Version</th>
-            <th>Date</th>
-            <th>Description</th>
+            <th><?php echo lang('version');?></th>
+            <th><?php echo lang('date');?></th>
+            <th><?php echo lang('description');?></th>
         </tr>
-        <tr>
-            <td class="version">0.0.1</td>
-            <td class="version">21.06.2013</td>
+        <?php foreach($param1 as $value){?>
+		<tr>
+            <td class="version"><?php echo $value['number'];?></td>
+            <td class="version"><?php echo $value['date'];?></td>
             <td class="desc">
 			    <ul>
-                    <li>Upgrade - New version 2.1.3 of codeigniter.</li> 
-					<li>Upgrade - Script and style.</li>
-					<li>New - Added new ACP.</li>
-					<li>New - Added new image.</li>
-					<li>New - Installer.</li>
-					<li>New - Battle system.</li>
-					<li>New - 'militaryAdvisorCombatReports' page.</li>
-					<li>New - Report view.</li>
-					<li>New - Added new table to the db.</li>
-					<li>New - Config class.</li>
-					<li>Bugfix - Research.</li>
-					<li>Bugifx - Now players can select the ships to send with troops when they attack.</li>
-					<li>Bugfix - Tradegood.</li>
-                    <li>Bugfix – Townhall.</li>
-					<li>Bugfix - Now player can send messages.</li>
-                    <li>Bugfix – Premium account.</li>
-                    <li>Bugfix – Barrack.</li>
-					<li>Bugfix - Tutorial.</li>
-					<li>Bugfix - 'merchantNavy' page.</li>
-					<li>Bugfix – Some link.</li>
-                    <li>Bugfix – Variables and functions in the models.</li>
-					<li>Bugfix – World page.</li>
-					<li>Bugfix - .htaccess file.</li>
+                    <?php foreach($value['text'] as $text) {?>
+					<li><?php echo $text;?></li>					
+					<?php  } ?>
                 </ul>
 			</td>
 		</tr>
+		<?php } ?>
 	</table>
 </div>

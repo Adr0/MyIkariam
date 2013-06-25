@@ -1,9 +1,10 @@
-<?  $level_text = 'pos'.$position.'_level';
+<?php
+    $level_text = 'pos'.$position.'_level';
     $level = $this->Player_Model->now_town->$level_text;
     $speed = $this->Data_Model->speed_by_port_level($level);
 ?>
 <div id="mainview">
-<?include_once('building_description.php')?>
+<?php include_once('building_description.php');?>
     <div class="contentBox01h">
         <h3 class="header"><span class="textLabel">Mua tàu chở hàng</span></h3>
         <div class="content">
@@ -45,10 +46,11 @@ Không đủ nguồn lực
         <h3 class="header"><span class="textLabel">Điều động tàu giao thương</span></h3>
         <div class="content">
             <ul class="cities">
-<?foreach($this->Player_Model->towns as $town)?>
-<?if($town->id != $this->Player_Model->town_id){?>
+<?php 
+foreach($this->Player_Model->towns as $town) {
+if($town->id != $this->Player_Model->town_id){?>
 <li><a title="Транспорт в <?=$town->name?>" href="<?=$this->config->item('base_url')?>game/transport/<?=$town->island?>/<?=$town->id?>/">(<?=$this->Player_Model->islands[$town->island]->x?>:<?=$this->Player_Model->islands[$town->island]->y?>) <?=$town->name?></a></li>
-<?}?>
+<?php } } ?>
             </ul>
         </div>
         <div class="footer"></div>
@@ -57,8 +59,8 @@ Không đủ nguồn lực
         <h3 class="header"><span class="textLabel">Tàu đang chuyển</span></h3>
         <div class="content master">
             <div class="tcap">Tàu chở hàng của ta</div>
-<?$m_id = 0?>
-<?if($this->Player_Model->missions_loading > 0){
+<?php $m_id = 0;
+if($this->Player_Model->missions_loading > 0){
 foreach($this->Player_Model->missions as $mission){
 if ($mission->mission_start == 0){
     $wood = $mission->wood;

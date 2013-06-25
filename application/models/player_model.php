@@ -46,8 +46,9 @@ class Player_Model extends CI_Model {
 				
 			// Battle Reports
 			$this->db->from($this->session->userdata('universe').'_reports');
-            $this->db->where('attacker =', $this->Player_Model->user->id);
-            $this->db->or_where('defender =', $this->Player_Model->user->id); 
+            $this->db->where('attacker =', $id);
+            $this->db->or_where('defender =', $id);
+			$this->db->order_by("date", "desc");  
             $this->reports = $this->db->get();
 			$this->reports_count = count($this->reports);
 			
@@ -148,9 +149,9 @@ class Player_Model extends CI_Model {
 
 				// Calcoliamo il saldo, l'oro per gli scienziati e altre cose relative
 				// TODO: differenziare i vari saldi, quello totale da quello parziale
-                $this->saldo[$town->id] = $town->peoples*90; // Questo è il saldo prodotto dai cittadini
+                $this->saldo[$town->id] = $town->peoples * 3; // Questo è il saldo prodotto dai cittadini
                 $this->scientists_gold_need = ($this->research->res3_13 > 0) ? 3 : 6;
-                $this->saldo[$town->id] = $this->saldo[$town->id] - $town->scientists*$this->scientists_gold_need;
+			    $this->saldo[$town->id] = $this->saldo[$town->id] - $town->scientists * $this->scientists_gold_need;
                 $this->peoples_gold[$town->id] = $this->saldo[$town->id];
 
 				// Sottrarre al saldo il costo dei soldati
@@ -160,7 +161,7 @@ class Player_Model extends CI_Model {
                     if ($this->armys[$town->id]->$class > 0)
                     {
                         $cost = $this->Data_Model->army_cost_by_type($a, $this->research, $this->levels[$town->id]);
-                        $this->saldo[$town->id] = $this->saldo[$town->id] - ($cost['gold']*$this->armys[$town->id]->$class);
+                        $this->saldo[$town->id] = $this->saldo[$town->id] - ($cost['gold'] * $this->armys[$town->id]->$class);
                         $this->army_gold_need[$town->id] = $this->army_gold_need[$town->id] + ($cost['gold']*$this->armys[$town->id]->$class);
                         $this->user->points_army = $this->user->points_army + ($cost['wood']+$cost['wine']+$cost['crystal']+$cost['sulfur'])*0.7;      
                         $this->units_count[$town->id] = ($a <= 14) ? $this->units_count[$town->id] + $this->armys[$town->id]->$class : $this->units_count[$town->id];
@@ -306,11 +307,14 @@ class Player_Model extends CI_Model {
                         {
                             $this->fleets++;
                         }
-                        $this->Data_Model->Load_Town($mission->to);
+                        if(is_int($mission->to))
+						    $this->Data_Model->Load_Town($mission->to);
                         $this->Data_Model->Load_Town($mission->from);
-					    $this->Data_Model->Load_User($this->Data_Model->temp_towns_db[$mission->to]->user);
+					    if(is_int($mission->to))
+						    $this->Data_Model->Load_User($this->Data_Model->temp_towns_db[$mission->to]->user);
                         $this->Data_Model->Load_User($this->Data_Model->temp_towns_db[$mission->from]->user);
-                        $this->Data_Model->Load_Island($this->Data_Model->temp_towns_db[$mission->to]->island);
+                        if(is_int($mission->to))
+						    $this->Data_Model->Load_Island($this->Data_Model->temp_towns_db[$mission->to]->island);
                         $this->Data_Model->Load_Island($this->Data_Model->temp_towns_db[$mission->from]->island);
                     }
                 }

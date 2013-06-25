@@ -138,7 +138,14 @@ foreach($this->Player_Model->missions as $mission){
                 <img style="padding-bottom: 5px;" src="<?=$this->config->item('style_url')?>skin/interface/arrow_right_green.gif">
 <?}?>
             </td>
-            <td title="Mục tiêu"><a href="<?=$this->config->item('base_url')?>game/island/<?=$this->Data_Model->temp_towns_db[$mission->to]->island?>/<?=$this->Data_Model->temp_towns_db[$mission->to]->id?>/"><?=$this->Data_Model->temp_towns_db[$mission->to]->name?></a> (<?=$this->Data_Model->temp_user_db[$this->Data_Model->temp_towns_db[$mission->to]->user]->login?>)</td>
+            <td title="Mục tiêu">
+			    <?php if(is_int($mission->to))
+				{?>
+				<a href="<?=$this->config->item('base_url')?>game/island/<?=$this->Data_Model->temp_towns_db[$mission->to]->island?>/<?=$this->Data_Model->temp_towns_db[$mission->to]->id?>/"><?=$this->Data_Model->temp_towns_db[$mission->to]->name?></a> (<?=$this->Data_Model->temp_user_db[$this->Data_Model->temp_towns_db[$mission->to]->user]->login?>)
+				<?php } else { ?>
+				Barbarian Village
+				<?php } ?>
+			</td>
             <td title="Hành động" style="text-align: center; ">
 <?if($mission->return_start == 0 and $mission->user == $this->Player_Model->user->id){?>
                 <a href="<?=$this->config->item('base_url')?>actions/abortFleet/<?=$mission->id?>/0/militaryAdvisorMilitaryMovements/">

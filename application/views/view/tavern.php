@@ -13,17 +13,16 @@ classValuePerSatisfaction[4] = -1000;
 classNamePerSatisfaction[4] = 'outraged';
 satPerWine = new Array();
 savedWine = new Array();
-<?
+<?php
     $level_text = 'pos'.$position.'_level';
     $level = $this->Player_Model->now_town->$level_text;
- ?>
-<?for($i = 0; $i <= $level; $i++){?>
+    for($i = 0; $i <= $level; $i++){?>
 	satPerWine[<?=$i?>] = <?=$i*60?>;
 	savedWine[<?=$i?>] = '&nbsp;';
 <?}?>
 </script>
 <div id="mainview">
-<?include_once('building_description.php')?>
+<?php include_once('building_description.php');?>
     <div class="contentBox01h">
         <h3 class="header"><span class="textLabel">Phục vụ thức uống</span></h3>
         <div class="content">
@@ -90,17 +89,17 @@ savedWine = new Array();
                                 <div class="centerButton">
                                     <input type="submit" value="Nâng cốc!" class="button">
                                 </div>
-                                <div id="citySatisfaction"  class="<?=$this->Data_Model->good_class_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>">
+                                <div id="citySatisfaction"  class="<?=$this->Data_Model->good_name_by_count($this->Player_Model->good[$this->Player_Model->town_id])?>">
                                 </div>
                             </div>
                             <div id="serve" class="textfield">
                                 <select id="wineAmount" name="amount" size="1">
-<?for($i = 0; $i <= $level; $i++){?>
-<?if ($i == 0){?>
+<?php for($i = 0; $i <= $level; $i++){
+if ($i == 0){?>
                                     <option value="0" <?if($this->Player_Model->now_town->tavern_wine == $i){?>selected<?}?>>Không có rượu</option>
-<?}else{?>
+<?php }else{ ?>
                                     <option value="<?=$i?>" <?if($this->Player_Model->now_town->tavern_wine == $i){?>selected<?}?>><?=$this->Data_Model->wine_by_tavern_level($i)?> Rượu một giờ </option>
-<?}}?>
+<?php }} ?>
                                 </select>
                                 <span class="bonus">+<span id="bonus" class="value">0</span> Cư dân hạnh phúc</span>
                                 <br>

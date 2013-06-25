@@ -26,6 +26,10 @@
 						    <th><input autocomplete="off" id="inputScientists" name="board_url" class="textfield" type="text" maxlength="50" value="<?php echo getConfig('board_link');?>"></th>
 					    </tr>
 						<tr>
+					        <th><?php echo $this->lang->line('config_head_news');?>:</th>
+						    <th><input autocomplete="off" id="inputScientists" name="head_news" class="textfield" type="text" maxlength="30" value="<?php echo getConfig('head_news');?>"></th>
+					    </tr>
+						<tr>
 					        <th><?php echo $this->lang->line('config_easter_design');?>:</th>
 						    <th><input type="radio" name="easter_design" value="1" <?php if(getConfig('easter_design') == '1') {?>checked="checked"<?php } ?>>Si <input type="radio" name="easter_design" <?php if(getConfig('easter_design') == '0') {?>checked="checked"<?php } ?>value="0">No</th>
 					    </tr>
@@ -60,6 +64,10 @@
 						<tr>
 					        <th><?php echo $this->lang->line('config_trade_route_time');?>:</th>
 						    <th><input autocomplete="off" id="inputScientists" name="trade_route_time" class="textfield" type="text" maxlength="10" value="<?php echo getConfig('trade_route_time');?>"></th>
+					    </tr>
+						<tr>
+					        <th><?php echo $this->lang->line('config_research_rate');?>:</th>
+						    <th><input autocomplete="off" id="inputScientists" name="research_rate" class="textfield" type="text" maxlength="10" value="<?php echo getConfig('research_rate');?>"></th>
 					    </tr>
                     </tbody>
 		        </table>

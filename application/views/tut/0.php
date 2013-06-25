@@ -102,19 +102,19 @@
 <div id="arrow">
 </div>
 <div id="tutorialAdvisor">
-    <div id="advisorImage" class="allAdvisors"><a href="javascript:;" id="tutorialAdvisorLink" title="Tutorial"></a></div>
+    <div id="advisorImage" class="allAdvisors"><a href="javascript:;" id="tutorialAdvisorLink" title="Hướng dẫn"></a></div>
 </div>
 <div id="tutorialMessage">
-    <h3>Tutorial</h3>
+    <h3>Hướng dẫn</h3>
     <a href="javascript:;" id="tutorialAdvisorCloseLink"></a>
     <div class="content">
-        <p>Welcome to the relm of Ikaria,<br />
-        We are your advisers and we will describe to you about all outstanding events, connected with your cities, military actions, research and diplomacy.<br /><br />
-        We will appear at the beginning of every game and will describe about the first major steps into the game. If our help is necessary to you, press on the symbols in the upper left side of the play window.</p>
-        <div class="centerButton">
-            <a href="javascript:;" id="okButton" class="button">ОК</a>
-        </div>
-        <div class="footer"></div>
+    <p>Chào mừng đến với quốc đảo,<br />
+Chúng tôi là cố vấn của bạn và chúng tôi sẽ cho bạn biết về tất cả các sự kiện quan trọng kết nối với các thành phố, các hành động quân sự, nghiên cứu và ngoại giao.<br />
+<br />
+Ngoài ra, chúng tôi sẽ bắt đầu trò chơi và cho bạn biết về những bước quan trọng đầu tiên trong trò chơi. Nếu bạn cần trợ giúp của chúng tôi, nhấp chuột vào biểu tượng ở phía trên bên trái của cửa sổ game. </p>
+
+        <div class="centerButton"><a href="javascript:;" id="okButton" class="button">ОК</a></div>
+    <div class="footer"></div>
     </div>
 </div>
 

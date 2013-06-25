@@ -1150,5 +1150,12 @@ $lang['cargo_space'] = 'Cargo Space';
 $lang['holds_empty'] = 'Holds Empty';
 
 // Key added after
-// Highscore
 $lang['acp_name'] = 'ACP';
+$lang['town_news'] = 'Town News';
+$lang['trade_routes'] = 'Trade routes';
+$lang['trade_route'] = 'Trade route';
+$lang['current_events'] = 'Current events';
+$lang['location'] = 'Location';
+$lang['min'] = 'Min';
+$lang['max'] = 'Max';
+$lang['description'] = 'Description';

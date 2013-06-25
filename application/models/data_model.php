@@ -817,6 +817,10 @@ class Data_Model extends CI_Model
                 $time = '1080 1800 2592 3463 4380 5460 6600 7860 9300 10857 12540 14422 16440 18720 21180 23940 26940 30240 33900 37860 42300 47160 52440';
             break;
             case 11:
+			    $wood = '242 415 623 873 1173 1532 1964 2482 3103 3849 4743 5817 7105 8651 10507 12733 15404 18610 22457 27074 32614 39261 47239 56811 68299 82084 98625 118475 142925 170829 205180 246341';
+                $marble = '155 342 571 850 1190 1606 2112 2730 3484 4404 5527 6896 8566 10604 13090 16123 19824 24339 29846 36556 44764 54765 66967 81853 100014 122170 149201 182178 222411 271495 331377 404433';
+                $time = '1080 1800 2592 3463 4380 5460 6600 7860 9300 10857 12540 14422 16440 18720 21180 23940 26940 30240 33900 37860 42300 47160 52440';
+			break;
 			case 17:
             case 18:
             case 19:
@@ -1464,29 +1468,116 @@ class Data_Model extends CI_Model
         return $return;
     }
 
-    // numero di barbari in base al livello del villaggio
+
+	function barbarian_resources_by_level($level = 0)
+    {
+        $booty = array();
+		switch($level)
+	    {
+	        case 1: 
+			    $booty['wood'] = 250;
+				$booty['wine'] = $booty['crystal'] = $booty['marble'] = $booty['sulfur'] = 0;
+			break;
+			case 2:
+                $booty['wood'] = $booty['sulfur'] = 250;
+				$booty['wine'] = $booty['crystal'] = $booty['marble'] = 0;
+            break;
+			case 3:
+			    $booty['wood'] = $booty['sulfur'] = $booty['marble'] = 250;
+				$booty['wine'] = $booty['crystal'] = 0;
+			break;
+			case 4: 
+			    $booty['wood'] = $booty['sulfur'] = $booty['marble'] = $booty['wine'] = 250;
+				$booty['crystal'] = 0;
+			break;
+			case 5: 
+			    $booty['wood'] = $booty['sulfur'] = $booty['marble'] = $booty['wine'] = $booty['crystal'] = 250;
+			break;
+			case 6: 
+			    $booty['wood'] = 500;
+				$booty['wine'] = $booty['crystal'] = $booty['marble'] = $booty['sulfur'] = 250;
+			break;
+			case 7: 
+			    $booty['wood'] = $booty['sulfur'] = 500;
+				$booty['wine'] = $booty['crystal'] = $booty['marble'] = 250;
+			break;
+			case 8: 
+			    $booty['wood'] = $booty['sulfur'] = $booty['marble'] = 500;
+				$booty['wine'] = $booty['crystal'] = 250;
+			break;
+			case 9: 
+			    $booty['wood'] = $booty['sulfur'] = $booty['marble'] = $booty['wine'] = 500;
+				$booty['crystal'] = 250; 
+			break;
+			case 10: 
+			    $booty['wood'] = $booty['sulfur'] = $booty['marble'] = $booty['wine'] = $booty['crystal'] = 500;
+			break;
+			case 11:
+    			$booty['wood'] = 1000;
+				$booty['wine'] = $booty['crystal'] = $booty['marble'] = $booty['sulfur'] = 500;
+			break;
+			case 12:
+			    $booty['wood'] = $booty['sulfur'] = 1000;
+				$booty['wine'] = $booty['crystal'] = $booty['marble'] = 500;
+			break;
+			case 13:
+                $booty['wood'] = $booty['sulfur'] = $booty['marble'] = 1000;
+				$booty['wine'] = $booty['crystal'] = 500;
+			break;
+			case 14:
+                $booty['wood'] = $booty['sulfur'] = $booty['marble'] = $booty['wine'] = 1000;
+				$booty['crystal'] = 500;
+			break;
+			case 15: 
+		    	$booty['wood'] = $booty['sulfur'] = $booty['marble'] = $booty['wine'] = $booty['crystal'] = 1000;
+			break;
+		}
+		return $booty;
+	}
+	
+	// numero di barbari in base al livello del villaggio
 	function barbarian_number_by_level($level = 0)
     {
         switch($level)
-        {
-            case 1: return 5; break;
-            case 2: return 10; break;
-            case 3: return 15; break;
-			case 4: return 25; break;
-			case 5: return 35; break;
-	    }
+	    {
+	        case 1: return 1; break;
+			case 2: return 5; break;
+			case 3: return 14; break;
+			case 4: return 28; break;
+			case 5: return 48; break;
+			case 6: return 72; break;
+			case 7: return 107; break;
+			case 8: return 147; break;
+			case 9: return 195; break;
+			case 10: return 251; break;
+			case 11: return 316; break;
+			case 12: return 389; break;
+			case 13: return 471; break;
+			case 14: return 563; break;
+			case 15: return 665; break;
+		}
 	}
 	
 	// livello mura del villaggio dei barbari
-	function barbarian_wall_level($level = 0)
+	function barbarian_wall_by_level($level = 0)
 	{
-	   switch($level)
-	   {
-	        case 1: return 1; break;
-			case 2: return 2; break;
-			case 3: return 3; break;
-			case 4: return 4; break;
-			case 5: return 4; break;
+	    switch($level)
+	    {
+	        case 1: return 0; break;
+			case 2: return 0; break;
+			case 3: return 0; break;
+			case 4: return 1; break;
+			case 5: return 1; break;
+			case 6: return 2; break;
+			case 7: return 4; break;
+			case 8: return 5; break;
+			case 9: return 6; break;
+			case 10: return 7; break;
+			case 11: return 8; break;
+			case 12: return 10; break;
+			case 13: return 12; break;
+			case 14: return 14; break;
+			case 15: return 16; break;
 		}
 	}
 	

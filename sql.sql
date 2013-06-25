@@ -150,7 +150,8 @@ CREATE TABLE `alpha_config` (
   `style_version` varchar(20) NOT NULL,
   `script_version` varchar(20) NOT NULL,
   `admin_email` text CHARACTER SET utf8 NOT NULL,
-  `board_link` text CHARACTER SET utf8 NOT NULL,
+  `board_link` varchar(30) NOT NULL,
+  `head_news` varchar(30) NOT NULL,
   `game_speed` int(11) NOT NULL DEFAULT '50',
   `easter_design` enum('0', '1') NOT NULL,
   `double_login` enum('0', '1') NOT NULL,
@@ -161,6 +162,7 @@ CREATE TABLE `alpha_config` (
   `notes_default` int(11) NOT NULL,
   `notes_premium` int(11) NOT NULL,
   `trade_route_time` int(11) NOT NULL,
+  `research_rate` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 
@@ -168,7 +170,7 @@ CREATE TABLE `alpha_config` (
 -- Dumping data for table `alpha_config`
 --
 
-INSERT INTO `alpha_config` VALUES(1, 'MyIkariam', '0.0.1 Alpha 1', '0.0.1', '0.0.1', 'test@test.com', 'http://', 50, '0', '0', 3000, 500, 5, 5, 200, 7000, 604800);
+INSERT INTO `alpha_config` VALUES(1, 'MyIkariam', '0.0.1 Alpha 2', '0.0.1', '0.0.1', 'test@test.com', 'http://boardforum01.zz.mu/forum/', 'Welcome to MyIkariam', 50, '0', '0', 3000, 500, 5, 5, 200, 7000, 604800, 250);
 
 -- --------------------------------------------------------
 
@@ -389,15 +391,15 @@ INSERT INTO `alpha_islands` VALUES(153, 'Imaytia', 16, 24, 2, 2, 2, 26, 17, 0, 0
 INSERT INTO `alpha_islands` VALUES(154, 'Wavios', 17, 2, 4, 4, 7, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(155, 'Trodyos', 17, 5, 1, 2, 7, 34, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(156, 'Enieos', 17, 7, 1, 2, 4, 20, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(157, 'Layrios', 17, 8, 5, 4, 3, 13, 14, 1099, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(157, 'Layrios', 17, 8, 5, 4, 3, 13, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(158, 'Voofios', 17, 9, 1, 1, 3, 29, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(159, 'Oriaos', 17, 11, 5, 2, 7, 14, 14, 15973, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(159, 'Oriaos', 17, 11, 5, 2, 7, 14, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(160, 'Swaishoios', 17, 12, 1, 4, 2, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(161, 'Beyreios', 17, 14, 3, 4, 4, 20, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(162, 'Burauos', 17, 17, 5, 1, 5, 31, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(163, 'Zyhiios', 17, 18, 4, 3, 8, 25, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(164, 'Llafios', 17, 23, 2, 2, 2, 14, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-INSERT INTO `alpha_islands` VALUES(165, 'Smaeghiios', 17, 25, 3, 3, 5, 2, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+INSERT INTO `alpha_islands` VALUES(165, 'Smaeghiios', 17, 25, 3, 3, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(166, 'Ashaos', 18, 2, 3, 4, 5, 24, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(167, 'Drorios', 18, 11, 1, 2, 5, 14, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 INSERT INTO `alpha_islands` VALUES(168, 'Wutios', 18, 12, 5, 1, 8, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
@@ -438,17 +440,17 @@ CREATE TABLE `alpha_missions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user` int(11) NOT NULL,
   `from` int(11) NOT NULL,
-  `to` varchar(20) NOT NULL,
+  `to` varchar(30) NOT NULL,
   `loading_from_start` int(11) NOT NULL,
   `loading_to_start` int(11) NOT NULL,
   `mission_type` int(11) NOT NULL,
   `mission_start` int(11) NOT NULL,
   `return_start` int(11) NOT NULL,
-  `wood` int(11) NOT NULL,
-  `wine` int(11) NOT NULL,
-  `marble` int(11) NOT NULL,
-  `crystal` int(11) NOT NULL,
-  `sulfur` int(11) NOT NULL,
+  `wood` int(11) unsigned NOT NULL,
+  `wine` int(11) unsigned NOT NULL,
+  `marble` int(11) unsigned NOT NULL,
+  `crystal` int(11) unsigned NOT NULL,
+  `sulfur` int(11) unsigned NOT NULL,
   `gold` int(11) NOT NULL DEFAULT '0',
   `peoples` int(11) NOT NULL,
   `phalanx` int(11) NOT NULL,
@@ -648,11 +650,11 @@ CREATE TABLE `alpha_towns` (
   `position` int(11) NOT NULL DEFAULT '0',
   `last_update` int(11) NOT NULL,
   `name` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT 'Polis',
-  `wood` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '500',
-  `wine` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '0',
-  `marble` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '0',
-  `crystal` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '0',
-  `sulfur` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '0',
+  `wood` int(11) unsigned NOT NULL DEFAULT '500',
+  `wine` int(11) unsigned NOT NULL DEFAULT '0',
+  `marble` int(11) unsigned NOT NULL DEFAULT '0',
+  `crystal` int(11) unsigned NOT NULL DEFAULT '0',
+  `sulfur` int(11) unsigned NOT NULL DEFAULT '0',
   `pos0_type` int(11) NOT NULL DEFAULT '1',
   `pos0_level` int(11) NOT NULL DEFAULT '1',
   `pos1_type` int(11) NOT NULL DEFAULT '0',

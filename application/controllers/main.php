@@ -9,6 +9,9 @@ class Main extends CI_Controller {
 	{
 	    parent::__construct();
 		
+		if($this->config->item('installed') == 'no')
+		    redirect('/install/', 'refresh');
+		
 		$this->load->model('Player_Model');
 		if ($this->session->userdata('language'))
         {
@@ -17,9 +20,7 @@ class Main extends CI_Controller {
         else
         {
             $this->lang->load('welcome');
-        }
-		if($this->db->installed == false)
-		    redirect('/install/', 'refresh');
+        }	
 	}
 	
 	function error()

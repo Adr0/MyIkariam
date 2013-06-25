@@ -64,6 +64,7 @@ class ACP extends CI_Controller {
 			            'game_speed' => ($this->input->post('game_speed') == getConfig('game_speed')) ? null : $this->input->post('game_speed'),
 			            'admin_email' => ($this->input->post('admin_email') == getConfig('admin_email')) ? null : $this->input->post('admin_email'),
 			            'board_link' => ($this->input->post('board_url') == getConfig('board_link')) ? null : $this->input->post('board_url'),
+			            'head_news' => ($this->input->post('head_news') == getConfig('head_news')) ? null : $this->input->post('head_news'),
 			            'easter_design' => ($this->input->post('easter_design') == getConfig('easter_design')) ? null : $this->input->post('easter_design'),
 			            'double_login' => ($this->input->post('double_login') == getConfig('double_login')) ? null : $this->input->post('double_login'),
 			            'standard_capacity' => ($this->input->post('standard_capacity') == getConfig('standard_capacity')) ? null : $this->input->post('standard_capacity'),
@@ -73,6 +74,8 @@ class ACP extends CI_Controller {
 			            'notes_default' => ($this->input->post('notes_default') == getConfig('notes_default')) ? null : $this->input->post('notes_default'),
 			            'notes_premium' => ($this->input->post('notes_premium') == getConfig('notes_premium')) ? null : $this->input->post('notes_premium'),
 			            'trade_route_time' => ($this->input->post('trade_route_time') == getConfig('trade_route_time')) ? null : $this->input->post('trade_route_time'),
+	                    'research_rate' => ($this->input->post('research_rate') == getConfig('research_rate')) ? null : $this->input->post('research_rate'),
+
 			);
 			
 			$final_config = array();

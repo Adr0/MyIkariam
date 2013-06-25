@@ -43,11 +43,11 @@ ul{height:50px;background-image:url(layout/assignworkers_bg_stats.gif)}
 #academy #mainview #setScientists .costs
 #valueResearchCosts.negative{color:#c61d1a}
 #academy #mainview #setScientists
-.setMin{position:absolute;display:block;width:24px;height:24px;top:88px;left:114px;background-image:url(img/resource/btn_min.gif)}
+.setMin{position:absolute;display:block;width:24px;height:24px;top:88px;left:114px;background-image:url(img/resource/btn_min.png)}
 #academy #mainview #setScientists .setMin
 .textLabel{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 #academy #mainview #setScientists
-.setMax{position:absolute;display:block;width:24px;height:24px;top:88px;left:512px;background-image:url(img/resource/btn_max.gif)}
+.setMax{position:absolute;display:block;width:24px;height:24px;top:88px;left:512px;background-image:url(img/resource/btn_max.png)}
 #academy #mainview #setScientists .setMax
 .textLabel{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 #academy #mainview #setScientists

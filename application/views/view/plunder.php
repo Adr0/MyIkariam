@@ -260,7 +260,7 @@ function plusMinus(obj) {
     <?php
 	if($param1 == 'barbarian_village')
 	{
-	    echo '<form action="'.$this->config->item('base_url').'actions/attack/'.$param3.'/'.$param1.'/'.$param2.'" id="plunderForm" method="POST">';
+	    echo '<form action="'.$this->config->item('base_url').'actions/attack/'.$this->Island_Model->island->id.'/'.$param1.'/'.$param2.'/" id="plunderForm" method="POST">';
 	}
 	else 
 	    echo '<form action="'.$this->config->item('base_url').'actions/attack/'.$this->Island_Model->island->id.'/'.$position.'/" id="plunderForm" method="POST">';

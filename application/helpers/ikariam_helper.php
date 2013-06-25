@@ -46,6 +46,7 @@
 		$universe = ($CI->session->userdata('universe')) ? $CI->session->userdata('universe') : 'alpha';
 		$CI->db->from($universe.'_config');
 		$query = $CI->db->get();
+		if(!$query) return null;
 		return $query->row()->$item;
 	}
 	
